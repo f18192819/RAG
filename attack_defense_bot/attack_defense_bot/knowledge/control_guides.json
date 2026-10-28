@@ -1,0 +1,688 @@
+{
+  "description": "Source-based bilingual control notes, refined after development-set error analysis. No question-answer pairs, evaluation sample IDs, option labels or student submissions are included.",
+  "documents": [
+    {
+      "id": "guide-sso",
+      "title": "Single sign-on and identity federation / 单点登录与身份联合",
+      "aliases": "单点登录 身份联合 SSO SaaS 统一撤销 SAML OIDC",
+      "text": "单点登录和身份联合通过受信任的身份提供方集中认证，减少每个应用独立维护凭据。标准协议如SAML或OpenID Connect传递经过验证的身份声明，各应用仍负责正确授权。 SSO和身份联合集中了身份验证和一致的MFA策略；必须测试会话和应用程序访问撤销。验证发布者、受众、签名、声明生命周期和注销行为，并在支持的地方自动化账户开通和撤权。\nSingle sign-on and federation reduce independent password stores by connecting applications to a trusted identity provider through protocols such as SAML or OpenID Connect. SSO and identity federation centralize authentication and consistent MFA policy; session and application access revocation must be tested. Verify issuer, audience, signatures, assertion lifetime and logout behavior, and automate provisioning/deprovisioning where supported.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#IA-13",
+      "text_zh": "单点登录和身份联合通过受信任的身份提供方集中认证，减少每个应用独立维护凭据。标准协议如SAML或OpenID Connect传递经过验证的身份声明，各应用仍负责正确授权。 SSO和身份联合集中了身份验证和一致的MFA策略；必须测试会话和应用程序访问撤销。验证发布者、受众、签名、声明生命周期和注销行为，并在支持的地方自动化账户开通和撤权。",
+      "text_en": "Single sign-on and federation reduce independent password stores by connecting applications to a trusted identity provider through protocols such as SAML or OpenID Connect. SSO and identity federation centralize authentication and consistent MFA policy; session and application access revocation must be tested. Verify issuer, audience, signatures, assertion lifetime and logout behavior, and automate provisioning/deprovisioning where supported.",
+      "topic_names": [
+        "单点登录",
+        "身份联合",
+        "SSO",
+        "identity federation",
+        "single sign-on"
+      ]
+    },
+    {
+      "id": "guide-identity",
+      "title": "Identity lifecycle / 身份生命周期与权限复核",
+      "aliases": "入职 转岗 离职 JML identity lifecycle account review",
+      "text": "以权威人事系统的入职、转岗和离职状态事件触发账户开通、调整及停用撤销，规定处置时限；对状态异常、孤儿账户和逾期撤权告警，保留审批与执行记录。 身份生命周期管理覆盖入职授权、转岗调整及离职撤权；账户应有唯一身份、业务负责人和可追溯的审批记录。定期复核实际权限，清理孤儿、闲置和过量权限，撤销会话与密钥。 身份生命周期管理把账户开通、岗位变更、访问复核和及时撤权与明确负责人关联。证据包括审批请求、权限复核记录和撤销记录。\nConnect authoritative personnel events for joiners, movers and leavers to account provisioning, changes and deprovisioning, with defined response deadlines and alerts for orphaned, inconsistent or overdue accounts. Retain approvals and execution records. Identity lifecycle management makes joiner, mover and leaver (JML) access changes timely and auditable. Manage account creation, job changes and termination so access remains aligned with current responsibilities and accountable business owners. Identity lifecycle management ties provisioning, transfers, reviews and timely deprovisioning to accountable owners. Evidence includes approved requests, access certifications and revocation records.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#AC-2",
+      "text_zh": "以权威人事系统的入职、转岗和离职状态事件触发账户开通、调整及停用撤销，规定处置时限；对状态异常、孤儿账户和逾期撤权告警，保留审批与执行记录。 身份生命周期管理覆盖入职授权、转岗调整及离职撤权；账户应有唯一身份、业务负责人和可追溯的审批记录。定期复核实际权限，清理孤儿、闲置和过量权限，撤销会话与密钥。 身份生命周期管理把账户开通、岗位变更、访问复核和及时撤权与明确负责人关联。证据包括审批请求、权限复核记录和撤销记录。",
+      "text_en": "Connect authoritative personnel events for joiners, movers and leavers to account provisioning, changes and deprovisioning, with defined response deadlines and alerts for orphaned, inconsistent or overdue accounts. Retain approvals and execution records. Identity lifecycle management makes joiner, mover and leaver (JML) access changes timely and auditable. Manage account creation, job changes and termination so access remains aligned with current responsibilities and accountable business owners. Identity lifecycle management ties provisioning, transfers, reviews and timely deprovisioning to accountable owners. Evidence includes approved requests, access certifications and revocation records.",
+      "topic_names": [
+        "身份全生命周期管理",
+        "身份生命周期管理",
+        "身份生命周期",
+        "identity lifecycle management"
+      ]
+    },
+    {
+      "id": "guide-pam",
+      "title": "Privileged access management / 特权访问管理",
+      "aliases": "PAM 特权账号 高权限 临时授权 JIT",
+      "text": "特权访问管理通过独立管理身份、凭据保管库和受控会话降低管理员权限滥用。高权限操作按任务申请并经审批，按需限时授予，记录操作和会话并在结束后回收权限。 特权访问管理结合了管理身份的分离、凭证库、审批、即时的限时提权和会话审计。审核人员验证审批、到期自动回收、凭证轮换和记录的管理会话。\nPrivileged access management reduces misuse of administrative privileges through controlled approval, isolated administrative identity and time-limited privileged sessions. PAM combines separation of administrative identities, credential vaulting, approval, just-in-time time-limited elevation and session auditing. Reviewers verify approvals, expiry enforcement, credential rotation and recorded administrative sessions.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#AC-6",
+      "text_zh": "特权访问管理通过独立管理身份、凭据保管库和受控会话降低管理员权限滥用。高权限操作按任务申请并经审批，按需限时授予，记录操作和会话并在结束后回收权限。 特权访问管理结合了管理身份的分离、凭证库、审批、即时的限时提权和会话审计。审核人员验证审批、到期自动回收、凭证轮换和记录的管理会话。",
+      "text_en": "Privileged access management reduces misuse of administrative privileges through controlled approval, isolated administrative identity and time-limited privileged sessions. PAM combines separation of administrative identities, credential vaulting, approval, just-in-time time-limited elevation and session auditing. Reviewers verify approvals, expiry enforcement, credential rotation and recorded administrative sessions.",
+      "topic_names": [
+        "特权访问管理",
+        "PAM",
+        "privileged access management"
+      ]
+    },
+    {
+      "id": "guide-least",
+      "title": "Least privilege / 最小权限",
+      "aliases": "权限最小化 最小访问 least privilege RBAC ABAC",
+      "text": "最小权限将访问限制在完成已批准职责所需的资源、操作和时间范围。角色或属性授权应默认拒绝，避免共享管理账号，周期复核并撤销多余权限。 最小权限限制主体访问必要的资源和操作，采用默认拒绝授权和定期访问审查。测试批准范围内的操作和超出范围的尝试。\nLeast privilege limits subjects to necessary resources and operations, with deny-by-default authorization and regular access review. Test both permitted actions and attempts outside the approved scope.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#AC-6",
+      "text_zh": "最小权限将访问限制在完成已批准职责所需的资源、操作和时间范围。角色或属性授权应默认拒绝，避免共享管理账号，周期复核并撤销多余权限。 最小权限限制主体访问必要的资源和操作，采用默认拒绝授权和定期访问审查。测试批准范围内的操作和超出范围的尝试。",
+      "text_en": "Least privilege limits subjects to necessary resources and operations, with deny-by-default authorization and regular access review. Test both permitted actions and attempts outside the approved scope.",
+      "topic_names": [
+        "最小权限原则",
+        "最小权限",
+        "least privilege"
+      ]
+    },
+    {
+      "id": "guide-mfa",
+      "title": "Phishing-resistant multi-factor authentication / 抗钓鱼多因素认证",
+      "aliases": "MFA FIDO2 WebAuthn 多因素认证 抗钓鱼",
+      "text": "多因素认证组合不同类型的认证因素；抗钓鱼认证进一步将验证绑定到真实服务来源，降低凭据被代理或重放的风险。 FIDO2/WebAuthn 使用与来源绑定的公钥认证。注册、丢失设备恢复和管理例外需要强验证。对敏感账户进行审计覆盖，并测试弱回退是否不能绕过所需的认证。\nMulti-factor authentication combines different factor types; phishing-resistant authentication prevents captured credentials or proxy phishing from authenticating to a different origin. FIDO2/WebAuthn uses origin-bound public-key authentication. Enrollment, lost-device recovery and administrative exceptions need strong verification. Audit coverage of sensitive accounts and test that weak fallback cannot bypass required authentication.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#IA-2",
+      "text_zh": "多因素认证组合不同类型的认证因素；抗钓鱼认证进一步将验证绑定到真实服务来源，降低凭据被代理或重放的风险。 FIDO2/WebAuthn 使用与来源绑定的公钥认证。注册、丢失设备恢复和管理例外需要强验证。对敏感账户进行审计覆盖，并测试弱回退是否不能绕过所需的认证。",
+      "text_en": "Multi-factor authentication combines different factor types; phishing-resistant authentication prevents captured credentials or proxy phishing from authenticating to a different origin. FIDO2/WebAuthn uses origin-bound public-key authentication. Enrollment, lost-device recovery and administrative exceptions need strong verification. Audit coverage of sensitive accounts and test that weak fallback cannot bypass required authentication.",
+      "topic_names": [
+        "抗钓鱼多因素认证",
+        "多因素认证",
+        "phishing-resistant MFA",
+        "phishing-resistant multi-factor authentication"
+      ]
+    },
+    {
+      "id": "guide-password",
+      "title": "Password storage / 口令哈希",
+      "aliases": "密码存储 加盐 哈希 Argon2id password hashing",
+      "text": "口令使用独立随机盐和专用、可调成本的慢速口令哈希保存，避免明文、可逆加密或快速通用哈希。 使用 Argon2id 等专用口令哈希函数，为每个口令配置唯一随机盐和经过校准的工作因子；单独保护的 pepper（额外机密）可作为补充。验证参数，随硬件和威胁变化升级。\nSalted, deliberately expensive password hashing raises the cost of offline password guessing after a credential database is stolen. Password storage uses a password hashing function such as Argon2id with unique salts and calibrated work factors; a separately protected pepper may add defense. Verify parameters and plan upgrades as hardware and threats evolve.",
+      "source": "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
+      "text_zh": "口令使用独立随机盐和专用、可调成本的慢速口令哈希保存，避免明文、可逆加密或快速通用哈希。 使用 Argon2id 等专用口令哈希函数，为每个口令配置唯一随机盐和经过校准的工作因子；单独保护的 pepper（额外机密）可作为补充。验证参数，随硬件和威胁变化升级。",
+      "text_en": "Salted, deliberately expensive password hashing raises the cost of offline password guessing after a credential database is stolen. Password storage uses a password hashing function such as Argon2id with unique salts and calibrated work factors; a separately protected pepper may add defense. Verify parameters and plan upgrades as hardware and threats evolve.",
+      "topic_names": [
+        "口令哈希存储",
+        "口令存储",
+        "密码安全存储",
+        "password hashing",
+        "password storage"
+      ]
+    },
+    {
+      "id": "guide-zero",
+      "title": "Risk-based conditional access and zero trust / 基于风险的条件访问与零信任",
+      "aliases": "零信任 条件访问 设备姿态 ZTNA conditional access 基于风险的条件访问 风险信号 设备合规 地理位置 资源敏感度",
+      "text": "零信任不因网络位置而默认授信。访问决策综合身份、设备状态、位置、资源敏感度和当前风险，按会话持续评估并最小化授权。 条件访问评估身份、设备状态和合规性、位置、资源敏感性和当前风险，以做出适应性访问决策。它需要在适当的情况下进行更强的身份验证，并阻止不合规的设备。验证拒绝和允许的路径、会话撤销和紧急访问程序。 实施时定义可解释的风险信号，按风险分级配置认证加强或阻断动作，并持续监测误报和业务影响。\nConditional access evaluates identity, device posture and compliance, location, resource sensitivity and current risk to make adaptive access decisions. It requires stronger authentication where appropriate and blocks non-compliant devices. Validate denied and allowed paths, session revocation and emergency-access procedures.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/207/final",
+      "text_zh": "零信任不因网络位置而默认授信。访问决策综合身份、设备状态、位置、资源敏感度和当前风险，按会话持续评估并最小化授权。 条件访问评估身份、设备状态和合规性、位置、资源敏感性和当前风险，以做出适应性访问决策。它需要在适当的情况下进行更强的身份验证，并阻止不合规的设备。验证拒绝和允许的路径、会话撤销和紧急访问程序。 实施时定义可解释的风险信号，按风险分级配置认证加强或阻断动作，并持续监测误报和业务影响。",
+      "text_en": "Conditional access evaluates identity, device posture and compliance, location, resource sensitivity and current risk to make adaptive access decisions. It requires stronger authentication where appropriate and blocks non-compliant devices. Validate denied and allowed paths, session revocation and emergency-access procedures.",
+      "topic_names": [
+        "基于风险的条件访问",
+        "条件访问",
+        "风险条件访问",
+        "risk-based conditional access",
+        "zero trust"
+      ],
+      "retrieval_context": "适用范围：远程接入、VPN或内部网络位置不能自动授予信任；对具体应用和资源按身份、设备健康、行为、位置及上下文逐次验证和授权。 Scope: remote access, VPN implicit trust, per-resource authorization, continuous identity and device verification.",
+      "retrieval_context_source": "https://csrc.nist.gov/pubs/sp/800/207/final"
+    },
+    {
+      "id": "guide-vulnerability",
+      "title": "Vulnerability management / 漏洞管理闭环",
+      "aliases": "漏洞 扫描报告 高风险 修复负责人 复测 补丁 SLA vulnerability management",
+      "text": "漏洞管理把资产识别、扫描发现、风险排序、分配责任、修复和复测连接为工单闭环。优先级结合被利用情况、可利用性、资产重要性和暴露程度；规定整改期限，限时审批例外并持续跟踪。 漏洞管理需要有责任的修复负责人、基于风险的截止日期、重新测试和有限时间的例外，而不仅仅是扫描报告。证据包括漏洞超期报告、关闭的工单和独立验证。\nClosed-loop vulnerability management connects discovery, prioritization, remediation, validation and governed exceptions in a traceable workflow. Vulnerability management needs accountable remediation owners, risk-based deadlines, retesting and time-bound exceptions, rather than scanning reports alone. Evidence includes aging reports, closed tickets and independent verification.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#RA-5",
+      "text_zh": "漏洞管理把资产识别、扫描发现、风险排序、分配责任、修复和复测连接为工单闭环。优先级结合被利用情况、可利用性、资产重要性和暴露程度；规定整改期限，限时审批例外并持续跟踪。 漏洞管理需要有责任的修复负责人、基于风险的截止日期、重新测试和有限时间的例外，而不仅仅是扫描报告。证据包括漏洞超期报告、关闭的工单和独立验证。",
+      "text_en": "Closed-loop vulnerability management connects discovery, prioritization, remediation, validation and governed exceptions in a traceable workflow. Vulnerability management needs accountable remediation owners, risk-based deadlines, retesting and time-bound exceptions, rather than scanning reports alone. Evidence includes aging reports, closed tickets and independent verification.",
+      "topic_names": [
+        "漏洞管理闭环",
+        "闭环漏洞管理",
+        "closed-loop vulnerability management"
+      ]
+    },
+    {
+      "id": "guide-patch",
+      "title": "Patch management / 补丁管理",
+      "aliases": "补丁更新 安全更新 patch remediation",
+      "text": "补丁管理先识别受影响资产和更新优先级，在代表性环境测试兼容性、有效性和副作用，再分批部署并验证安装及漏洞消除；保留回滚方案和限时例外。 补丁管理结合了资产清单、风险优先级排序、测试、分阶段部署、回滚和安装后验证，明确负责人并跟踪整改期限。 维护资产与版本清单，结合可利用性、对外暴露和业务关键性排序，经代表性环境测试后分批部署并复测。\nPatch and remediation management reduces exposure to known software vulnerabilities by applying and verifying security fixes promptly, with priority for exploitable and externally exposed flaws. Maintain an asset and version inventory, prioritize exploitability, external exposure and business criticality, test representative systems, deploy in stages and verify remediation. Patch management combines inventory, risk prioritization, testing, staged deployment, rollback and post-installation verification, with tracked owners and deadlines.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/40/r4/final",
+      "text_zh": "补丁管理先识别受影响资产和更新优先级，在代表性环境测试兼容性、有效性和副作用，再分批部署并验证安装及漏洞消除；保留回滚方案和限时例外。 补丁管理结合了资产清单、风险优先级排序、测试、分阶段部署、回滚和安装后验证，明确负责人并跟踪整改期限。 维护资产与版本清单，结合可利用性、对外暴露和业务关键性排序，经代表性环境测试后分批部署并复测。",
+      "text_en": "Patch and remediation management reduces exposure to known software vulnerabilities by applying and verifying security fixes promptly, with priority for exploitable and externally exposed flaws. Maintain an asset and version inventory, prioritize exploitability, external exposure and business criticality, test representative systems, deploy in stages and verify remediation. Patch management combines inventory, risk prioritization, testing, staged deployment, rollback and post-installation verification, with tracked owners and deadlines.",
+      "topic_names": [
+        "补丁与修复管理",
+        "补丁管理",
+        "patch and remediation management"
+      ],
+      "retrieval_context": "适用范围：终端或服务器已部署软件的旧版本、已知漏洞、远程代码执行缺陷与安全更新；按风险安排测试、升级、补丁分发及修复验证。 Scope: outdated deployed software, known exploitable vulnerabilities, security updates, staged patch deployment and verification.",
+      "retrieval_context_source": "https://csrc.nist.gov/pubs/sp/800/40/r4/final"
+    },
+    {
+      "id": "guide-hardening",
+      "title": "Secure configuration baseline / 安全配置基线",
+      "aliases": "基线加固 配置漂移 默认口令 默认服务 hardening baseline",
+      "text": "安全基线规定经过批准的服务、端口、权限和配置；关闭无业务必要的功能，修改默认凭据，并检测实际状态与基线的偏离。 安全配置基线应进行版本控制、测试、强制执行并定期检查漂移。例外情况有负责人、理由和到期日；修复和合规性扫描提供证据。\nConfiguration baselines should be versioned, tested, enforced and periodically checked for drift. Exceptions have an owner, justification and expiry; remediation and compliance scans provide evidence.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#CM-2",
+      "text_zh": "安全基线规定经过批准的服务、端口、权限和配置；关闭无业务必要的功能，修改默认凭据，并检测实际状态与基线的偏离。 安全配置基线应进行版本控制、测试、强制执行并定期检查漂移。例外情况有负责人、理由和到期日；修复和合规性扫描提供证据。",
+      "text_en": "Configuration baselines should be versioned, tested, enforced and periodically checked for drift. Exceptions have an owner, justification and expiry; remediation and compliance scans provide evidence.",
+      "topic_names": [
+        "安全配置基线",
+        "主机安全基线",
+        "secure configuration baseline"
+      ]
+    },
+    {
+      "id": "guide-edr",
+      "title": "Endpoint detection and response / 端点检测与响应",
+      "aliases": "EDR 终端检测 端点行为 恶意进程 主机隔离",
+      "text": "EDR收集端点进程、文件、注册表和网络行为，检测恶意执行与持久化并支持调查、进程处置和主机隔离。 端点检测与响应需要传感器覆盖、维护检测规则、告警研判负责人和经过测试的响应手册。通过受控模拟和遥测检查验证整个检测到响应链。\nEDR detects malicious endpoint processes, files and persistence, supports investigation and enables containment such as host isolation. Endpoint detection and response requires sensor coverage, maintained detection rules, triage ownership and tested response playbooks. Validate the whole detection-to-response chain with controlled simulations and telemetry checks.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SI-4",
+      "text_zh": "EDR收集端点进程、文件、注册表和网络行为，检测恶意执行与持久化并支持调查、进程处置和主机隔离。 端点检测与响应需要传感器覆盖、维护检测规则、告警研判负责人和经过测试的响应手册。通过受控模拟和遥测检查验证整个检测到响应链。",
+      "text_en": "EDR detects malicious endpoint processes, files and persistence, supports investigation and enables containment such as host isolation. Endpoint detection and response requires sensor coverage, maintained detection rules, triage ownership and tested response playbooks. Validate the whole detection-to-response chain with controlled simulations and telemetry checks.",
+      "topic_names": [
+        "端点检测与响应",
+        "终端检测与响应",
+        "EDR"
+      ]
+    },
+    {
+      "id": "guide-fde",
+      "title": "Full disk encryption / 全盘加密",
+      "aliases": "全盘加密 磁盘加密 FDE 恢复密钥 启动前保护",
+      "text": "全盘加密保护关机或丢失设备上的静态数据，不能替代运行时访问控制。部署时统一管理加密策略，使用受保护的启动解锁机制，安全托管恢复密钥并限制恢复操作权限；验证磁盘加密状态、启动前认证和授权恢复流程。 全盘加密需要进行管理部署，保护启动认证，安全的恢复密钥托管和经过测试的恢复；加密并不能保护已经通过授权会话解锁的数据。\nFull disk encryption protects stored information when a device is lost, stolen or accessed offline, while authorized running sessions still need access controls. Full disk encryption requires managed deployment, protected boot authentication, secure recovery-key escrow and tested recovery; encryption does not protect data after an authorized session has unlocked it.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/111/final",
+      "text_zh": "全盘加密保护关机或丢失设备上的静态数据，不能替代运行时访问控制。部署时统一管理加密策略，使用受保护的启动解锁机制，安全托管恢复密钥并限制恢复操作权限；验证磁盘加密状态、启动前认证和授权恢复流程。 全盘加密需要进行管理部署，保护启动认证，安全的恢复密钥托管和经过测试的恢复；加密并不能保护已经通过授权会话解锁的数据。",
+      "text_en": "Full disk encryption protects stored information when a device is lost, stolen or accessed offline, while authorized running sessions still need access controls. Full disk encryption requires managed deployment, protected boot authentication, secure recovery-key escrow and tested recovery; encryption does not protect data after an authorized session has unlocked it.",
+      "topic_names": [
+        "全盘加密",
+        "全磁盘加密",
+        "full-disk encryption"
+      ],
+      "retrieval_context": "适用范围：笔记本、手提电脑、移动终端和可移动存储在遗失、丢失、被盗、失窃或离线读取时的存储保密。保护静态数据，配合恢复密钥托管和启动前认证。 Scope: laptop, notebook, portable device, lost or stolen computer, offline disk access and removable storage confidentiality.",
+      "retrieval_context_source": "https://csrc.nist.gov/pubs/sp/800/111/final"
+    },
+    {
+      "id": "guide-allowlist",
+      "title": "Application allowlisting / 应用白名单",
+      "aliases": "应用控制 白名单 allowlisting 未授权程序",
+      "text": "应用白名单按可信签名、发布者、哈希或受控路径限制可运行程序，减少未授权和恶意代码执行。 应用程序白名单需要经过批准的清单、分阶段测试、受控例外和持续监控；验证已批准的执行和阻止未知的二进制文件，包括适用的脚本和解释器。\nApplication allowlisting needs an approved inventory, staged testing, controlled exceptions and ongoing monitoring; verify both approved execution and blocked unknown binaries, including scripts and interpreters where applicable.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#CM-7",
+      "text_zh": "应用白名单按可信签名、发布者、哈希或受控路径限制可运行程序，减少未授权和恶意代码执行。 应用程序白名单需要经过批准的清单、分阶段测试、受控例外和持续监控；验证已批准的执行和阻止未知的二进制文件，包括适用的脚本和解释器。",
+      "text_en": "Application allowlisting needs an approved inventory, staged testing, controlled exceptions and ongoing monitoring; verify both approved execution and blocked unknown binaries, including scripts and interpreters where applicable.",
+      "topic_names": [
+        "应用白名单",
+        "应用程序白名单",
+        "application allowlisting"
+      ],
+      "retrieval_context": "适用范围：终端上哪些应用、二进制、脚本和解释器被允许执行，识别与阻止来源不明、未批准的可执行文件及便携式程序。 Scope: approved software execution, portable applications, unknown executables and unauthorized programs on hosts.",
+      "retrieval_context_source": "https://csrc.nist.gov/pubs/sp/800/167/final"
+    },
+    {
+      "id": "guide-sql",
+      "title": "SQL injection prevention / 参数化查询",
+      "aliases": "SQL注入 参数化查询 prepared statements",
+      "text": "参数化查询让SQL结构与外部输入作为数据分开处理，防止输入改变查询语义。 参数化语句绑定值而不是将输入拼接到SQL中。动态标识符需要允许列表；数据库帐户仍然需要最小权限。通过恶意输入测试和所有查询构造路径的代码审查进行验证。\nParameterized statements bind values rather than concatenating input into SQL. Dynamic identifiers require an allowlist; database accounts still need least privilege. Verify with malicious input tests and code review of all query construction paths.",
+      "source": "https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html",
+      "text_zh": "参数化查询让SQL结构与外部输入作为数据分开处理，防止输入改变查询语义。 参数化语句绑定值而不是将输入拼接到SQL中。动态标识符需要允许列表；数据库帐户仍然需要最小权限。通过恶意输入测试和所有查询构造路径的代码审查进行验证。",
+      "text_en": "Parameterized statements bind values rather than concatenating input into SQL. Dynamic identifiers require an allowlist; database accounts still need least privilege. Verify with malicious input tests and code review of all query construction paths.",
+      "topic_names": [
+        "参数化查询",
+        "SQL注入防护",
+        "parameterized queries",
+        "parameterized statements"
+      ]
+    },
+    {
+      "id": "guide-xss",
+      "title": "Cross-site scripting prevention / XSS防护",
+      "aliases": "XSS 上下文输出编码 HTML净化 CSP",
+      "text": "XSS防护按HTML、属性、JavaScript和URL等输出位置使用对应编码；确需允许HTML时使用维护良好的净化器，并避免危险DOM接收点。 根据上下文进行输出编码，防止不可信数据变为可执行的浏览器内容。净化和安全API是主要控制手段；内容安全策略则增加了深度防御，而不是取代它们。\nContext-sensitive output encoding keeps untrusted data from becoming executable browser content. Sanitization and safe APIs are primary controls; Content Security Policy adds defense in depth rather than replacing them.",
+      "source": "https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html",
+      "text_zh": "XSS防护按HTML、属性、JavaScript和URL等输出位置使用对应编码；确需允许HTML时使用维护良好的净化器，并避免危险DOM接收点。 根据上下文进行输出编码，防止不可信数据变为可执行的浏览器内容。净化和安全API是主要控制手段；内容安全策略则增加了深度防御，而不是取代它们。",
+      "text_en": "Context-sensitive output encoding keeps untrusted data from becoming executable browser content. Sanitization and safe APIs are primary controls; Content Security Policy adds defense in depth rather than replacing them.",
+      "topic_names": [
+        "上下文输出编码",
+        "上下文感知输出编码",
+        "context-aware output encoding",
+        "XSS防护"
+      ]
+    },
+    {
+      "id": "guide-csrf",
+      "title": "CSRF protection / CSRF防护令牌",
+      "aliases": "CSRF防护令牌 跨站请求伪造 会话 状态变更",
+      "text": "CSRF防护使服务器能区分用户主动提交与第三方站点诱发的状态变更请求。同步令牌应由密码学安全随机源产生，与用户会话关联并由服务端验证；令牌不应泄露到URL或日志。 CSRF令牌必须保密、不可预测并与会话绑定。校验Origin或Referer来源以及适当的SameSite Cookie提供纵深防御；GET请求不应改变状态。\nCSRF protection prevents another site from inducing unwanted state-changing requests through a victim authenticated session. CSRF tokens must be secret, unpredictable and session-bound. Origin/Referer validation and appropriate SameSite cookies add defense; state changes should not use GET.",
+      "source": "https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html",
+      "text_zh": "CSRF防护使服务器能区分用户主动提交与第三方站点诱发的状态变更请求。同步令牌应由密码学安全随机源产生，与用户会话关联并由服务端验证；令牌不应泄露到URL或日志。 CSRF令牌必须保密、不可预测并与会话绑定。校验Origin或Referer来源以及适当的SameSite Cookie提供纵深防御；GET请求不应改变状态。",
+      "text_en": "CSRF protection prevents another site from inducing unwanted state-changing requests through a victim authenticated session. CSRF tokens must be secret, unpredictable and session-bound. Origin/Referer validation and appropriate SameSite cookies add defense; state changes should not use GET.",
+      "topic_names": [
+        "CSRF防护令牌",
+        "CSRF protection tokens",
+        "CSRF protection"
+      ],
+      "retrieval_context": "适用范围：浏览器自动携带会话Cookie的已认证状态变更操作，例如转账、支付、修改账户信息。第三方站点可诱发请求；需要服务端校验不可预测的会话绑定令牌与来源。 Scope: automatically attached session cookies, authenticated state-changing requests, transfers and account changes.",
+      "retrieval_context_source": "https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html"
+    },
+    {
+      "id": "guide-session",
+      "title": "Secure session management / 安全会话管理",
+      "aliases": "会话管理 Session cookie HttpOnly Secure SameSite",
+      "text": "会话标识需要不可预测、经安全通道传输，登录或权限变化后更新，并设置空闲与绝对超时；退出时在服务端使会话失效。 会话cookie使用Secure、HttpOnly和适当的SameSite属性。验证抵御会话固定攻击、令牌更新、过期和撤销，而不是仅依赖客户端删除。\nSecure sessions use unpredictable identifiers, renew them after login or privilege changes, and enforce server-side inactivity and absolute timeouts and logout revocation. Session cookies use Secure, HttpOnly and appropriate SameSite attributes. Verify fixation resistance, token renewal, expiry and revocation rather than relying on client-side deletion alone.",
+      "source": "https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html",
+      "text_zh": "会话标识需要不可预测、经安全通道传输，登录或权限变化后更新，并设置空闲与绝对超时；退出时在服务端使会话失效。 会话cookie使用Secure、HttpOnly和适当的SameSite属性。验证抵御会话固定攻击、令牌更新、过期和撤销，而不是仅依赖客户端删除。",
+      "text_en": "Secure sessions use unpredictable identifiers, renew them after login or privilege changes, and enforce server-side inactivity and absolute timeouts and logout revocation. Session cookies use Secure, HttpOnly and appropriate SameSite attributes. Verify fixation resistance, token renewal, expiry and revocation rather than relying on client-side deletion alone.",
+      "topic_names": [
+        "安全会话管理",
+        "secure session management"
+      ]
+    },
+    {
+      "id": "guide-sdlc",
+      "title": "Secure development lifecycle / 安全开发生命周期",
+      "aliases": "SSDLC 威胁建模 安全需求 安全评审",
+      "text": "安全开发生命周期在需求、设计、实现、测试和发布运维各阶段安排安全活动。 安全开发生命周期要求在威胁建模中识别资产、信任边界和滥用案例；代码审查和安全测试验证需求。发布门禁应跟踪发现、负责人、整改和重新测试，而不是将开发末期的一次渗透测试视为整个过程。\nThreat modeling identifies assets, trust boundaries and abuse cases; code review and security testing verify requirements. Release gates should track findings, owners, remediation and retests, rather than treating a single late penetration test as the entire process.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/218/final",
+      "text_zh": "安全开发生命周期在需求、设计、实现、测试和发布运维各阶段安排安全活动。 安全开发生命周期要求在威胁建模中识别资产、信任边界和滥用案例；代码审查和安全测试验证需求。发布门禁应跟踪发现、负责人、整改和重新测试，而不是将开发末期的一次渗透测试视为整个过程。",
+      "text_en": "Threat modeling identifies assets, trust boundaries and abuse cases; code review and security testing verify requirements. Release gates should track findings, owners, remediation and retests, rather than treating a single late penetration test as the entire process.",
+      "topic_names": [
+        "安全开发生命周期",
+        "secure development lifecycle",
+        "SSDLC"
+      ]
+    },
+    {
+      "id": "guide-sca",
+      "title": "Software composition analysis / 软件成分分析与SBOM",
+      "aliases": "SCA SBOM 第三方依赖 组件漏洞 开源依赖",
+      "text": "软件成分分析识别直接和传递依赖、版本、已知漏洞及许可证风险；软件物料清单记录组件组成以支持追踪。 SCA结果需要可达性和暴露评估，明确负责人，升级计划和验证。SBOM是一个清单，而不是证明组件是安全的；持续将其与漏洞情报关联。\nSoftware composition analysis identifies direct and transitive dependencies, versions, known vulnerabilities and license risks; an SBOM records the component inventory. SCA results need reachability and exposure assessment, responsible owners, upgrade planning and verification. An SBOM is an inventory, not proof that components are secure; continuously correlate it with vulnerability intelligence.",
+      "source": "https://cheatsheetseries.owasp.org/cheatsheets/Software_Supply_Chain_Security_Cheat_Sheet.html",
+      "text_zh": "软件成分分析识别直接和传递依赖、版本、已知漏洞及许可证风险；软件物料清单记录组件组成以支持追踪。 SCA结果需要可达性和暴露评估，明确负责人，升级计划和验证。SBOM是一个清单，而不是证明组件是安全的；持续将其与漏洞情报关联。",
+      "text_en": "Software composition analysis identifies direct and transitive dependencies, versions, known vulnerabilities and license risks; an SBOM records the component inventory. SCA results need reachability and exposure assessment, responsible owners, upgrade planning and verification. An SBOM is an inventory, not proof that components are secure; continuously correlate it with vulnerability intelligence.",
+      "topic_names": [
+        "SBOM与依赖治理",
+        "软件成分分析",
+        "软件物料清单",
+        "SBOM and dependency governance",
+        "SCA"
+      ]
+    },
+    {
+      "id": "guide-secrets",
+      "title": "Centralized secrets management / 应用凭据与机密集中管理",
+      "aliases": "机密集中管理 凭据 代码仓库 短期令牌 密钥轮换 secrets vault 数据库密码 凭据硬编码 集中式密钥管理 应用机密 源代码仓库",
+      "text": "机密管理把应用凭据移出源码和配置分发包，采用受控机密库或工作负载身份，按最小权限获取、自动轮换并审计访问。 机密集中管理应优先考虑短期凭证，防止日志或存储库暴露，并支持快速撤销。测试凭据轮换而不会中断服务，并验证旧凭证是否停止工作。\nKeep application secrets out of source code and distributed configuration by using a controlled vault or workload identity with least-privilege retrieval and audit trails. Secrets management should prefer short-lived credentials, prevent logging or repository exposure, and support rapid revocation. Test rotation without service disruption and verify that old credentials cease working.",
+      "source": "https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html",
+      "text_zh": "机密管理把应用凭据移出源码和配置分发包，采用受控机密库或工作负载身份，按最小权限获取、自动轮换并审计访问。 机密集中管理应优先考虑短期凭证，防止日志或存储库暴露，并支持快速撤销。测试凭据轮换而不会中断服务，并验证旧凭证是否停止工作。",
+      "text_en": "Keep application secrets out of source code and distributed configuration by using a controlled vault or workload identity with least-privilege retrieval and audit trails. Secrets management should prefer short-lived credentials, prevent logging or repository exposure, and support rapid revocation. Test rotation without service disruption and verify that old credentials cease working.",
+      "topic_names": [
+        "应用机密集中管理",
+        "应用凭据集中管理",
+        "机密集中管理",
+        "centralized secrets management",
+        "application secrets management"
+      ]
+    },
+    {
+      "id": "guide-cloud-responsibility",
+      "title": "Cloud shared responsibility / 云责任共担",
+      "aliases": "云责任共担 共享责任 托管服务 IaaS PaaS SaaS",
+      "text": "云责任共担按服务模式明确云服务商和客户各自承担的控制。客户仍需管理数据、身份权限和服务配置，具体边界以服务合同与实际能力为准。 云责任共担需要有记录的责任矩阵，验证供应商的保证，并测试客户管理的控制措施；外包基础设施并不意味着转移所有责任。\nCloud shared responsibility requires a documented responsibility matrix, verification of provider assurances and testing of customer-managed controls; outsourcing infrastructure does not transfer all accountability.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SA-9",
+      "text_zh": "云责任共担按服务模式明确云服务商和客户各自承担的控制。客户仍需管理数据、身份权限和服务配置，具体边界以服务合同与实际能力为准。 云责任共担需要有记录的责任矩阵，验证供应商的保证，并测试客户管理的控制措施；外包基础设施并不意味着转移所有责任。",
+      "text_en": "Cloud shared responsibility requires a documented responsibility matrix, verification of provider assurances and testing of customer-managed controls; outsourcing infrastructure does not transfer all accountability.",
+      "topic_names": [
+        "云责任共担",
+        "云共享责任",
+        "cloud shared responsibility"
+      ]
+    },
+    {
+      "id": "guide-security-group",
+      "title": "Cloud security groups / 安全组最小暴露",
+      "aliases": "安全组 最小暴露 数据库端口 互联网地址 入站 出站 开放端口",
+      "text": "云安全组和防火墙规则按实际业务通信需求限制来源、目的、协议和端口，避免数据库或管理端口向整个互联网开放。 云安全组/安全组最小暴露 安全组通过最小权限入站和出站、私有连接和明确批准的来源来最小化网络暴露。审查过时的规则、负责人和到期日期；测试允许的业务流和阻断未授权的路径。\nSecurity groups reduce cloud workload exposure to the internet and unnecessary networks by restricting source, destination, protocol and port to required business flows. Security groups minimize network exposure with least-privilege ingress and egress, private connectivity and explicit approved sources. Review stale rules, owners and expirations; test allowed business flows and blocked unauthorized paths.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SC-7",
+      "text_zh": "云安全组和防火墙规则按实际业务通信需求限制来源、目的、协议和端口，避免数据库或管理端口向整个互联网开放。 云安全组/安全组最小暴露 安全组通过最小权限入站和出站、私有连接和明确批准的来源来最小化网络暴露。审查过时的规则、负责人和到期日期；测试允许的业务流和阻断未授权的路径。",
+      "text_en": "Security groups reduce cloud workload exposure to the internet and unnecessary networks by restricting source, destination, protocol and port to required business flows. Security groups minimize network exposure with least-privilege ingress and egress, private connectivity and explicit approved sources. Review stale rules, owners and expirations; test allowed business flows and blocked unauthorized paths.",
+      "topic_names": [
+        "安全组最小暴露",
+        "cloud security groups",
+        "least-exposure security groups"
+      ]
+    },
+    {
+      "id": "guide-cspm",
+      "title": "Cloud security posture management / 云配置态势管理",
+      "aliases": "CSPM 云配置态势管理 公开存储桶 跨账户 错误配置",
+      "text": "云配置态势管理持续汇集账户和资源配置，对照安全基线发现公开存储、过宽权限及配置偏离，并按数据敏感度和外部可达性安排整改。 CSPM持续检测跨账户的云配置错误和策略漂移。发现的问题需要责任负责人，跟踪整改和验证；覆盖率和误报应被衡量。\nCSPM continuously detects cloud misconfiguration and policy drift across accounts. Findings need accountable owners, tracked remediation and verification; coverage and false positives should be measured.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#CA-7",
+      "text_zh": "云配置态势管理持续汇集账户和资源配置，对照安全基线发现公开存储、过宽权限及配置偏离，并按数据敏感度和外部可达性安排整改。 CSPM持续检测跨账户的云配置错误和策略漂移。发现的问题需要责任负责人，跟踪整改和验证；覆盖率和误报应被衡量。",
+      "text_en": "CSPM continuously detects cloud misconfiguration and policy drift across accounts. Findings need accountable owners, tracked remediation and verification; coverage and false positives should be measured.",
+      "topic_names": [
+        "云配置态势管理",
+        "云安全态势管理",
+        "CSPM"
+      ]
+    },
+    {
+      "id": "guide-container",
+      "title": "Container security / 容器与镜像安全",
+      "aliases": "容器 镜像 扫描 Kubernetes 非root 镜像签名",
+      "text": "部署前扫描容器镜像中的已知漏洞并验证签名与可信来源，通过准入策略阻止含高风险漏洞、被篡改或来源不明的镜像进入运行环境。扫描和签名分别处理组件漏洞与来源完整性，不能相互替代。 容器安全同时覆盖镜像来源和漏洞、镜像签名验证、运行时权限、隔离、机密注入和编排配置。 容器加固通过最小化镜像内容、在没有必要的root权限或能力的情况下运行、隔离工作负载和限制网络访问来实现。验证可信镜像准入、修补和检测可疑运行时行为。\nImage vulnerability scanning and signature verification identify risky components and reject untrusted images before deployment; runtime isolation and permissions remain necessary. Container hardening minimizes image contents, runs without unnecessary root or capabilities, isolates workloads and restricts network access. Verify trusted-image admission, patching and detection of suspicious runtime behavior.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/190/final",
+      "text_zh": "部署前扫描容器镜像中的已知漏洞并验证签名与可信来源，通过准入策略阻止含高风险漏洞、被篡改或来源不明的镜像进入运行环境。扫描和签名分别处理组件漏洞与来源完整性，不能相互替代。 容器安全同时覆盖镜像来源和漏洞、镜像签名验证、运行时权限、隔离、机密注入和编排配置。 容器加固通过最小化镜像内容、在没有必要的root权限或能力的情况下运行、隔离工作负载和限制网络访问来实现。验证可信镜像准入、修补和检测可疑运行时行为。",
+      "text_en": "Image vulnerability scanning and signature verification identify risky components and reject untrusted images before deployment; runtime isolation and permissions remain necessary. Container hardening minimizes image contents, runs without unnecessary root or capabilities, isolates workloads and restricts network access. Verify trusted-image admission, patching and detection of suspicious runtime behavior.",
+      "topic_names": [
+        "容器镜像扫描与签名验证",
+        "镜像扫描与签名验证",
+        "container image scanning",
+        "container security"
+      ]
+    },
+    {
+      "id": "guide-inventory",
+      "title": "Asset inventory / 资产盘点",
+      "aliases": "资产盘点 资产清单 影子资产 负责人 inventory",
+      "text": "资产清单记录硬件、软件、云资源、版本、业务负责人、用途和关键性，并结合主动或被动发现持续更新。 资产盘点提供了漏洞管理、配置控制和事件响应的范围。将发现的资产与批准的记录进行核对，调查未知系统并移除已退役的资源。\nInventory hardware, software and cloud resources with versions, ownership, business purpose and criticality, and continuously reconcile discovery results. Asset inventory provides the scope for vulnerability management, configuration control and incident response. Reconcile discovered assets with approved records, investigate unknown systems and remove retired resources.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#CM-8",
+      "text_zh": "资产清单记录硬件、软件、云资源、版本、业务负责人、用途和关键性，并结合主动或被动发现持续更新。 资产盘点提供了漏洞管理、配置控制和事件响应的范围。将发现的资产与批准的记录进行核对，调查未知系统并移除已退役的资源。",
+      "text_en": "Inventory hardware, software and cloud resources with versions, ownership, business purpose and criticality, and continuously reconcile discovery results. Asset inventory provides the scope for vulnerability management, configuration control and incident response. Reconcile discovered assets with approved records, investigate unknown systems and remove retired resources.",
+      "topic_names": [
+        "资产盘点",
+        "资产清单管理",
+        "asset inventory"
+      ]
+    },
+    {
+      "id": "guide-segmentation",
+      "title": "Network segmentation / 网络分段",
+      "aliases": "网络分段 微隔离 横向移动 东西向流量",
+      "text": "网络分段按业务信任边界隔离区域和工作负载，控制跨区通信以限制横向移动及事件影响范围。 网络分段在网络区域之间应用默认拒绝控制，并验证允许的依赖关系。测试东西向限制和管理平面隔离；没有强制访问规则的VLAN是不够的。\nNetwork segmentation applies deny-by-default controls between zones and validates allowed dependencies. Test east-west restrictions and management-plane isolation; a VLAN without enforced access rules is insufficient.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SC-7",
+      "text_zh": "网络分段按业务信任边界隔离区域和工作负载，控制跨区通信以限制横向移动及事件影响范围。 网络分段在网络区域之间应用默认拒绝控制，并验证允许的依赖关系。测试东西向限制和管理平面隔离；没有强制访问规则的VLAN是不够的。",
+      "text_en": "Network segmentation applies deny-by-default controls between zones and validates allowed dependencies. Test east-west restrictions and management-plane isolation; a VLAN without enforced access rules is insufficient.",
+      "topic_names": [
+        "网络分段与微隔离",
+        "网络分段",
+        "network segmentation",
+        "microsegmentation"
+      ],
+      "retrieval_context": "适用范围：访客网络、办公网络、生产网络、数据库网段和管理区域之间的信任边界与访问路径，默认拒绝跨区通信并仅允许业务依赖。 Scope: guest devices, production database subnet, network zones, inter-zone access and lateral movement containment.",
+      "retrieval_context_source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SC-7"
+    },
+    {
+      "id": "guide-ndr",
+      "title": "Network detection and response / 网络检测与响应",
+      "aliases": "NDR 网络检测与响应 异常通信 罕见外部地址 网络流量 外联",
+      "text": "网络检测与响应利用网络流量、连接元数据和协议行为识别入侵、异常外联及横向移动。 NDR需要覆盖关键网络边界和东西向链路，建立正常流量基线，并关联资产与身份信息。分析人员调查告警、收集证据并执行经过测试的遏制流程；加密流量仍可提供有价值的元数据。\nNetwork detection and response identifies intrusions, anomalous external communications and lateral movement from traffic, protocol behavior and connection metadata. NDR needs visibility at critical boundaries and east-west links, a baseline of legitimate traffic, and correlation with asset and identity context. Analysts investigate alerts, collect evidence and trigger tested containment workflows; encrypted traffic still offers useful metadata.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SI-4",
+      "text_zh": "网络检测与响应利用网络流量、连接元数据和协议行为识别入侵、异常外联及横向移动。 NDR需要覆盖关键网络边界和东西向链路，建立正常流量基线，并关联资产与身份信息。分析人员调查告警、收集证据并执行经过测试的遏制流程；加密流量仍可提供有价值的元数据。",
+      "text_en": "Network detection and response identifies intrusions, anomalous external communications and lateral movement from traffic, protocol behavior and connection metadata. NDR needs visibility at critical boundaries and east-west links, a baseline of legitimate traffic, and correlation with asset and identity context. Analysts investigate alerts, collect evidence and trigger tested containment workflows; encrypted traffic still offers useful metadata.",
+      "topic_names": [
+        "网络检测与响应",
+        "network detection and response",
+        "NDR"
+      ]
+    },
+    {
+      "id": "guide-tls",
+      "title": "Transport encryption / 传输加密",
+      "aliases": "TLS HTTPS 传输加密 证书验证 中间人",
+      "text": "传输加密保护通信机密性与完整性，证书验证提供对端身份认证。 部署受支持的TLS协议与密码算法，严格校验证书链和主机名，保护私钥并监控到期。客户端应拒绝伪造、不可信、过期或主机名不匹配的证书，防止冒充服务和中间人攻击；验证正常及拒绝路径。\nTLS deployment uses supported protocol versions and algorithms, validates certificate chains and hostnames, protects private keys and monitors expiry. Verify configurations and failed validation paths; encryption without authentication does not reliably prevent interception. Strict certificate validation prevents clients from connecting to impersonated servers or an intermediary using an untrusted certificate.",
+      "source": "https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Security_Cheat_Sheet.html",
+      "text_zh": "传输加密保护通信机密性与完整性，证书验证提供对端身份认证。 部署受支持的TLS协议与密码算法，严格校验证书链和主机名，保护私钥并监控到期。客户端应拒绝伪造、不可信、过期或主机名不匹配的证书，防止冒充服务和中间人攻击；验证正常及拒绝路径。",
+      "text_en": "TLS deployment uses supported protocol versions and algorithms, validates certificate chains and hostnames, protects private keys and monitors expiry. Verify configurations and failed validation paths; encryption without authentication does not reliably prevent interception. Strict certificate validation prevents clients from connecting to impersonated servers or an intermediary using an untrusted certificate.",
+      "topic_names": [
+        "传输加密与证书验证",
+        "传输加密",
+        "transport encryption",
+        "certificate validation"
+      ]
+    },
+    {
+      "id": "guide-data-classification",
+      "title": "Data classification / 数据分类分级",
+      "aliases": "数据分类分级 数据敏感度 数据所有者 信息分类",
+      "text": "数据分类分级按业务价值、敏感度及泄露、篡改和不可用的影响确定保护要求，为数据指定负责人并维护标签。 数据分类应把处置、存储、访问、传输、保留和销毁规则映射到相应敏感级别。对照实际数据检验标签，培训使用者，并周期复核分类范围及准确性。 先制定分类标准并指定数据责任人，盘点数据及存储位置，维护分类标记，并把访问、保留和处置规则映射到各等级。\nData classification applies protection according to information sensitivity and business impact, with accountable owners and a maintained inventory. Data classification maps handling, storage, access, transfer, retention and disposal rules to sensitivity levels. Verify labels against actual data, train users and periodically reassess scope and accuracy.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#RA-2",
+      "text_zh": "数据分类分级按业务价值、敏感度及泄露、篡改和不可用的影响确定保护要求，为数据指定负责人并维护标签。 数据分类应把处置、存储、访问、传输、保留和销毁规则映射到相应敏感级别。对照实际数据检验标签，培训使用者，并周期复核分类范围及准确性。 先制定分类标准并指定数据责任人，盘点数据及存储位置，维护分类标记，并把访问、保留和处置规则映射到各等级。",
+      "text_en": "Data classification applies protection according to information sensitivity and business impact, with accountable owners and a maintained inventory. Data classification maps handling, storage, access, transfer, retention and disposal rules to sensitivity levels. Verify labels against actual data, train users and periodically reassess scope and accuracy.",
+      "topic_names": [
+        "数据分类分级",
+        "data classification"
+      ]
+    },
+    {
+      "id": "guide-minimization",
+      "title": "Data minimization and purpose limitation / 数据最小化与目的限制",
+      "aliases": "数据最小化 目的限制 收集个人信息 过度收集",
+      "text": "数据最小化要求收集与处理范围限于明确目的所需，目的限制约束后续使用。 数据最小化和目的限制/数据最小化与目的限制，通过限制字段、接收者和保留，并在适当的情况下优先选择不太具有标识性的表示形式，数据最小化减少了暴露。审查采集表单、处理清单、访问和删除行为，以检查是否与记录的目的相符。\nData minimization reduces exposure by limiting fields, recipients and retention and by preferring less identifying representations where suitable. Review collection forms, processing inventories, access and deletion behavior against documented purposes.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#PT-3",
+      "text_zh": "数据最小化要求收集与处理范围限于明确目的所需，目的限制约束后续使用。 数据最小化和目的限制/数据最小化与目的限制，通过限制字段、接收者和保留，并在适当的情况下优先选择不太具有标识性的表示形式，数据最小化减少了暴露。审查采集表单、处理清单、访问和删除行为，以检查是否与记录的目的相符。",
+      "text_en": "Data minimization reduces exposure by limiting fields, recipients and retention and by preferring less identifying representations where suitable. Review collection forms, processing inventories, access and deletion behavior against documented purposes.",
+      "topic_names": [
+        "数据最小化与目的限制",
+        "数据最小化",
+        "data minimization",
+        "purpose limitation"
+      ]
+    },
+    {
+      "id": "guide-key",
+      "title": "Cryptographic key lifecycle / 密钥生命周期管理",
+      "aliases": "密钥生命周期 KMS HSM 密钥生成 轮换 吊销",
+      "text": "密钥生命周期管理覆盖安全生成、分发、存储、使用、轮换、备份恢复、吊销和销毁，区分密钥用途与使用权限。 密钥需要强随机性、适当的KMS或HSM保护、职责分离及审计能力。测试密钥轮换、恢复和吊销，并覆盖依赖系统及加密数据的访问。\nManage cryptographic keys across secure generation, distribution, storage, authorized use, rotation, backup, recovery, revocation and destruction. Cryptographic keys need strong randomness, protected custody such as suitable KMS/HSM controls, separation of duties and auditability. Verify rotation, recovery and revocation, including dependent systems and encrypted-data access.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SC-12",
+      "text_zh": "密钥生命周期管理覆盖安全生成、分发、存储、使用、轮换、备份恢复、吊销和销毁，区分密钥用途与使用权限。 密钥需要强随机性、适当的KMS或HSM保护、职责分离及审计能力。测试密钥轮换、恢复和吊销，并覆盖依赖系统及加密数据的访问。",
+      "text_en": "Manage cryptographic keys across secure generation, distribution, storage, authorized use, rotation, backup, recovery, revocation and destruction. Cryptographic keys need strong randomness, protected custody such as suitable KMS/HSM controls, separation of duties and auditability. Verify rotation, recovery and revocation, including dependent systems and encrypted-data access.",
+      "topic_names": [
+        "密钥生命周期管理",
+        "密钥全生命周期管理",
+        "cryptographic key lifecycle"
+      ]
+    },
+    {
+      "id": "guide-masking",
+      "title": "Tokenization and masking / 令牌化与脱敏",
+      "aliases": "令牌化 脱敏 测试数据 生产数据 tokenization masking",
+      "text": "令牌化用受控映射的替代标识减少原始敏感值的分发，脱敏遮盖或变换展示和测试数据中的敏感字段。 令牌化与脱敏/Tokenization and masking减少不必要的暴露，但并不会自动使数据匿名化。保护映射和重新识别密钥，限制反向操作，并测试保留字段的组合是否可以识别个人。\nTokenization substitutes controlled surrogate identifiers for sensitive values; masking obscures sensitive fields in displays and test datasets. Tokenization and masking reduce unnecessary exposure but do not automatically make data anonymous. Protect the mapping and re-identification keys, restrict reversal and test whether combinations of retained fields can identify individuals.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SI-19",
+      "text_zh": "令牌化用受控映射的替代标识减少原始敏感值的分发，脱敏遮盖或变换展示和测试数据中的敏感字段。 令牌化与脱敏/Tokenization and masking减少不必要的暴露，但并不会自动使数据匿名化。保护映射和重新识别密钥，限制反向操作，并测试保留字段的组合是否可以识别个人。",
+      "text_en": "Tokenization substitutes controlled surrogate identifiers for sensitive values; masking obscures sensitive fields in displays and test datasets. Tokenization and masking reduce unnecessary exposure but do not automatically make data anonymous. Protect the mapping and re-identification keys, restrict reversal and test whether combinations of retained fields can identify individuals.",
+      "topic_names": [
+        "令牌化与脱敏",
+        "令牌化",
+        "数据脱敏",
+        "tokenization and masking"
+      ]
+    },
+    {
+      "id": "guide-backup",
+      "title": "Immutable backups / 不可变备份",
+      "aliases": "不可变备份 离线备份 勒索软件 恢复测试",
+      "text": "备份通过隔离或不可变保存降低勒索和误删除同时破坏主副本的风险；备份权限与生产管理权限分离。 不可变备份需要受保护的日志留存设置、备份作业监控和重复恢复测试。通过代表性数据验证恢复时间目标和恢复点目标，不能仅凭备份任务成功状态判断可恢复性。\nIsolated or immutable backup copies resist ransomware and accidental deletion, with backup administration separated from production access. Immutable backups require protected retention, monitored jobs and repeated restoration tests. Verify recovery point and recovery time objectives using representative data, not merely a successful backup-job status.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#CP-9",
+      "text_zh": "备份通过隔离或不可变保存降低勒索和误删除同时破坏主副本的风险；备份权限与生产管理权限分离。 不可变备份需要受保护的日志留存设置、备份作业监控和重复恢复测试。通过代表性数据验证恢复时间目标和恢复点目标，不能仅凭备份任务成功状态判断可恢复性。",
+      "text_en": "Isolated or immutable backup copies resist ransomware and accidental deletion, with backup administration separated from production access. Immutable backups require protected retention, monitored jobs and repeated restoration tests. Verify recovery point and recovery time objectives using representative data, not merely a successful backup-job status.",
+      "topic_names": [
+        "不可变备份",
+        "离线不可变备份",
+        "immutable backups"
+      ]
+    },
+    {
+      "id": "guide-integrity",
+      "title": "Hash and digital-signature integrity checks / 哈希与数字签名完整性",
+      "aliases": "哈希 数字签名 完整性 篡改 来源验证",
+      "text": "哈希通过比较可信基准检测内容变化，但普通哈希本身不验证发布者。数字签名把完整性验证与持有私钥的签名者绑定，验证过程还需信任公钥来源。 哈希与数字签名完整性/哈希与数字签名完整性检查。哈希检测与受保护参考值的更改；数字签名还使用可信密钥验证来源。验证签名、证书或密钥信任、算法适用性和受保护的基线。\nHashes detect changes against a protected reference; digital signatures additionally authenticate origin with trusted keys. Verify signatures, certificate or key trust, algorithm suitability and protected baselines.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SI-7",
+      "text_zh": "哈希通过比较可信基准检测内容变化，但普通哈希本身不验证发布者。数字签名把完整性验证与持有私钥的签名者绑定，验证过程还需信任公钥来源。 哈希与数字签名完整性/哈希与数字签名完整性检查。哈希检测与受保护参考值的更改；数字签名还使用可信密钥验证来源。验证签名、证书或密钥信任、算法适用性和受保护的基线。",
+      "text_en": "Hashes detect changes against a protected reference; digital signatures additionally authenticate origin with trusted keys. Verify signatures, certificate or key trust, algorithm suitability and protected baselines.",
+      "topic_names": [
+        "哈希与数字签名完整性",
+        "hash and digital-signature integrity checks"
+      ]
+    },
+    {
+      "id": "guide-retention",
+      "title": "Retention and secure disposal / 数据保留与安全销毁",
+      "aliases": "数据保留与安全销毁 保留期限 删除 介质销毁",
+      "text": "数据保留按业务、合同和适用法规规定期限及责任人，到期后经审批安全删除或销毁并保留证据。 保留时间表应包括备份、副本和法律保留。安全处置选择与介质类型和敏感度相适应的净化方法，验证完成情况并记录授权的销毁。\nDefine retention periods and accountable owners based on business, contractual and applicable legal needs, then securely delete or destroy expired data with evidence. Retention schedules should address backups, replicas and legal holds. Secure disposal selects sanitization methods appropriate to the media and sensitivity, verifies completion and records authorized destruction.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SI-12",
+      "text_zh": "数据保留按业务、合同和适用法规规定期限及责任人，到期后经审批安全删除或销毁并保留证据。 保留时间表应包括备份、副本和法律保留。安全处置选择与介质类型和敏感度相适应的净化方法，验证完成情况并记录授权的销毁。",
+      "text_en": "Define retention periods and accountable owners based on business, contractual and applicable legal needs, then securely delete or destroy expired data with evidence. Retention schedules should address backups, replicas and legal holds. Secure disposal selects sanitization methods appropriate to the media and sensitivity, verifies completion and records authorized destruction.",
+      "topic_names": [
+        "数据保留与安全销毁",
+        "retention and secure disposal"
+      ],
+      "retrieval_context": "适用范围：个人信息、身份材料、业务文件和历史记录的保留期限、处理目的完成、项目结束、数据过期、不再需要以及安全删除或介质销毁；处理保存的数据记录而非人员账户权限。 Scope: records retention, obsolete documents, completed business purpose, expired personal data and verified secure disposal.",
+      "retrieval_context_source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SI-12"
+    },
+    {
+      "id": "guide-supplier",
+      "title": "Supplier security and privacy clauses / 供应商安全与隐私条款",
+      "aliases": "供应商安全与隐私条款 受托方 外包商 合同 supplier clauses processor audit rights",
+      "text": "安全与隐私合同条款为受托处理明确可执行的控制、保密、分包授权、审计配合及事件协助义务；服务结束时规定数据返还或删除。 供应商安全与隐私条款\n绑定的处理合同分配可执行的保障措施和责任，允许审计和检查，并要求协助处理数据泄露通知和隐私义务。指定处理范围、授权指令、事件合作和服务结束后的处理，而不仅仅是价格。指导取决于适用的司法管辖区。\nBinding processor contracts allocate enforceable safeguards and accountability, permit audits and inspections, and require assistance with breach notification and privacy obligations. Specify processing scope, authorized instructions, incident cooperation and end-of-service handling rather than price alone. Guidance depends on applicable jurisdiction.",
+      "source": "https://www.edpb.europa.eu/sme/learn-the-basics/data-controller-or-data-processor_en",
+      "text_zh": "安全与隐私合同条款为受托处理明确可执行的控制、保密、分包授权、审计配合及事件协助义务；服务结束时规定数据返还或删除。 供应商安全与隐私条款\n绑定的处理合同分配可执行的保障措施和责任，允许审计和检查，并要求协助处理数据泄露通知和隐私义务。指定处理范围、授权指令、事件合作和服务结束后的处理，而不仅仅是价格。指导取决于适用的司法管辖区。",
+      "text_en": "Binding processor contracts allocate enforceable safeguards and accountability, permit audits and inspections, and require assistance with breach notification and privacy obligations. Specify processing scope, authorized instructions, incident cooperation and end-of-service handling rather than price alone. Guidance depends on applicable jurisdiction.",
+      "topic_names": [
+        "供应商安全与隐私条款",
+        "supplier security and privacy clauses"
+      ]
+    },
+    {
+      "id": "guide-transfer",
+      "title": "Cross-border data transfers / 跨境传输评估",
+      "aliases": "跨境传输评估 数据出境 接收方 transfer impact assessment cross-border",
+      "text": "跨境数据传输在发送前识别目的地、接收方和数据范围，并核查处理的法律依据与适用的传输机制；评估目的地法律、接收方保护能力和额外保障。 对于个人数据的出口，评估合法处理基础、适用的传输工具、目的地法律、接收者保护措施和传输影响，记录补充措施和定期审查。具体要求取决于司法辖区；金融支付结算是一个不同的主题。\nFor personal-data exports, assess the lawful processing basis, applicable transfer tool, destination law, recipient safeguards and transfer impact, documenting supplementary measures and periodic review. Exact requirements depend on jurisdiction; financial payment settlement is a different topic.",
+      "source": "https://www.edpb.europa.eu/sme/be-compliant/international-data-transfers_en",
+      "text_zh": "跨境数据传输在发送前识别目的地、接收方和数据范围，并核查处理的法律依据与适用的传输机制；评估目的地法律、接收方保护能力和额外保障。 对于个人数据的出口，评估合法处理基础、适用的传输工具、目的地法律、接收者保护措施和传输影响，记录补充措施和定期审查。具体要求取决于司法辖区；金融支付结算是一个不同的主题。",
+      "text_en": "For personal-data exports, assess the lawful processing basis, applicable transfer tool, destination law, recipient safeguards and transfer impact, documenting supplementary measures and periodic review. Exact requirements depend on jurisdiction; financial payment settlement is a different topic.",
+      "topic_names": [
+        "跨境传输评估",
+        "数据跨境传输",
+        "cross-border transfer assessment",
+        "cross-border data transfers"
+      ]
+    },
+    {
+      "id": "guide-dpia",
+      "title": "Data protection impact assessment (DPIA) / 数据保护影响评估",
+      "aliases": "data protection impact assessment privacy impact assessment DPIA PIA 数据保护影响评估 高风险个人数据 隐私风险 必要性 相称性",
+      "text": "隐私或数据保护影响评估在高风险处理上线之前识别信息主体风险，评价处理必要性、相称性与保护措施，安排降低风险并记录残余风险决定。 DPIA在部署之前识别和减轻隐私风险；咨询负责隐私的专家，并在处理变更时重新审视评估。维护评估、缓解负责人、决策和审查证据。\nDPIAs identify and mitigate privacy risks before deployment; consult responsible privacy specialists and revisit the assessment when the processing changes. Maintain the assessment, mitigation owners, decisions and review evidence.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#RA-8",
+      "text_zh": "隐私或数据保护影响评估在高风险处理上线之前识别信息主体风险，评价处理必要性、相称性与保护措施，安排降低风险并记录残余风险决定。 DPIA在部署之前识别和减轻隐私风险；咨询负责隐私的专家，并在处理变更时重新审视评估。维护评估、缓解负责人、决策和审查证据。",
+      "text_en": "DPIAs identify and mitigate privacy risks before deployment; consult responsible privacy specialists and revisit the assessment when the processing changes. Maintain the assessment, mitigation owners, decisions and review evidence.",
+      "topic_names": [
+        "数据保护影响评估",
+        "隐私影响评估",
+        "data protection impact assessment",
+        "privacy impact assessment",
+        "DPIA"
+      ],
+      "retrieval_context": "适用范围：处理活动上线前对个人权利和自由的高风险评估；大规模健康等敏感信息处理、系统性监测、位置轨迹及创新技术可能触发评估。 Scope: planned high-risk processing, large-scale health or other sensitive personal data and systematic monitoring before deployment.",
+      "retrieval_context_source": "https://europa.eu/youreurope/business/governance-and-sustainability/digital-and-data-compliance/data-protection-gdpr/index_en.htm"
+    },
+    {
+      "id": "guide-notification",
+      "title": "Incident and breach reporting / 事件通报与泄露通知",
+      "aliases": "事件通报 监管报告 受影响方通知 时限 内部升级",
+      "text": "事件通报流程把发现时间、分级、内部升级、法律评估、对外报告和受影响方通知责任明确分配，并依据适用时限留痕执行。 事件通报和泄露通知需要明确的升级阈值、负责任的决策者、证据保存、批准的通信模板和练习。通知职责和截止日期取决于适用法律和事实；避免将一个司法管辖区的限制视为普遍适用。\nIncident notification supports timely internal escalation, regulatory reporting and affected-party notice when applicable, with documented responsibilities and deadlines. Incident reporting requires defined escalation thresholds, accountable decision makers, evidence preservation, approved communication templates and exercises. Notification duties and deadlines depend on the applicable law and facts; avoid treating one jurisdiction's limit as universal.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#IR-6",
+      "text_zh": "事件通报流程把发现时间、分级、内部升级、法律评估、对外报告和受影响方通知责任明确分配，并依据适用时限留痕执行。 事件通报和泄露通知需要明确的升级阈值、负责任的决策者、证据保存、批准的通信模板和练习。通知职责和截止日期取决于适用法律和事实；避免将一个司法管辖区的限制视为普遍适用。",
+      "text_en": "Incident notification supports timely internal escalation, regulatory reporting and affected-party notice when applicable, with documented responsibilities and deadlines. Incident reporting requires defined escalation thresholds, accountable decision makers, evidence preservation, approved communication templates and exercises. Notification duties and deadlines depend on the applicable law and facts; avoid treating one jurisdiction's limit as universal.",
+      "topic_names": [
+        "事件通报与泄露通知",
+        "事件通报",
+        "incident notification process",
+        "breach notification"
+      ]
+    },
+    {
+      "id": "guide-siem",
+      "title": "Central log correlation / 集中日志关联",
+      "aliases": "集中日志关联 SIEM 多源日志 告警 时间同步",
+      "text": "集中日志关联把主机、网络、应用和身份事件按统一字段、时间与实体联系，发现单一日志无法显示的攻击链。 SIEM需要可靠的日志采集，同步的时间，受保护的日志留存，检测规则，调整和告警研判流程。通过代表性端到端测试和追踪的事件调查验证覆盖范围和关联。\nCentral log correlation connects host, network, application and identity events using consistent fields, time and entities to reveal attack chains. SIEM needs reliable ingestion, synchronized time, protected retention, detection rules, tuning and triage workflows. Verify coverage and correlation through representative end-to-end tests and tracked incident investigations.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#AU-6",
+      "text_zh": "集中日志关联把主机、网络、应用和身份事件按统一字段、时间与实体联系，发现单一日志无法显示的攻击链。 SIEM需要可靠的日志采集，同步的时间，受保护的日志留存，检测规则，调整和告警研判流程。通过代表性端到端测试和追踪的事件调查验证覆盖范围和关联。",
+      "text_en": "Central log correlation connects host, network, application and identity events using consistent fields, time and entities to reveal attack chains. SIEM needs reliable ingestion, synchronized time, protected retention, detection rules, tuning and triage workflows. Verify coverage and correlation through representative end-to-end tests and tracked incident investigations.",
+      "topic_names": [
+        "集中日志关联",
+        "集中日志分析",
+        "central log correlation",
+        "SIEM"
+      ]
+    },
+    {
+      "id": "guide-ir",
+      "title": "Incident response playbooks / 事件响应预案",
+      "aliases": "事件响应预案 应急 响应流程 遏制 根除 恢复",
+      "text": "事件响应预案为不同事件规定角色、分类和升级、调查取证、遏制、清除、恢复及沟通步骤。 事件响应预案应定义决策权、证据处理和恢复标准，并协调技术、业务和法律角色。演练和真实事件会产生经验教训，更新程序并验证纠正措施。\nIncident response playbooks define decision authority, coordination, investigation, containment, eradication, recovery and communications for security incidents. Incident response playbooks should define decision authority, evidence handling and recovery criteria, with coordination across technical, business and legal roles. Exercises and real incidents produce lessons, updated procedures and verified corrective actions.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#IR-8",
+      "text_zh": "事件响应预案为不同事件规定角色、分类和升级、调查取证、遏制、清除、恢复及沟通步骤。 事件响应预案应定义决策权、证据处理和恢复标准，并协调技术、业务和法律角色。演练和真实事件会产生经验教训，更新程序并验证纠正措施。",
+      "text_en": "Incident response playbooks define decision authority, coordination, investigation, containment, eradication, recovery and communications for security incidents. Incident response playbooks should define decision authority, evidence handling and recovery criteria, with coordination across technical, business and legal roles. Exercises and real incidents produce lessons, updated procedures and verified corrective actions.",
+      "topic_names": [
+        "事件响应预案",
+        "incident response playbooks"
+      ]
+    },
+    {
+      "id": "guide-risk",
+      "title": "Risk assessment / 风险评估",
+      "aliases": "风险评估 可能性 影响 风险标准 风险负责人",
+      "text": "风险评估先明确业务范围、资产、风险标准和假设，再识别威胁及脆弱性，评价发生可能性和影响，分配风险负责人并决定处置。 风险评估支持对剩余风险进行优先处理和记录接受。定期审查变更和证据；仅计算漏洞并不能确定业务风险。\nRisk assessment defines scope and criteria, identifies threats and vulnerabilities, evaluates likelihood and impact, and assigns accountable risk owners. Risk assessment supports prioritized treatment and documented acceptance of residual risk. Review changes and evidence periodically; counting vulnerabilities alone does not establish business risk.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#RA-3",
+      "text_zh": "风险评估先明确业务范围、资产、风险标准和假设，再识别威胁及脆弱性，评价发生可能性和影响，分配风险负责人并决定处置。 风险评估支持对剩余风险进行优先处理和记录接受。定期审查变更和证据；仅计算漏洞并不能确定业务风险。",
+      "text_en": "Risk assessment defines scope and criteria, identifies threats and vulnerabilities, evaluates likelihood and impact, and assigns accountable risk owners. Risk assessment supports prioritized treatment and documented acceptance of residual risk. Review changes and evidence periodically; counting vulnerabilities alone does not establish business risk.",
+      "topic_names": [
+        "风险评估",
+        "risk assessment"
+      ]
+    },
+    {
+      "id": "guide-awareness",
+      "title": "Security awareness exercises / 安全意识培训与演练",
+      "aliases": "安全意识 培训 钓鱼演练 员工上报",
+      "text": "安全意识培训围绕岗位风险安排实际情境和上报渠道，结合钓鱼等受控演练检验行为并持续改进。 安全意识需要结合岗位实践、事件上报流程和反馈不断强化。衡量上报质量、重复错误与后续改进情况，不能只统计培训出勤。\nSecurity awareness is reinforced by role-relevant practice, reporting procedures and feedback. Measure reporting quality, repeated mistakes and follow-up improvements rather than attendance alone.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#AT-2",
+      "text_zh": "安全意识培训围绕岗位风险安排实际情境和上报渠道，结合钓鱼等受控演练检验行为并持续改进。 安全意识需要结合岗位实践、事件上报流程和反馈不断强化。衡量上报质量、重复错误与后续改进情况，不能只统计培训出勤。",
+      "text_en": "Security awareness is reinforced by role-relevant practice, reporting procedures and feedback. Measure reporting quality, repeated mistakes and follow-up improvements rather than attendance alone.",
+      "topic_names": [
+        "基于角色的安全意识培训",
+        "安全意识培训与演练",
+        "安全意识培训",
+        "role-based security awareness",
+        "security awareness exercises"
+      ],
+      "retrieval_context": "适用范围：教育课程、培训参与和完成率之外的实际安全行为、反复人为错误、岗位相关练习、钓鱼演练、事件上报及及时反馈。 Scope: learning effectiveness, behavior change, role-relevant practice, phishing exercises, repeated mistakes and reporting quality.",
+      "retrieval_context_source": "https://csrc.nist.gov/pubs/sp/800/50/r1/final"
+    },
+    {
+      "id": "guide-third-party",
+      "title": "Third-party and supplier risk management / 第三方与供应商风险管理",
+      "aliases": "第三方风险 供应商尽调 外包商 供应商退出 供应商安全评估 远程接入 准入尽职调查 合作生命周期 定期复评",
+      "text": "第三方风险管理覆盖准入分级、尽职调查、合同控制、持续监督和退出。 供应商审查优先考虑关键服务和敏感数据，建立安全和通知要求，监控变更并验证终止时的数据返回或删除。证据包括评估、合同承诺、审查结果和跟踪的整改措施。 关键供应商远程接入前需分层尽职调查和安全评估，合作全生命周期持续监督，并在退出时撤销访问、返还或删除数据。\nSupplier reviews prioritize critical services and sensitive data, establish security and notification requirements, monitor changes and verify revocation and data return or deletion at termination. Evidence includes assessments, contract commitments, review results and tracked remediation.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SR-6",
+      "text_zh": "第三方风险管理覆盖准入分级、尽职调查、合同控制、持续监督和退出。 供应商审查优先考虑关键服务和敏感数据，建立安全和通知要求，监控变更并验证终止时的数据返回或删除。证据包括评估、合同承诺、审查结果和跟踪的整改措施。 关键供应商远程接入前需分层尽职调查和安全评估，合作全生命周期持续监督，并在退出时撤销访问、返还或删除数据。",
+      "text_en": "Supplier reviews prioritize critical services and sensitive data, establish security and notification requirements, monitor changes and verify revocation and data return or deletion at termination. Evidence includes assessments, contract commitments, review results and tracked remediation.",
+      "topic_names": [
+        "第三方风险管理",
+        "供应商风险管理",
+        "third-party risk management",
+        "supplier risk management"
+      ]
+    },
+    {
+      "id": "guide-recovery",
+      "title": "Business continuity and recovery exercises / 业务连续性与灾难恢复演练",
+      "aliases": "业务连续性 灾难恢复演练 RTO RPO 业务依赖 桌面演练",
+      "text": "业务连续性识别关键业务、依赖和中断影响，规定可接受恢复时间与数据丢失范围；演练实际验证人员、系统和第三方协同。 业务连续性与灾难恢复演练/业务连续性与灾难恢复演练测试依赖假设、RTO/RPO和恢复程序，通过桌面和技术场景。记录差距，分配整改措施并重复测试以验证改进。\nContinuity and disaster recovery exercises test dependency assumptions, RTO/RPO and restoration procedures through tabletop and technical scenarios. Record gaps, assign remediation and repeat tests to verify improvements.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#CP-4",
+      "text_zh": "业务连续性识别关键业务、依赖和中断影响，规定可接受恢复时间与数据丢失范围；演练实际验证人员、系统和第三方协同。 业务连续性与灾难恢复演练/业务连续性与灾难恢复演练测试依赖假设、RTO/RPO和恢复程序，通过桌面和技术场景。记录差距，分配整改措施并重复测试以验证改进。",
+      "text_en": "Continuity and disaster recovery exercises test dependency assumptions, RTO/RPO and restoration procedures through tabletop and technical scenarios. Record gaps, assign remediation and repeat tests to verify improvements.",
+      "topic_names": [
+        "业务连续性与灾难恢复演练",
+        "业务连续性演练",
+        "灾难恢复演练",
+        "business continuity exercises",
+        "business continuity and disaster recovery exercises"
+      ]
+    },
+    {
+      "id": "guide-change",
+      "title": "Change control / 变更控制",
+      "aliases": "变更控制 变更审批 回滚 上线变更",
+      "text": "变更控制要求记录变更内容、分析安全与业务影响、评审批准、测试、安排部署并准备回滚。 配置变更控制在必要时将请求、批准和执行分离，并确认最终状态。紧急变更仍需跟踪和及时的事后审查；保留测试、授权和验证证据。\nAssess the security and business impact of changes, obtain approval, test, schedule deployment and prepare rollback before implementation. Configuration change control separates request, approval and execution where warranted and confirms the resulting state. Emergency changes still require tracking and timely retrospective review; retain test, authorization and verification evidence.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#CM-3",
+      "text_zh": "变更控制要求记录变更内容、分析安全与业务影响、评审批准、测试、安排部署并准备回滚。 配置变更控制在必要时将请求、批准和执行分离，并确认最终状态。紧急变更仍需跟踪和及时的事后审查；保留测试、授权和验证证据。",
+      "text_en": "Assess the security and business impact of changes, obtain approval, test, schedule deployment and prepare rollback before implementation. Configuration change control separates request, approval and execution where warranted and confirms the resulting state. Emergency changes still require tracking and timely retrospective review; retain test, authorization and verification evidence.",
+      "topic_names": [
+        "变更控制",
+        "change control"
+      ]
+    }
+  ]
+}

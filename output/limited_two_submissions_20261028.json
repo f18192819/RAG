@@ -1,0 +1,35 @@
+{
+  "task": "按用户最新要求，优化代码并上传验证最多两次，最后报告结果",
+  "max_uploads": 2,
+  "baseline_latest_version": "v25_exact_source_without_lossy_rewrite",
+  "baseline_latest_accuracy": 0.851351,
+  "baseline_best_accuracy": 0.878378,
+  "baseline_reject_recall": 1.0,
+  "attempts": [
+    {
+      "version": "v26_contextual_scope_and_competing_evidence",
+      "started_at": "2026-10-28T12:22:18.783143+00:00",
+      "status": "queued",
+      "submission_id": "2024012348_20261028122220237374",
+      "archive": "C:\\data\\software\\big_homework\\output\\course_v26_contextual_scope_and_competing_evidence.zip",
+      "result": {
+        "id": "2024012348_20261028122220237374",
+        "status": "success",
+        "submitted_at": "2026-10-28T12:22:20.308Z",
+        "updated_at": "2026-10-28T12:26:38.586Z",
+        "completed_at": "2026-10-28T12:26:38.586Z",
+        "error_message": null,
+        "balanced_score": 0.912162,
+        "answer_accuracy": 0.824324,
+        "reject_recall": 1.0
+      }
+    },
+    {
+      "version": "v27_question_scope_and_source_normalization",
+      "started_at": "2026-10-28T12:52:31.784747+00:00",
+      "status": "queued",
+      "submission_id": "2024012348_20261028125233200590",
+      "archive": "C:\\data\\software\\big_homework\\output\\course_v27_question_scope_and_source_normalization.zip"
+    }
+  ]
+}

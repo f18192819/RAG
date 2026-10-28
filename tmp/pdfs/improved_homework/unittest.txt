@@ -1,0 +1,20 @@
+
+test_citation_order_tracks_used_files (test_security.SafetyTests.test_citation_order_tracks_used_files) ... ok
+test_context_budget_includes_separators (test_security.SafetyTests.test_context_budget_includes_separators) ... ok
+test_end_to_end_mocked_api (test_security.SafetyTests.test_end_to_end_mocked_api) ... ok
+test_http_error_redacts_token (test_security.SafetyTests.test_http_error_redacts_token) ... ok
+test_invalid_inputs (test_security.SafetyTests.test_invalid_inputs) ... ok
+test_malformed_model_is_runtime_error (test_security.SafetyTests.test_malformed_model_is_runtime_error) ... ok
+test_modified_template_is_rejected (test_security.SafetyTests.test_modified_template_is_rejected) ... ok
+test_normal_security_questions (test_security.SafetyTests.test_normal_security_questions) ... ok
+test_output_contract (test_security.SafetyTests.test_output_contract) ... ok
+test_paraphrased_attacks (test_security.SafetyTests.test_paraphrased_attacks) ... ok
+test_poisoned_corpus_and_duplicate_removal (test_security.SafetyTests.test_poisoned_corpus_and_duplicate_removal) ... ok
+test_reject_before_network (test_security.SafetyTests.test_reject_before_network) ... ok
+test_settings_repr_hides_token (test_security.SafetyTests.test_settings_repr_hides_token) ... ok
+test_template_breakout_is_escaped (test_security.SafetyTests.test_template_breakout_is_escaped) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.019s
+
+OK
