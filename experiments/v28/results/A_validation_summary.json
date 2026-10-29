@@ -1,0 +1,37 @@
+{
+  "samples": 27,
+  "scored_control_samples": 27,
+  "target_control_accuracy": 1.0,
+  "answer_primary_control_accuracy": 1.0,
+  "candidate_recall": {
+    "1": 0.8148148148148148,
+    "3": 0.8518518518518519,
+    "5": 0.8518518518518519
+  },
+  "rerank_accuracy": 0.6296296296296297,
+  "MRR": 0.6296296296296297,
+  "evidence_survival": 0.7083333333333334,
+  "final_semantic_accuracy": 0.8888888888888888,
+  "primary_unresolved_rate": 0.0,
+  "fallback_accuracy": 1.0,
+  "evidence_modes": {
+    "llm": 8,
+    "deterministic_guide": 18,
+    "fallback": 1
+  },
+  "failure_stages": {
+    "none": 24,
+    "generation_miss": 2,
+    "retrieval_miss": 1
+  },
+  "top_confusions": [],
+  "variant": "A",
+  "split": "validation",
+  "real_model_inference": true,
+  "split_manifest_sha256": "87dbb088dab833bb60e174b780eafc865c99ebfadbd87bccd995ff3f266921f8",
+  "error_count": 0,
+  "strict_scoring_complete": true,
+  "scoring_error_count": 1,
+  "scorer_sha256": "0c3b5bb6a5d1b927f2d047df347db971653ff963fd20799725cea04fd7e8521d",
+  "primary_judge_blinded_to_expected": true
+}

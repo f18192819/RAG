@@ -1,0 +1,14 @@
+*.token.json
+.env
+.env.*
+!.env.example
+*.zip
+__pycache__/
+*.py[cod]
+*.sqlite3*
+/tmp/
+/output/
+/experiments/v28/cache/
+/experiments/v28/judge_cache/
+/experiments/v28/baseline_v17/knowledge/
+*.log

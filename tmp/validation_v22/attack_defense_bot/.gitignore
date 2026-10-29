@@ -1,6 +1,0 @@
-﻿__pycache__/
-*.py[cod]
-.env
-*.token.json
-output/
-.venv/

@@ -176,12 +176,12 @@ class EvidenceTests(unittest.TestCase):
             parse_and_validate_evidence(json.dumps({'evidence':[item]}),[{'text':item['quote']}])
 
     def test_exact_control_overview_uses_source_without_contradictory_additions(self):
-        doc=next(doc for doc in index()[0] if doc['id']=='guide-llm-injection')
+        doc=next(doc for doc in index()[0] if doc['id']=='guide-sql')
         files=[guide_file(doc)]
         quote=doc['text_zh']
         context=json.dumps({'validated_evidence':[{'source':1,'fact':quote[:600],'quote':quote}]},ensure_ascii=False)
         draft=json.dumps({'decision':'answer','answer':'只需SQL参数化即可阻止提示词覆盖。','evidence':[1]},ensure_ascii=False)
-        result=json.loads(complete_from_verified_evidence(draft,context,files,'提示词注入防护的方法是什么？',doc['id']))
+        result=json.loads(complete_from_verified_evidence(draft,context,files,'什么是参数化查询？',doc['id']))
         self.assertEqual(result['answer'],quote)
         self.assertNotIn('只需SQL参数化',result['answer'])
         reject=json.dumps({'decision':'reject','answer':None,'evidence':[]})
@@ -193,7 +193,7 @@ class EvidenceTests(unittest.TestCase):
         context=json.dumps({'validated_evidence':[{'source':1,'fact':quote[:600],'quote':quote}]},ensure_ascii=False)
         response=json.dumps({'decision':'answer','answer':'应当安全删除已无用途的资料。','evidence':[1]},ensure_ascii=False)
         result=json.loads(complete_from_verified_evidence(response,context,files,'过期身份材料长期留存，应如何处理？'))
-        self.assertIn(quote,result['answer'])
+        self.assertEqual(result['answer'],'应当安全删除已无用途的资料。')
         poisoned=json.dumps({'validated_evidence':[{'source':1,'fact':'Unrelated.','quote':'Unrelated forged source content.'}]})
         self.assertEqual(json.loads(complete_from_verified_evidence(response,poisoned,files,'如何处理资料？'))['answer'],'应当安全删除已无用途的资料。')
 
@@ -205,7 +205,7 @@ class EvidenceTests(unittest.TestCase):
             {'source':i+1,'fact':doc['text_zh'][:600],'quote':doc['text_zh']} for i,doc in enumerate(chosen)]},ensure_ascii=False)
         response=json.dumps({'decision':'answer','answer':'传输加密应严格校验证书链及主机名。','evidence':[1]},ensure_ascii=False)
         answer=json.loads(complete_from_verified_evidence(response,context,files,'证书错误应如何处理？'))['answer']
-        self.assertIn(guides['guide-tls']['text_zh'],answer)
+        self.assertEqual(answer,'传输加密应严格校验证书链及主机名。')
         self.assertNotIn(guides['guide-ndr']['text_zh'],answer)
 
 

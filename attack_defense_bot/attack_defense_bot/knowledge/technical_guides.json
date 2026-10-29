@@ -19,7 +19,7 @@
     {
       "id": "guide-dns",
       "title": "DNS security monitoring / DNS安全监测",
-      "aliases": "DNS安全监测 域名 解析 DNS隧道 恶意域名 查询字符熵 高熵子域名 新域名 查询频率 domain entropy DNS tunneling novel subdomains",
+      "aliases": "DNS安全监测 域名 解析 DNS隧道 恶意域名",
       "text": "DNS安全监测分析解析请求、响应、域名信誉及行为异常，发现恶意域名通信、可疑新域名和DNS隧道。 DNS安全监测将查询日志、声誉和异常与资产和身份相关联，然后调查并阻止已验证的恶意活动。保护解析器配置，验证适用情况下的DNSSEC，并审查误报；监测和DNS真实性解决了不同的风险。 集中收集DNS查询与响应日志，关联域名信誉、查询频率、名称新颖度及字符熵，识别隧道并保留主机与调查上下文。\nCentralize DNS query and response logs; correlate reputation, frequency, novel names and entropy to detect tunneling while preserving host and investigation context. DNS monitoring can expose malicious-domain communications, suspicious new domains and DNS tunneling through query and response analysis. DNS security monitoring correlates query logs, reputation and anomalies with assets and identity, then investigates and blocks verified malicious activity. Protect resolver configurations, validate DNSSEC where applicable and review false positives; monitoring and DNS authenticity address different risks.",
       "source": "https://csrc.nist.gov/pubs/sp/800/81/r3/final",
       "text_zh": "DNS安全监测分析解析请求、响应、域名信誉及行为异常，发现恶意域名通信、可疑新域名和DNS隧道。 DNS安全监测将查询日志、声誉和异常与资产和身份相关联，然后调查并阻止已验证的恶意活动。保护解析器配置，验证适用情况下的DNSSEC，并审查误报；监测和DNS真实性解决了不同的风险。 集中收集DNS查询与响应日志，关联域名信誉、查询频率、名称新颖度及字符熵，识别隧道并保留主机与调查上下文。",
@@ -58,8 +58,8 @@
     },
     {
       "id": "guide-cloud-kms",
-      "title": "Managed key services (cloud KMS) / 托管密钥服务",
-      "aliases": "managed key services cloud key management service KMS HSM 托管密钥服务 数据加密密钥 云加密密钥 信封加密 主密钥 密码运算 权限隔离",
+      "title": "Managed key services / 托管密钥服务",
+      "aliases": "托管密钥服务 KMS HSM 数据加密密钥 权限隔离",
       "text": "托管密钥服务通过受控密钥生成、存储和密码运算减少应用自行保管主密钥的风险，提供访问策略、轮换和审计能力。 托管密钥服务集中密钥保护和生命周期操作，通常使用信封加密和硬件支持的安全措施。将密钥管理与数据使用分开，限制解密权限并测试恢复、轮换和撤销；KMS不会自动纠正过于宽泛的应用权限。\nManaged key services centralize key protection and lifecycle operations, often using envelope encryption and hardware-backed safeguards. Separate key administration from data use, restrict decrypt permissions and test recovery, rotation and revocation; a KMS does not correct overly broad application permissions automatically.",
       "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SC-12",
       "text_zh": "托管密钥服务通过受控密钥生成、存储和密码运算减少应用自行保管主密钥的风险，提供访问策略、轮换和审计能力。 托管密钥服务集中密钥保护和生命周期操作，通常使用信封加密和硬件支持的安全措施。将密钥管理与数据使用分开，限制解密权限并测试恢复、轮换和撤销；KMS不会自动纠正过于宽泛的应用权限。",
@@ -86,9 +86,7 @@
         "数据防泄漏",
         "data loss prevention",
         "DLP"
-      ],
-      "retrieval_context": "适用范围：敏感文件、个人信息、身份标识和表格在终端、邮件、浏览器及云服务之间的传输与分享；限制上传到未批准的个人网盘、云盘或外部邮箱。 Scope: sensitive-file upload, personal cloud storage, sharing, clipboard and unauthorized outbound information flows.",
-      "retrieval_context_source": "https://learn.microsoft.com/en-us/purview/endpoint-dlp-learn-about"
+      ]
     },
     {
       "id": "guide-rest-encryption",
@@ -146,8 +144,8 @@
     },
     {
       "id": "guide-sast-dast",
-      "title": "Static and dynamic security testing (SAST and DAST) / 静态与动态安全测试",
-      "aliases": "static and dynamic security testing SAST DAST 静态与动态安全测试 代码扫描 运行应用 测试门禁 自动测试 缺陷发现前移 流水线 修复门禁 shift-left security testing manual post-release discovery",
+      "title": "Static and dynamic application security testing / 静态与动态安全测试",
+      "aliases": "静态与动态安全测试 SAST DAST 代码扫描 运行应用 测试门禁 发布后人工 手工检查 自动测试 缺陷发现前移 流水线 修复门禁 shift-left testing",
       "text": "静态安全测试分析源代码或构建产物，动态安全测试观察运行应用在测试请求下的行为，两者覆盖范围互补。 SAST检查代码中的不安全模式，而DAST则测试已部署应用程序的行为；单独的任何一种都不能证明没有漏洞。将测试集成到开发和发布门禁中，对发现的问题进行分类，分配责任人，修复并重新测试确认的缺陷。 不能只依赖发布后人工发现问题，应把静态代码分析、依赖检查和动态安全测试集成到开发流水线，在发布前尽早发现缺陷，并对高风险问题设置修复门槛。\nShift security testing before release by combining static analysis, dependency checks and dynamic tests in the pipeline, with remediation gates for high-risk findings. SAST inspects code for insecure patterns while DAST exercises deployed application behavior; neither alone proves absence of vulnerabilities. Integrate tests into development and release gates, triage findings, assign owners, remediate and retest confirmed flaws.",
       "source": "https://csrc.nist.gov/pubs/sp/800/218/final",
       "text_zh": "静态安全测试分析源代码或构建产物，动态安全测试观察运行应用在测试请求下的行为，两者覆盖范围互补。 SAST检查代码中的不安全模式，而DAST则测试已部署应用程序的行为；单独的任何一种都不能证明没有漏洞。将测试集成到开发和发布门禁中，对发现的问题进行分类，分配责任人，修复并重新测试确认的缺陷。 不能只依赖发布后人工发现问题，应把静态代码分析、依赖检查和动态安全测试集成到开发流水线，在发布前尽早发现缺陷，并对高风险问题设置修复门槛。",
@@ -163,33 +161,28 @@
       "id": "guide-memory",
       "title": "Memory safety / 内存安全语言与防护",
       "aliases": "内存安全语言与防护 内存越界 UAF ASLR DEP 栈保护",
-      "text": "新编写的复杂二进制解析器可通过内存安全语言和可靠的边界检查，在实现层防止越界读写和释放后使用等缺陷。沙箱限制缺陷被利用后的影响范围，不能替代这一缺陷预防。 内存安全语言减少越界访问、释放后使用和相关内存破坏缺陷；遗留代码还需边界检查、模糊测试及编译和运行时防护。 内存安全语言预防多类内存破坏；ASLR、不可执行内存及栈保护降低遗留不安全组件的可利用性。尽量减少不安全接口，对解析器进行测试并验证编译加固设置。缓解机制不能修复底层缺陷。\nFor newly written parsers of complex binary data, memory-safe implementation prevents classes of out-of-bounds access and use-after-free defects. Sandboxing limits the impact of exploitation; it does not remove these implementation defects. Memory safety reduces memory-corruption defects, including out-of-bounds access and use-after-free flaws, rather than merely making exploitation harder. Memory-safe languages prevent broad classes of memory corruption; mitigations such as ASLR, non-executable memory and stack protections reduce exploitability in remaining unsafe components. Minimize unsafe interfaces, test parsers and verify build-hardening settings. Mitigation features do not repair the underlying defect.",
-      "source": "https://www.cisa.gov/sites/default/files/2023-12/The-Case-for-Memory-Safe-Roadmaps-508c.pdf",
-      "text_zh": "新编写的复杂二进制解析器可通过内存安全语言和可靠的边界检查，在实现层防止越界读写和释放后使用等缺陷。沙箱限制缺陷被利用后的影响范围，不能替代这一缺陷预防。 内存安全语言减少越界访问、释放后使用和相关内存破坏缺陷；遗留代码还需边界检查、模糊测试及编译和运行时防护。 内存安全语言预防多类内存破坏；ASLR、不可执行内存及栈保护降低遗留不安全组件的可利用性。尽量减少不安全接口，对解析器进行测试并验证编译加固设置。缓解机制不能修复底层缺陷。",
-      "text_en": "For newly written parsers of complex binary data, memory-safe implementation prevents classes of out-of-bounds access and use-after-free defects. Sandboxing limits the impact of exploitation; it does not remove these implementation defects. Memory safety reduces memory-corruption defects, including out-of-bounds access and use-after-free flaws, rather than merely making exploitation harder. Memory-safe languages prevent broad classes of memory corruption; mitigations such as ASLR, non-executable memory and stack protections reduce exploitability in remaining unsafe components. Minimize unsafe interfaces, test parsers and verify build-hardening settings. Mitigation features do not repair the underlying defect.",
+      "text": "内存安全语言减少越界访问、释放后使用和相关内存破坏缺陷；遗留代码还需边界检查、模糊测试及编译和运行时防护。 内存安全语言预防多类内存破坏；ASLR、不可执行内存及栈保护降低遗留不安全组件的可利用性。尽量减少不安全接口，对解析器进行测试并验证编译加固设置。缓解机制不能修复底层缺陷。\nMemory safety reduces memory-corruption defects, including out-of-bounds access and use-after-free flaws, rather than merely making exploitation harder. Memory-safe languages prevent broad classes of memory corruption; mitigations such as ASLR, non-executable memory and stack protections reduce exploitability in remaining unsafe components. Minimize unsafe interfaces, test parsers and verify build-hardening settings. Mitigation features do not repair the underlying defect.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SI-16",
+      "text_zh": "内存安全语言减少越界访问、释放后使用和相关内存破坏缺陷；遗留代码还需边界检查、模糊测试及编译和运行时防护。 内存安全语言预防多类内存破坏；ASLR、不可执行内存及栈保护降低遗留不安全组件的可利用性。尽量减少不安全接口，对解析器进行测试并验证编译加固设置。缓解机制不能修复底层缺陷。",
+      "text_en": "Memory safety reduces memory-corruption defects, including out-of-bounds access and use-after-free flaws, rather than merely making exploitation harder. Memory-safe languages prevent broad classes of memory corruption; mitigations such as ASLR, non-executable memory and stack protections reduce exploitability in remaining unsafe components. Minimize unsafe interfaces, test parsers and verify build-hardening settings. Mitigation features do not repair the underlying defect.",
       "topic_names": [
         "内存安全语言与防护",
         "内存安全语言",
         "memory-safe languages",
         "memory safety"
-      ],
-      "retrieval_context": "适用范围：新建或重写解析器、处理不可信二进制输入的高权限服务、越界读写、释放后使用和内存破坏。通过内存安全语言与边界检查预防实现缺陷，隔离作为补充。 Scope: new parser implementation, untrusted binary input, privileged services, bounds safety, use-after-free and memory corruption prevention.",
-      "retrieval_context_source": "https://www.cisa.gov/sites/default/files/2023-12/The-Case-for-Memory-Safe-Roadmaps-508c.pdf"
+      ]
     },
     {
       "id": "guide-sandbox",
       "title": "Sandbox isolation / 沙箱隔离",
-      "aliases": "沙箱隔离 不可信程序 最小文件网络权限 逃逸 文档预览 不可信文件 文件解析 第三方组件 受限进程隔离 document preview untrusted files existing parser",
-      "text": "既有文档预览服务或外部组件处理不可信文件时，可用独立低权限沙箱限制文件、网络、系统调用和资源，降低解析漏洞或恶意输入对宿主的影响。运行时隔离可保留既有实现；内存安全重写则针对实现缺陷类别，二者的实施约束不同。 沙箱为不可信代码提供受限执行环境，限制文件、网络、进程和系统调用权限，降低恶意行为影响宿主和其他任务的风险。 沙箱隔离使用强大的边界和最小特权，具有资源限制、监控接口和受控数据交换。修复隔离层并测试抗逃逸能力；仅单独的进程隔离是不够的，因为共享特权仍然广泛。\nExisting document-preview services and third-party parsers can use separate low-privilege sandboxes to restrict files, network access, system calls and resources. Runtime isolation limits impact while retaining the existing implementation; memory-safe rewriting addresses defect classes under different implementation constraints. Restrict untrusted parsers and code with separate low-privilege execution, file and network access limits, system-call restrictions and resource quotas. Sandbox isolation uses strong boundaries and least privilege with resource limits, monitored interfaces and controlled data exchange. Patch the isolation layer and test escape resistance; process separation alone is not sufficient when shared privileges remain broad.",
+      "aliases": "沙箱隔离 不可信程序 最小文件网络权限 逃逸",
+      "text": "沙箱为不可信代码提供受限执行环境，限制文件、网络、进程和系统调用权限，降低恶意行为影响宿主和其他任务的风险。 沙箱隔离使用强大的边界和最小特权，具有资源限制、监控接口和受控数据交换。修复隔离层并测试抗逃逸能力；仅单独的进程隔离是不够的，因为共享特权仍然广泛。\nRestrict untrusted parsers and code with separate low-privilege execution, file and network access limits, system-call restrictions and resource quotas. Sandbox isolation uses strong boundaries and least privilege with resource limits, monitored interfaces and controlled data exchange. Patch the isolation layer and test escape resistance; process separation alone is not sufficient when shared privileges remain broad.",
       "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SC-39",
-      "text_zh": "既有文档预览服务或外部组件处理不可信文件时，可用独立低权限沙箱限制文件、网络、系统调用和资源，降低解析漏洞或恶意输入对宿主的影响。运行时隔离可保留既有实现；内存安全重写则针对实现缺陷类别，二者的实施约束不同。 沙箱为不可信代码提供受限执行环境，限制文件、网络、进程和系统调用权限，降低恶意行为影响宿主和其他任务的风险。 沙箱隔离使用强大的边界和最小特权，具有资源限制、监控接口和受控数据交换。修复隔离层并测试抗逃逸能力；仅单独的进程隔离是不够的，因为共享特权仍然广泛。",
-      "text_en": "Existing document-preview services and third-party parsers can use separate low-privilege sandboxes to restrict files, network access, system calls and resources. Runtime isolation limits impact while retaining the existing implementation; memory-safe rewriting addresses defect classes under different implementation constraints. Restrict untrusted parsers and code with separate low-privilege execution, file and network access limits, system-call restrictions and resource quotas. Sandbox isolation uses strong boundaries and least privilege with resource limits, monitored interfaces and controlled data exchange. Patch the isolation layer and test escape resistance; process separation alone is not sufficient when shared privileges remain broad.",
+      "text_zh": "沙箱为不可信代码提供受限执行环境，限制文件、网络、进程和系统调用权限，降低恶意行为影响宿主和其他任务的风险。 沙箱隔离使用强大的边界和最小特权，具有资源限制、监控接口和受控数据交换。修复隔离层并测试抗逃逸能力；仅单独的进程隔离是不够的，因为共享特权仍然广泛。",
+      "text_en": "Restrict untrusted parsers and code with separate low-privilege execution, file and network access limits, system-call restrictions and resource quotas. Sandbox isolation uses strong boundaries and least privilege with resource limits, monitored interfaces and controlled data exchange. Patch the isolation layer and test escape resistance; process separation alone is not sufficient when shared privileges remain broad.",
       "topic_names": [
         "沙箱隔离",
         "sandbox isolation"
-      ],
-      "additional_sources": [
-        "https://www.cisa.gov/sites/default/files/2023-12/The-Case-for-Memory-Safe-Roadmaps-508c.pdf"
       ]
     },
     {

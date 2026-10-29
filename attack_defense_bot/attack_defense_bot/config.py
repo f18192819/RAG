@@ -1,9 +1,15 @@
 from __future__ import annotations
 
 import os
+import json
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict
+from types import MappingProxyType
+
+RRF_WEIGHTS=MappingProxyType({'exact':8.0,'options':4.5,'explicit_named':4.5,
+    'contrastive':1.0,'dense':1.3,'public_bm25':1.4,'course_bm25':1.4,
+    'local_bm25':1.1,'personal':1.1})
 
 
 PACKAGE_DIR = Path(__file__).resolve().parent
@@ -55,13 +61,28 @@ class Settings:
     max_tokens: int
     personal_database_name: str = ''
     choice_strategy: str = 'rag'
+    rerank_margin: float = 0.15
+    rerank_min_score: float = 0.65
+    supplemental_retrieval: bool = True
+    query_representation: bool = True
+    contrastive_rerank: bool = True
 
 
 def load_settings() -> Settings:
     """优先使用环境变量；未设置时读取当前目录下的 .env。"""
     values = _read_dotenv(ENV_FILE)
+    profile_path=PACKAGE_DIR/'pipeline_profile.json'
+    profile=json.loads(profile_path.read_text(encoding='utf-8')) if profile_path.exists() else {}
     api_base_url = os.getenv("RAG_API_BASE_URL", values.get("RAG_API_BASE_URL", "http://10.1.0.220:9002/api"))
     api_token = os.getenv("RAG_API_TOKEN", values.get("RAG_API_TOKEN", ""))
+    if not api_token:
+        try:
+            try:from .credentials import load_credentials
+            except ImportError:from credentials import load_credentials
+            external=os.getenv('RAG_TOKEN_FILE',values.get('RAG_TOKEN_FILE',''))
+            api_token=load_credentials(Path(external).expanduser() if external else None)['token']
+        except FileNotFoundError:
+            api_token=''
     database_name = os.getenv("RAG_DATABASE_NAME", values.get("RAG_DATABASE_NAME", "common_dataset"))
     metric_type = os.getenv("RAG_METRIC_TYPE", values.get("RAG_METRIC_TYPE", "cosine"))
     settings = Settings(
@@ -78,6 +99,11 @@ def load_settings() -> Settings:
         max_tokens=_get_int("RAG_MAX_TOKENS", values, 1000),
         personal_database_name=os.getenv('RAG_PERSONAL_DATABASE', values.get('RAG_PERSONAL_DATABASE', '')).strip(),
         choice_strategy=os.getenv('RAG_CHOICE_STRATEGY',values.get('RAG_CHOICE_STRATEGY','rag')).strip(),
+        rerank_margin=_get_float('RAG_RERANK_MARGIN',values,0.15),
+        rerank_min_score=_get_float('RAG_RERANK_MIN_SCORE',values,0.65),
+        supplemental_retrieval=os.getenv('RAG_SUPPLEMENTAL_RETRIEVAL',values.get('RAG_SUPPLEMENTAL_RETRIEVAL','true')).lower()=='true',
+        query_representation=os.getenv('RAG_QUERY_REPRESENTATION',str(profile.get('query_representation',True))).lower()=='true',
+        contrastive_rerank=os.getenv('RAG_CONTRASTIVE_RERANK',str(profile.get('contrastive_rerank',True))).lower()=='true',
     )
     if not 1 <= settings.top_k <= 50 or not 1 <= settings.context_max_files <= settings.top_k:
         raise ValueError("top_k 必须在 1..50，max_files 必须在 1..top_k")
@@ -87,6 +113,8 @@ def load_settings() -> Settings:
         raise ValueError("请求超时或输出长度参数越界")
     if not 0 <= settings.temperature <= 1 or not 0 <= settings.score_threshold <= 1:
         raise ValueError("temperature 和 score_threshold 必须在 0..1")
+    if not 0<=settings.rerank_margin<=1 or not 0<=settings.rerank_min_score<=1:
+        raise ValueError('Reranking settings must be in 0..1')
     return settings
 
 

@@ -1,0 +1,11 @@
+{
+  "guard_sha256": "a399aadc0a0fefb2e61a0631c68c149ec83958d0f736172a67dcb0f09e1f24f3",
+  "guard_reference_commit": "36c28acb69b17d392ade602f65bd69d4157de4c5",
+  "baseline_source": {
+    "main.py": "69b150b413d1659e38f6c412a4937841b52b2630140c195f5f9e46a1bfc52398",
+    "prompt_builder.py": "b4592baad4d95f9532c3b3e6bc00ea74e2d17572bb6b3e51d7b5f610d8ba613c"
+  },
+  "baseline_recovered_from": "preserved v17 preview archive; main/prompt verified against preserved text copies",
+  "corpus_shared": true,
+  "personal_database_disabled_in_ablation": true
+}

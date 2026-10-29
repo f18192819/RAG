@@ -1,0 +1,53 @@
+{
+  "samples": 27,
+  "scored_control_samples": 27,
+  "error_count": 0,
+  "target_control_accuracy": 0.9259259259259259,
+  "answer_primary_control_accuracy": 0.9259259259259259,
+  "candidate_recall": {
+    "1": 0.7777777777777778,
+    "3": 0.8518518518518519,
+    "5": 0.8518518518518519
+  },
+  "rerank_accuracy": 0.5555555555555556,
+  "MRR": 0.5833333333333334,
+  "evidence_survival": 0.6296296296296297,
+  "final_semantic_accuracy": 0.7407407407407407,
+  "primary_unresolved_rate": 0.0,
+  "fallback_accuracy": 1.0,
+  "evidence_modes": {
+    "deterministic_guide": 17,
+    "llm": 9,
+    "fallback": 1
+  },
+  "failure_stages": {
+    "none": 20,
+    "rerank_miss": 3,
+    "generation_miss": 4
+  },
+  "top_confusions": [
+    {
+      "desired": "guide-cloud-iam",
+      "predicted": "guide-least",
+      "count": 1
+    },
+    {
+      "desired": "guide-identity",
+      "predicted": "guide-rbac",
+      "count": 1
+    }
+  ],
+  "variant": "H",
+  "split": "validation",
+  "real_model_inference": true,
+  "split_manifest_sha256": "87dbb088dab833bb60e174b780eafc865c99ebfadbd87bccd995ff3f266921f8",
+  "inference_source_sha256": "35248418ba0bf7546e77753c082a79b384e5e9a467040edae9d4bf18abf9a8b5",
+  "run_configuration": {
+    "query_representation": false,
+    "contrastive_rerank": false
+  },
+  "strict_scoring_complete": true,
+  "scoring_error_count": 2,
+  "scorer_sha256": "0c3b5bb6a5d1b927f2d047df347db971653ff963fd20799725cea04fd7e8521d",
+  "primary_judge_blinded_to_expected": true
+}

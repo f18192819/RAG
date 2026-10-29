@@ -21,10 +21,10 @@
       "id": "guide-identity",
       "title": "Identity lifecycle / 身份生命周期与权限复核",
       "aliases": "入职 转岗 离职 JML identity lifecycle account review",
-      "text": "以权威人事系统的入职、转岗和离职状态事件触发账户开通、调整及停用撤销，规定处置时限；对状态异常、孤儿账户和逾期撤权告警，保留审批与执行记录。 身份生命周期管理覆盖入职授权、转岗调整及离职撤权；账户应有唯一身份、业务负责人和可追溯的审批记录。定期复核实际权限，清理孤儿、闲置和过量权限，撤销会话与密钥。 身份生命周期管理把账户开通、岗位变更、访问复核和及时撤权与明确负责人关联。证据包括审批请求、权限复核记录和撤销记录。\nConnect authoritative personnel events for joiners, movers and leavers to account provisioning, changes and deprovisioning, with defined response deadlines and alerts for orphaned, inconsistent or overdue accounts. Retain approvals and execution records. Identity lifecycle management makes joiner, mover and leaver (JML) access changes timely and auditable. Manage account creation, job changes and termination so access remains aligned with current responsibilities and accountable business owners. Identity lifecycle management ties provisioning, transfers, reviews and timely deprovisioning to accountable owners. Evidence includes approved requests, access certifications and revocation records.",
+      "text": "身份生命周期管理覆盖入职授权、转岗调整及离职撤权；账户应有唯一身份、业务负责人和可追溯的审批记录。定期复核实际权限，清理孤儿、闲置和过量权限，撤销会话与密钥。 身份生命周期管理把账户开通、岗位变更、访问复核和及时撤权与明确负责人关联。证据包括审批请求、权限复核记录和撤销记录。\nIdentity lifecycle management makes joiner, mover and leaver (JML) access changes timely and auditable. Manage account creation, job changes and termination so access remains aligned with current responsibilities and accountable business owners. Identity lifecycle management ties provisioning, transfers, reviews and timely deprovisioning to accountable owners. Evidence includes approved requests, access certifications and revocation records.",
       "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#AC-2",
-      "text_zh": "以权威人事系统的入职、转岗和离职状态事件触发账户开通、调整及停用撤销，规定处置时限；对状态异常、孤儿账户和逾期撤权告警，保留审批与执行记录。 身份生命周期管理覆盖入职授权、转岗调整及离职撤权；账户应有唯一身份、业务负责人和可追溯的审批记录。定期复核实际权限，清理孤儿、闲置和过量权限，撤销会话与密钥。 身份生命周期管理把账户开通、岗位变更、访问复核和及时撤权与明确负责人关联。证据包括审批请求、权限复核记录和撤销记录。",
-      "text_en": "Connect authoritative personnel events for joiners, movers and leavers to account provisioning, changes and deprovisioning, with defined response deadlines and alerts for orphaned, inconsistent or overdue accounts. Retain approvals and execution records. Identity lifecycle management makes joiner, mover and leaver (JML) access changes timely and auditable. Manage account creation, job changes and termination so access remains aligned with current responsibilities and accountable business owners. Identity lifecycle management ties provisioning, transfers, reviews and timely deprovisioning to accountable owners. Evidence includes approved requests, access certifications and revocation records.",
+      "text_zh": "身份生命周期管理覆盖入职授权、转岗调整及离职撤权；账户应有唯一身份、业务负责人和可追溯的审批记录。定期复核实际权限，清理孤儿、闲置和过量权限，撤销会话与密钥。 身份生命周期管理把账户开通、岗位变更、访问复核和及时撤权与明确负责人关联。证据包括审批请求、权限复核记录和撤销记录。",
+      "text_en": "Identity lifecycle management makes joiner, mover and leaver (JML) access changes timely and auditable. Manage account creation, job changes and termination so access remains aligned with current responsibilities and accountable business owners. Identity lifecycle management ties provisioning, transfers, reviews and timely deprovisioning to accountable owners. Evidence includes approved requests, access certifications and revocation records.",
       "topic_names": [
         "身份全生命周期管理",
         "身份生命周期管理",
@@ -105,9 +105,7 @@
         "风险条件访问",
         "risk-based conditional access",
         "zero trust"
-      ],
-      "retrieval_context": "适用范围：远程接入、VPN或内部网络位置不能自动授予信任；对具体应用和资源按身份、设备健康、行为、位置及上下文逐次验证和授权。 Scope: remote access, VPN implicit trust, per-resource authorization, continuous identity and device verification.",
-      "retrieval_context_source": "https://csrc.nist.gov/pubs/sp/800/207/final"
+      ]
     },
     {
       "id": "guide-vulnerability",
@@ -135,9 +133,7 @@
         "补丁与修复管理",
         "补丁管理",
         "patch and remediation management"
-      ],
-      "retrieval_context": "适用范围：终端或服务器已部署软件的旧版本、已知漏洞、远程代码执行缺陷与安全更新；按风险安排测试、升级、补丁分发及修复验证。 Scope: outdated deployed software, known exploitable vulnerabilities, security updates, staged patch deployment and verification.",
-      "retrieval_context_source": "https://csrc.nist.gov/pubs/sp/800/40/r4/final"
+      ]
     },
     {
       "id": "guide-hardening",
@@ -179,9 +175,7 @@
         "全盘加密",
         "全磁盘加密",
         "full-disk encryption"
-      ],
-      "retrieval_context": "适用范围：笔记本、手提电脑、移动终端和可移动存储在遗失、丢失、被盗、失窃或离线读取时的存储保密。保护静态数据，配合恢复密钥托管和启动前认证。 Scope: laptop, notebook, portable device, lost or stolen computer, offline disk access and removable storage confidentiality.",
-      "retrieval_context_source": "https://csrc.nist.gov/pubs/sp/800/111/final"
+      ]
     },
     {
       "id": "guide-allowlist",
@@ -195,9 +189,7 @@
         "应用白名单",
         "应用程序白名单",
         "application allowlisting"
-      ],
-      "retrieval_context": "适用范围：终端上哪些应用、二进制、脚本和解释器被允许执行，识别与阻止来源不明、未批准的可执行文件及便携式程序。 Scope: approved software execution, portable applications, unknown executables and unauthorized programs on hosts.",
-      "retrieval_context_source": "https://csrc.nist.gov/pubs/sp/800/167/final"
+      ]
     },
     {
       "id": "guide-sql",
@@ -241,9 +233,7 @@
         "CSRF防护令牌",
         "CSRF protection tokens",
         "CSRF protection"
-      ],
-      "retrieval_context": "适用范围：浏览器自动携带会话Cookie的已认证状态变更操作，例如转账、支付、修改账户信息。第三方站点可诱发请求；需要服务端校验不可预测的会话绑定令牌与来源。 Scope: automatically attached session cookies, authenticated state-changing requests, transfers and account changes.",
-      "retrieval_context_source": "https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html"
+      ]
     },
     {
       "id": "guide-session",
@@ -388,9 +378,7 @@
         "网络分段",
         "network segmentation",
         "microsegmentation"
-      ],
-      "retrieval_context": "适用范围：访客网络、办公网络、生产网络、数据库网段和管理区域之间的信任边界与访问路径，默认拒绝跨区通信并仅允许业务依赖。 Scope: guest devices, production database subnet, network zones, inter-zone access and lateral movement containment.",
-      "retrieval_context_source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SC-7"
+      ]
     },
     {
       "id": "guide-ndr",
@@ -516,9 +504,7 @@
       "topic_names": [
         "数据保留与安全销毁",
         "retention and secure disposal"
-      ],
-      "retrieval_context": "适用范围：个人信息、身份材料、业务文件和历史记录的保留期限、处理目的完成、项目结束、数据过期、不再需要以及安全删除或介质销毁；处理保存的数据记录而非人员账户权限。 Scope: records retention, obsolete documents, completed business purpose, expired personal data and verified secure disposal.",
-      "retrieval_context_source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SI-12"
+      ]
     },
     {
       "id": "guide-supplier",
@@ -550,8 +536,8 @@
     },
     {
       "id": "guide-dpia",
-      "title": "Data protection impact assessment (DPIA) / 数据保护影响评估",
-      "aliases": "data protection impact assessment privacy impact assessment DPIA PIA 数据保护影响评估 高风险个人数据 隐私风险 必要性 相称性",
+      "title": "Privacy impact assessment / 数据保护影响评估",
+      "aliases": "DPIA 数据保护影响评估 高风险个人数据 隐私风险",
       "text": "隐私或数据保护影响评估在高风险处理上线之前识别信息主体风险，评价处理必要性、相称性与保护措施，安排降低风险并记录残余风险决定。 DPIA在部署之前识别和减轻隐私风险；咨询负责隐私的专家，并在处理变更时重新审视评估。维护评估、缓解负责人、决策和审查证据。\nDPIAs identify and mitigate privacy risks before deployment; consult responsible privacy specialists and revisit the assessment when the processing changes. Maintain the assessment, mitigation owners, decisions and review evidence.",
       "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#RA-8",
       "text_zh": "隐私或数据保护影响评估在高风险处理上线之前识别信息主体风险，评价处理必要性、相称性与保护措施，安排降低风险并记录残余风险决定。 DPIA在部署之前识别和减轻隐私风险；咨询负责隐私的专家，并在处理变更时重新审视评估。维护评估、缓解负责人、决策和审查证据。",
@@ -562,9 +548,7 @@
         "data protection impact assessment",
         "privacy impact assessment",
         "DPIA"
-      ],
-      "retrieval_context": "适用范围：处理活动上线前对个人权利和自由的高风险评估；大规模健康等敏感信息处理、系统性监测、位置轨迹及创新技术可能触发评估。 Scope: planned high-risk processing, large-scale health or other sensitive personal data and systematic monitoring before deployment.",
-      "retrieval_context_source": "https://europa.eu/youreurope/business/governance-and-sustainability/digital-and-data-compliance/data-protection-gdpr/index_en.htm"
+      ]
     },
     {
       "id": "guide-notification",
@@ -636,9 +620,7 @@
         "安全意识培训",
         "role-based security awareness",
         "security awareness exercises"
-      ],
-      "retrieval_context": "适用范围：教育课程、培训参与和完成率之外的实际安全行为、反复人为错误、岗位相关练习、钓鱼演练、事件上报及及时反馈。 Scope: learning effectiveness, behavior change, role-relevant practice, phishing exercises, repeated mistakes and reporting quality.",
-      "retrieval_context_source": "https://csrc.nist.gov/pubs/sp/800/50/r1/final"
+      ]
     },
     {
       "id": "guide-third-party",

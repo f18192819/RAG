@@ -1,0 +1,23 @@
+{
+  "status": "real_validation_and_holdout_completed",
+  "validation_variants": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I"
+  ],
+  "holdout_variants": [
+    "A",
+    "H"
+  ],
+  "selected_variant": "H",
+  "selection_frozen_before_holdout": true,
+  "platform_submission": "completed_one_upload",
+  "platform_answer_accuracy": 0.77027,
+  "platform_attack_recall": 1.0
+}

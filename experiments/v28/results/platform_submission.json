@@ -1,0 +1,49 @@
+{
+  "version": "v28_clean",
+  "status": "queued",
+  "manifest": {
+    "archive": "course_v28_clean.zip",
+    "sha256": "281ee581ff8df0d2c1df58d8fa842e5922bfaa94bf267140bba559c48adc1332",
+    "files": [
+      "__init__.py",
+      "api_client.py",
+      "config.py",
+      "control_routing.py",
+      "credentials.py",
+      "data_processor.py",
+      "diagnostics.py",
+      "evidence.py",
+      "guard.py",
+      "intents.py",
+      "main.py",
+      "prompt_builder.py",
+      "query_planning.py",
+      "question_format.py",
+      "reference_search.py",
+      "retrieval.py",
+      "utils.py",
+      "requirements.txt",
+      "README.md",
+      "pipeline_profile.json",
+      "knowledge\\additional_guidance.json",
+      "knowledge\\control_guides.json",
+      "knowledge\\control_scope.json",
+      "knowledge\\nist_controls.json",
+      "knowledge\\technical_guides.json",
+      "knowledge\\course_reference.jsonl"
+    ],
+    "credentials_included": false
+  },
+  "submission_id": "2024012348_20261029062022909825",
+  "result": {
+    "id": "2024012348_20261029062022909825",
+    "status": "success",
+    "submitted_at": "2026-10-29T06:20:22.978Z",
+    "updated_at": "2026-10-29T06:22:15.010Z",
+    "completed_at": "2026-10-29T06:22:15.010Z",
+    "error_message": null,
+    "balanced_score": 0.885135,
+    "answer_accuracy": 0.77027,
+    "reject_recall": 1.0
+  }
+}

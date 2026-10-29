@@ -1,0 +1,2204 @@
+{
+  "A_validation": {
+    "desired_controls": [
+      "guide-cloud-iam",
+      "guide-data-classification",
+      "guide-endpoint-privilege",
+      "guide-identity",
+      "guide-integrity",
+      "guide-ndr",
+      "guide-sandbox",
+      "guide-vulnerability",
+      "guide-xss"
+    ],
+    "predicted_controls": [
+      "guide-cloud-iam",
+      "guide-data-classification",
+      "guide-endpoint-privilege",
+      "guide-identity",
+      "guide-integrity",
+      "guide-ndr",
+      "guide-sandbox",
+      "guide-vulnerability",
+      "guide-xss"
+    ],
+    "matrix": [
+      [
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
+    ],
+    "cells": [
+      {
+        "desired": "guide-cloud-iam",
+        "predicted": "guide-cloud-iam",
+        "count": 3
+      },
+      {
+        "desired": "guide-data-classification",
+        "predicted": "guide-data-classification",
+        "count": 3
+      },
+      {
+        "desired": "guide-endpoint-privilege",
+        "predicted": "guide-endpoint-privilege",
+        "count": 3
+      },
+      {
+        "desired": "guide-identity",
+        "predicted": "guide-identity",
+        "count": 3
+      },
+      {
+        "desired": "guide-integrity",
+        "predicted": "guide-integrity",
+        "count": 3
+      },
+      {
+        "desired": "guide-ndr",
+        "predicted": "guide-ndr",
+        "count": 3
+      },
+      {
+        "desired": "guide-sandbox",
+        "predicted": "guide-sandbox",
+        "count": 3
+      },
+      {
+        "desired": "guide-vulnerability",
+        "predicted": "guide-vulnerability",
+        "count": 3
+      },
+      {
+        "desired": "guide-xss",
+        "predicted": "guide-xss",
+        "count": 3
+      }
+    ]
+  },
+  "B_validation": {
+    "desired_controls": [
+      "guide-cloud-iam",
+      "guide-data-classification",
+      "guide-endpoint-privilege",
+      "guide-identity",
+      "guide-integrity",
+      "guide-ndr",
+      "guide-sandbox",
+      "guide-vulnerability",
+      "guide-xss"
+    ],
+    "predicted_controls": [
+      "guide-cloud-iam",
+      "guide-data-classification",
+      "guide-endpoint-privilege",
+      "guide-identity",
+      "guide-integrity",
+      "guide-ndr",
+      "guide-sandbox",
+      "guide-vulnerability",
+      "guide-xss"
+    ],
+    "matrix": [
+      [
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
+    ],
+    "cells": [
+      {
+        "desired": "guide-cloud-iam",
+        "predicted": "guide-cloud-iam",
+        "count": 3
+      },
+      {
+        "desired": "guide-data-classification",
+        "predicted": "guide-data-classification",
+        "count": 3
+      },
+      {
+        "desired": "guide-endpoint-privilege",
+        "predicted": "guide-endpoint-privilege",
+        "count": 3
+      },
+      {
+        "desired": "guide-identity",
+        "predicted": "guide-identity",
+        "count": 3
+      },
+      {
+        "desired": "guide-integrity",
+        "predicted": "guide-integrity",
+        "count": 3
+      },
+      {
+        "desired": "guide-ndr",
+        "predicted": "guide-ndr",
+        "count": 3
+      },
+      {
+        "desired": "guide-sandbox",
+        "predicted": "guide-sandbox",
+        "count": 3
+      },
+      {
+        "desired": "guide-vulnerability",
+        "predicted": "guide-vulnerability",
+        "count": 3
+      },
+      {
+        "desired": "guide-xss",
+        "predicted": "guide-xss",
+        "count": 3
+      }
+    ]
+  },
+  "C_validation": {
+    "desired_controls": [
+      "guide-cloud-iam",
+      "guide-data-classification",
+      "guide-endpoint-privilege",
+      "guide-identity",
+      "guide-integrity",
+      "guide-ndr",
+      "guide-sandbox",
+      "guide-vulnerability",
+      "guide-xss"
+    ],
+    "predicted_controls": [
+      "guide-awareness",
+      "guide-cloud-iam",
+      "guide-data-classification",
+      "guide-endpoint-privilege",
+      "guide-identity",
+      "guide-integrity",
+      "guide-least",
+      "guide-ndr",
+      "guide-sandbox",
+      "guide-vulnerability",
+      "guide-xss",
+      "unresolved"
+    ],
+    "matrix": [
+      [
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0
+      ]
+    ],
+    "cells": [
+      {
+        "desired": "guide-cloud-iam",
+        "predicted": "guide-cloud-iam",
+        "count": 2
+      },
+      {
+        "desired": "guide-cloud-iam",
+        "predicted": "guide-least",
+        "count": 1
+      },
+      {
+        "desired": "guide-data-classification",
+        "predicted": "guide-data-classification",
+        "count": 3
+      },
+      {
+        "desired": "guide-endpoint-privilege",
+        "predicted": "guide-endpoint-privilege",
+        "count": 2
+      },
+      {
+        "desired": "guide-endpoint-privilege",
+        "predicted": "guide-least",
+        "count": 1
+      },
+      {
+        "desired": "guide-identity",
+        "predicted": "guide-identity",
+        "count": 3
+      },
+      {
+        "desired": "guide-integrity",
+        "predicted": "guide-integrity",
+        "count": 2
+      },
+      {
+        "desired": "guide-integrity",
+        "predicted": "unresolved",
+        "count": 1
+      },
+      {
+        "desired": "guide-ndr",
+        "predicted": "guide-ndr",
+        "count": 3
+      },
+      {
+        "desired": "guide-sandbox",
+        "predicted": "guide-sandbox",
+        "count": 3
+      },
+      {
+        "desired": "guide-vulnerability",
+        "predicted": "guide-awareness",
+        "count": 1
+      },
+      {
+        "desired": "guide-vulnerability",
+        "predicted": "guide-vulnerability",
+        "count": 2
+      },
+      {
+        "desired": "guide-xss",
+        "predicted": "guide-xss",
+        "count": 3
+      }
+    ]
+  },
+  "D_validation": {
+    "desired_controls": [
+      "guide-cloud-iam",
+      "guide-data-classification",
+      "guide-endpoint-privilege",
+      "guide-identity",
+      "guide-integrity",
+      "guide-ndr",
+      "guide-sandbox",
+      "guide-vulnerability",
+      "guide-xss"
+    ],
+    "predicted_controls": [
+      "guide-awareness",
+      "guide-cloud-iam",
+      "guide-data-classification",
+      "guide-endpoint-privilege",
+      "guide-identity",
+      "guide-integrity",
+      "guide-least",
+      "guide-ndr",
+      "guide-sandbox",
+      "guide-vulnerability",
+      "guide-xss",
+      "unresolved"
+    ],
+    "matrix": [
+      [
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0
+      ]
+    ],
+    "cells": [
+      {
+        "desired": "guide-cloud-iam",
+        "predicted": "guide-cloud-iam",
+        "count": 2
+      },
+      {
+        "desired": "guide-cloud-iam",
+        "predicted": "guide-least",
+        "count": 1
+      },
+      {
+        "desired": "guide-data-classification",
+        "predicted": "guide-data-classification",
+        "count": 3
+      },
+      {
+        "desired": "guide-endpoint-privilege",
+        "predicted": "guide-endpoint-privilege",
+        "count": 2
+      },
+      {
+        "desired": "guide-endpoint-privilege",
+        "predicted": "guide-least",
+        "count": 1
+      },
+      {
+        "desired": "guide-identity",
+        "predicted": "guide-identity",
+        "count": 3
+      },
+      {
+        "desired": "guide-integrity",
+        "predicted": "guide-integrity",
+        "count": 2
+      },
+      {
+        "desired": "guide-integrity",
+        "predicted": "unresolved",
+        "count": 1
+      },
+      {
+        "desired": "guide-ndr",
+        "predicted": "guide-ndr",
+        "count": 3
+      },
+      {
+        "desired": "guide-sandbox",
+        "predicted": "guide-sandbox",
+        "count": 3
+      },
+      {
+        "desired": "guide-vulnerability",
+        "predicted": "guide-awareness",
+        "count": 1
+      },
+      {
+        "desired": "guide-vulnerability",
+        "predicted": "guide-vulnerability",
+        "count": 2
+      },
+      {
+        "desired": "guide-xss",
+        "predicted": "guide-xss",
+        "count": 3
+      }
+    ]
+  },
+  "E_validation": {
+    "desired_controls": [
+      "guide-cloud-iam",
+      "guide-data-classification",
+      "guide-endpoint-privilege",
+      "guide-identity",
+      "guide-integrity",
+      "guide-ndr",
+      "guide-sandbox",
+      "guide-vulnerability",
+      "guide-xss"
+    ],
+    "predicted_controls": [
+      "guide-awareness",
+      "guide-cloud-iam",
+      "guide-data-classification",
+      "guide-endpoint-privilege",
+      "guide-identity",
+      "guide-integrity",
+      "guide-least",
+      "guide-ndr",
+      "guide-pam",
+      "guide-sandbox",
+      "guide-vulnerability",
+      "guide-xss"
+    ],
+    "matrix": [
+      [
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
+    ],
+    "cells": [
+      {
+        "desired": "guide-cloud-iam",
+        "predicted": "guide-cloud-iam",
+        "count": 2
+      },
+      {
+        "desired": "guide-cloud-iam",
+        "predicted": "guide-pam",
+        "count": 1
+      },
+      {
+        "desired": "guide-data-classification",
+        "predicted": "guide-data-classification",
+        "count": 3
+      },
+      {
+        "desired": "guide-endpoint-privilege",
+        "predicted": "guide-endpoint-privilege",
+        "count": 2
+      },
+      {
+        "desired": "guide-endpoint-privilege",
+        "predicted": "guide-least",
+        "count": 1
+      },
+      {
+        "desired": "guide-identity",
+        "predicted": "guide-identity",
+        "count": 3
+      },
+      {
+        "desired": "guide-integrity",
+        "predicted": "guide-integrity",
+        "count": 3
+      },
+      {
+        "desired": "guide-ndr",
+        "predicted": "guide-ndr",
+        "count": 3
+      },
+      {
+        "desired": "guide-sandbox",
+        "predicted": "guide-sandbox",
+        "count": 3
+      },
+      {
+        "desired": "guide-vulnerability",
+        "predicted": "guide-awareness",
+        "count": 1
+      },
+      {
+        "desired": "guide-vulnerability",
+        "predicted": "guide-vulnerability",
+        "count": 2
+      },
+      {
+        "desired": "guide-xss",
+        "predicted": "guide-xss",
+        "count": 3
+      }
+    ]
+  },
+  "F_validation": {
+    "desired_controls": [
+      "guide-cloud-iam",
+      "guide-data-classification",
+      "guide-endpoint-privilege",
+      "guide-identity",
+      "guide-integrity",
+      "guide-ndr",
+      "guide-sandbox",
+      "guide-vulnerability",
+      "guide-xss"
+    ],
+    "predicted_controls": [
+      "guide-cloud-iam",
+      "guide-data-classification",
+      "guide-endpoint-privilege",
+      "guide-identity",
+      "guide-integrity",
+      "guide-least",
+      "guide-ndr",
+      "guide-rbac",
+      "guide-sandbox",
+      "guide-vulnerability",
+      "guide-xss"
+    ],
+    "matrix": [
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
+    ],
+    "cells": [
+      {
+        "desired": "guide-cloud-iam",
+        "predicted": "guide-cloud-iam",
+        "count": 2
+      },
+      {
+        "desired": "guide-cloud-iam",
+        "predicted": "guide-least",
+        "count": 1
+      },
+      {
+        "desired": "guide-data-classification",
+        "predicted": "guide-data-classification",
+        "count": 3
+      },
+      {
+        "desired": "guide-endpoint-privilege",
+        "predicted": "guide-endpoint-privilege",
+        "count": 3
+      },
+      {
+        "desired": "guide-identity",
+        "predicted": "guide-identity",
+        "count": 2
+      },
+      {
+        "desired": "guide-identity",
+        "predicted": "guide-rbac",
+        "count": 1
+      },
+      {
+        "desired": "guide-integrity",
+        "predicted": "guide-integrity",
+        "count": 3
+      },
+      {
+        "desired": "guide-ndr",
+        "predicted": "guide-ndr",
+        "count": 3
+      },
+      {
+        "desired": "guide-sandbox",
+        "predicted": "guide-sandbox",
+        "count": 3
+      },
+      {
+        "desired": "guide-vulnerability",
+        "predicted": "guide-vulnerability",
+        "count": 3
+      },
+      {
+        "desired": "guide-xss",
+        "predicted": "guide-xss",
+        "count": 3
+      }
+    ]
+  },
+  "G_validation": {
+    "desired_controls": [
+      "guide-cloud-iam",
+      "guide-data-classification",
+      "guide-endpoint-privilege",
+      "guide-identity",
+      "guide-integrity",
+      "guide-ndr",
+      "guide-sandbox",
+      "guide-vulnerability",
+      "guide-xss"
+    ],
+    "predicted_controls": [
+      "guide-cloud-iam",
+      "guide-data-classification",
+      "guide-endpoint-privilege",
+      "guide-identity",
+      "guide-integrity",
+      "guide-least",
+      "guide-ndr",
+      "guide-rbac",
+      "guide-sandbox",
+      "guide-vulnerability",
+      "guide-xss"
+    ],
+    "matrix": [
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
+    ],
+    "cells": [
+      {
+        "desired": "guide-cloud-iam",
+        "predicted": "guide-cloud-iam",
+        "count": 2
+      },
+      {
+        "desired": "guide-cloud-iam",
+        "predicted": "guide-least",
+        "count": 1
+      },
+      {
+        "desired": "guide-data-classification",
+        "predicted": "guide-data-classification",
+        "count": 3
+      },
+      {
+        "desired": "guide-endpoint-privilege",
+        "predicted": "guide-endpoint-privilege",
+        "count": 3
+      },
+      {
+        "desired": "guide-identity",
+        "predicted": "guide-identity",
+        "count": 2
+      },
+      {
+        "desired": "guide-identity",
+        "predicted": "guide-rbac",
+        "count": 1
+      },
+      {
+        "desired": "guide-integrity",
+        "predicted": "guide-integrity",
+        "count": 3
+      },
+      {
+        "desired": "guide-ndr",
+        "predicted": "guide-ndr",
+        "count": 3
+      },
+      {
+        "desired": "guide-sandbox",
+        "predicted": "guide-sandbox",
+        "count": 3
+      },
+      {
+        "desired": "guide-vulnerability",
+        "predicted": "guide-vulnerability",
+        "count": 3
+      },
+      {
+        "desired": "guide-xss",
+        "predicted": "guide-xss",
+        "count": 3
+      }
+    ]
+  },
+  "H_validation": {
+    "desired_controls": [
+      "guide-cloud-iam",
+      "guide-data-classification",
+      "guide-endpoint-privilege",
+      "guide-identity",
+      "guide-integrity",
+      "guide-ndr",
+      "guide-sandbox",
+      "guide-vulnerability",
+      "guide-xss"
+    ],
+    "predicted_controls": [
+      "guide-cloud-iam",
+      "guide-data-classification",
+      "guide-endpoint-privilege",
+      "guide-identity",
+      "guide-integrity",
+      "guide-least",
+      "guide-ndr",
+      "guide-rbac",
+      "guide-sandbox",
+      "guide-vulnerability",
+      "guide-xss"
+    ],
+    "matrix": [
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
+    ],
+    "cells": [
+      {
+        "desired": "guide-cloud-iam",
+        "predicted": "guide-cloud-iam",
+        "count": 2
+      },
+      {
+        "desired": "guide-cloud-iam",
+        "predicted": "guide-least",
+        "count": 1
+      },
+      {
+        "desired": "guide-data-classification",
+        "predicted": "guide-data-classification",
+        "count": 3
+      },
+      {
+        "desired": "guide-endpoint-privilege",
+        "predicted": "guide-endpoint-privilege",
+        "count": 3
+      },
+      {
+        "desired": "guide-identity",
+        "predicted": "guide-identity",
+        "count": 2
+      },
+      {
+        "desired": "guide-identity",
+        "predicted": "guide-rbac",
+        "count": 1
+      },
+      {
+        "desired": "guide-integrity",
+        "predicted": "guide-integrity",
+        "count": 3
+      },
+      {
+        "desired": "guide-ndr",
+        "predicted": "guide-ndr",
+        "count": 3
+      },
+      {
+        "desired": "guide-sandbox",
+        "predicted": "guide-sandbox",
+        "count": 3
+      },
+      {
+        "desired": "guide-vulnerability",
+        "predicted": "guide-vulnerability",
+        "count": 3
+      },
+      {
+        "desired": "guide-xss",
+        "predicted": "guide-xss",
+        "count": 3
+      }
+    ]
+  },
+  "I_validation": {
+    "desired_controls": [
+      "guide-cloud-iam",
+      "guide-data-classification",
+      "guide-endpoint-privilege",
+      "guide-identity",
+      "guide-integrity",
+      "guide-ndr",
+      "guide-sandbox",
+      "guide-vulnerability",
+      "guide-xss"
+    ],
+    "predicted_controls": [
+      "guide-cloud-iam",
+      "guide-data-classification",
+      "guide-endpoint-privilege",
+      "guide-identity",
+      "guide-integrity",
+      "guide-least",
+      "guide-ndr",
+      "guide-rbac",
+      "guide-sandbox",
+      "guide-vulnerability",
+      "guide-xss"
+    ],
+    "matrix": [
+      [
+        2,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
+    ],
+    "cells": [
+      {
+        "desired": "guide-cloud-iam",
+        "predicted": "guide-cloud-iam",
+        "count": 2
+      },
+      {
+        "desired": "guide-cloud-iam",
+        "predicted": "guide-least",
+        "count": 1
+      },
+      {
+        "desired": "guide-data-classification",
+        "predicted": "guide-data-classification",
+        "count": 3
+      },
+      {
+        "desired": "guide-endpoint-privilege",
+        "predicted": "guide-endpoint-privilege",
+        "count": 3
+      },
+      {
+        "desired": "guide-identity",
+        "predicted": "guide-identity",
+        "count": 2
+      },
+      {
+        "desired": "guide-identity",
+        "predicted": "guide-rbac",
+        "count": 1
+      },
+      {
+        "desired": "guide-integrity",
+        "predicted": "guide-integrity",
+        "count": 3
+      },
+      {
+        "desired": "guide-ndr",
+        "predicted": "guide-ndr",
+        "count": 3
+      },
+      {
+        "desired": "guide-sandbox",
+        "predicted": "guide-sandbox",
+        "count": 3
+      },
+      {
+        "desired": "guide-vulnerability",
+        "predicted": "guide-vulnerability",
+        "count": 3
+      },
+      {
+        "desired": "guide-xss",
+        "predicted": "guide-xss",
+        "count": 3
+      }
+    ]
+  },
+  "A_holdout": {
+    "desired_controls": [
+      "guide-allowlist",
+      "guide-cloud-kms",
+      "guide-dns",
+      "guide-masking",
+      "guide-mfa",
+      "guide-random",
+      "guide-recovery",
+      "guide-sca",
+      "guide-transfer"
+    ],
+    "predicted_controls": [
+      "guide-allowlist",
+      "guide-cloud-kms",
+      "guide-dns",
+      "guide-inventory",
+      "guide-masking",
+      "guide-mfa",
+      "guide-random",
+      "guide-recovery",
+      "guide-sca",
+      "guide-transfer",
+      "unresolved"
+    ],
+    "matrix": [
+      [
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0
+      ]
+    ],
+    "cells": [
+      {
+        "desired": "guide-allowlist",
+        "predicted": "guide-allowlist",
+        "count": 3
+      },
+      {
+        "desired": "guide-cloud-kms",
+        "predicted": "guide-cloud-kms",
+        "count": 3
+      },
+      {
+        "desired": "guide-dns",
+        "predicted": "guide-dns",
+        "count": 3
+      },
+      {
+        "desired": "guide-masking",
+        "predicted": "guide-masking",
+        "count": 2
+      },
+      {
+        "desired": "guide-masking",
+        "predicted": "unresolved",
+        "count": 1
+      },
+      {
+        "desired": "guide-mfa",
+        "predicted": "guide-mfa",
+        "count": 3
+      },
+      {
+        "desired": "guide-random",
+        "predicted": "guide-random",
+        "count": 3
+      },
+      {
+        "desired": "guide-recovery",
+        "predicted": "guide-recovery",
+        "count": 3
+      },
+      {
+        "desired": "guide-sca",
+        "predicted": "guide-inventory",
+        "count": 1
+      },
+      {
+        "desired": "guide-sca",
+        "predicted": "guide-sca",
+        "count": 2
+      },
+      {
+        "desired": "guide-transfer",
+        "predicted": "guide-transfer",
+        "count": 3
+      }
+    ]
+  },
+  "H_holdout": {
+    "desired_controls": [
+      "guide-allowlist",
+      "guide-cloud-kms",
+      "guide-dns",
+      "guide-masking",
+      "guide-mfa",
+      "guide-random",
+      "guide-recovery",
+      "guide-sca",
+      "guide-transfer"
+    ],
+    "predicted_controls": [
+      "guide-allowlist",
+      "guide-cloud-kms",
+      "guide-dns",
+      "guide-inventory",
+      "guide-masking",
+      "guide-mfa",
+      "guide-random",
+      "guide-recovery",
+      "guide-sca",
+      "guide-transfer"
+    ],
+    "matrix": [
+      [
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
+    ],
+    "cells": [
+      {
+        "desired": "guide-allowlist",
+        "predicted": "guide-allowlist",
+        "count": 3
+      },
+      {
+        "desired": "guide-cloud-kms",
+        "predicted": "guide-cloud-kms",
+        "count": 3
+      },
+      {
+        "desired": "guide-dns",
+        "predicted": "guide-dns",
+        "count": 3
+      },
+      {
+        "desired": "guide-masking",
+        "predicted": "guide-masking",
+        "count": 3
+      },
+      {
+        "desired": "guide-mfa",
+        "predicted": "guide-mfa",
+        "count": 3
+      },
+      {
+        "desired": "guide-random",
+        "predicted": "guide-random",
+        "count": 3
+      },
+      {
+        "desired": "guide-recovery",
+        "predicted": "guide-recovery",
+        "count": 3
+      },
+      {
+        "desired": "guide-sca",
+        "predicted": "guide-inventory",
+        "count": 1
+      },
+      {
+        "desired": "guide-sca",
+        "predicted": "guide-sca",
+        "count": 2
+      },
+      {
+        "desired": "guide-transfer",
+        "predicted": "guide-transfer",
+        "count": 3
+      }
+    ]
+  }
+}

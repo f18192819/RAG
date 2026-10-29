@@ -162,167 +162,81 @@ def matching_course_qa(question: str, source: dict):
     except ValueError:return None
 
 
-def isolate_evidence(question: str, files: list[dict], client, primary_source_id: str = '', control_source_ids=(), alternative_source_ids=()) -> tuple[str, list[dict]]:
+def isolate_evidence(question,files,client,primary_source_id='',control_source_ids=(),alternative_source_ids=(),retained_source_ids=()):
+    try:
+        from .diagnostics import record,source_ids
+    except ImportError:
+        from diagnostics import record,source_ids
     if not files:
-        return '', []
+        record('evidence',mode='empty',retained_sources=[],fallback_used=False)
+        return '',[]
     for source in files:
         exact=matching_course_qa(question,source)
         if exact:
-            return json.dumps({'validated_evidence':[{'source':1,'fact':exact['fact'],'quote':exact['quote']}]},ensure_ascii=False),[source]
-    compare_ids=list(control_source_ids) if len(control_source_ids)==4 else list(alternative_source_ids) if len(alternative_source_ids)==2 else []
-    if compare_ids:
-        # Present the same source-checked definitions for competing controls,
-        # rather than letting a single inferred topic predetermine the answer.
-        bundled={doc['id']:doc for doc in index()[0] if doc['id'].startswith('guide-')}
-        selected=[];items=[]
-        language='text_zh' if is_chinese_question(question) else 'text_en'
-        for identifier in list(dict.fromkeys(str(key).casefold() for key in compare_ids))[:4]:
-            doc=bundled.get(identifier)
-            if not doc:continue
-            for source in files:
-                if str(source.get('metadata',{}).get('source_id','')).casefold()!=identifier:continue
-                if ' '.join(clean(doc['text']).split()) not in ' '.join(clean(source['text']).split()):continue
-                quote=' '.join(clean(doc[language]).split())
-                item={'source_id':'source-1','fact':quote[:600],'quote':quote}
-                try:valid=parse_and_validate_evidence(json.dumps({'evidence':[item]},ensure_ascii=False),[source])[0]
-                except ValueError:continue
-                selected.append(source)
-                items.append({'source':len(selected),'fact':valid['fact'],'quote':valid['quote']})
-                break
-        if len(items)==len(compare_ids):return json.dumps({'validated_evidence':items},ensure_ascii=False),selected
-    # These application-owned notes are already structured and reviewed.
-    # Extract the selected parent deterministically, then apply exactly the
-    # same quote/source/schema validation. Unknown external materials still
-    # require the isolated LLM extractor below.
-    primary=next((doc for doc in index()[0] if doc['id']==primary_source_id),None)
-    if primary:
-        for source in files:
-            if str(source.get('metadata',{}).get('source_id','')).casefold()!=primary_source_id:
-                continue
-            if ' '.join(clean(primary['text']).split()) not in ' '.join(clean(source['text']).split()):
-                continue
-            chinese=is_chinese_question(question)
-            quote=' '.join(clean(primary['text_zh' if chinese else 'text_en']).split())
-            item={'source_id':'source-1','fact':quote[:600],'quote':quote}
-            valid=parse_and_validate_evidence(json.dumps({'evidence':[item]},ensure_ascii=False),[source])
-            return json.dumps({'validated_evidence':[{'source':1,'fact':valid[0]['fact'],'quote':valid[0]['quote']}]},ensure_ascii=False),[source]
-    try:
-        raw = client.dialogue(user_input='', custom_prompt=build_evidence_extraction_prompt(question, files),
-                              temperature=0, max_tokens=1800)
-        items = parse_and_validate_evidence(raw, files)
-    except (ValueError, TypeError, ApiError):
-        items = fallback_evidence(question, files)
-    # Preserve the complete, source-verified primary control mechanism. The
-    # model's summary sometimes omits its second sentence. This deterministic
-    # extraction is allowed only for a matching bundled source, not arbitrary
-    # remote metadata; the exact-substring/schema checks remain mandatory.
-    bundled = {doc['id']: doc for doc in index()[0] if doc['id'].startswith('guide-')}
-    relevant_sources = {item['source_id'] for item in items}
-    for i, source in enumerate(files, 1):
-        source_id = str(source.get('metadata', {}).get('source_id', '')).casefold()
-        guide = bundled.get(source_id)
-        if not guide or f'source-{i}' not in relevant_sources or ' '.join(clean(guide['text']).split()) not in ' '.join(clean(source['text']).split()):
-            continue
-        parts = re.split(r'(?<=[。])\s*(?=[A-Za-z])', clean(guide['text']), maxsplit=1)
-        chinese = is_chinese_question(question)
-        quote = guide.get('text_zh' if chinese else 'text_en') or (parts[0] if chinese or len(parts) == 1 else parts[1])
-        quote = ' '.join(clean(quote).split())
-        preserved = {'source_id':f'source-{i}', 'fact':quote[:600], 'quote':quote}
+            context={'validated_evidence':[{'source':1,'fact':exact['fact'],'quote':exact['quote']}]}
+            record('evidence',mode='exact',retained_sources=source_ids([source]),fallback_used=False)
+            return json.dumps(context,ensure_ascii=False),[source]
+    selected=list(control_source_ids) if len(control_source_ids)==4 else list(retained_source_ids or alternative_source_ids)
+    if primary_source_id and not selected:selected=[primary_source_id]
+    selected={str(identifier).casefold() for identifier in selected}
+    bundled={doc['id']:doc for doc in index()[0] if doc['id'].startswith('guide-')}
+    items=[];used=[]
+    for source in files:
+        identifier=str(source.get('metadata',{}).get('source_id','')).casefold()
+        doc=bundled.get(identifier)
+        if identifier not in selected or doc is None:continue
+        if ' '.join(clean(doc['text']).split()) not in ' '.join(clean(source['text']).split()):continue
+        quote=' '.join(clean(doc['text_zh' if is_chinese_question(question) else 'text_en']).split())
+        normalized=dict(source,text=' '.join(clean(source['text']).split()))
         try:
-            valid = parse_and_validate_evidence(json.dumps({'evidence':[preserved]},ensure_ascii=False),files)
-        except ValueError:
-            continue
-        items = valid + [item for item in items if item['source_id'] != preserved['source_id']][:MAX_ITEMS-1]
-        break
-    source_order = list(dict.fromkeys(item['source_id'] for item in items))
-    renumber = {source: index for index, source in enumerate(source_order, 1)}
-    kept = [files[int(source.split('-')[1])-1] for source in source_order]
-    evidence = [{'source': renumber[item['source_id']], 'fact': item['fact'], 'quote': item['quote']}
-                for item in items]
-    return json.dumps({'validated_evidence': evidence}, ensure_ascii=False), kept
+            value=parse_and_validate_evidence(json.dumps({'evidence':[{'source_id':'source-1','fact':quote[:600],'quote':quote}]},ensure_ascii=False),[normalized])[0]
+        except ValueError:continue
+        used.append(normalized)
+        items.append({'source':len(used),'title':doc['title'],'fact':value['fact'],'quote':value['quote']})
+    if items:
+        record('evidence',mode='deterministic_guide',retained_sources=source_ids(used),fallback_used=False)
+        return json.dumps({'validated_evidence':items},ensure_ascii=False),used
+    mode='llm';failure=None
+    try:
+        raw=client.dialogue(user_input='',custom_prompt=build_evidence_extraction_prompt(question,files),temperature=0,max_tokens=1500)
+        extracted=parse_and_validate_evidence(raw,files)
+    except (ValueError,TypeError,ApiError) as exc:
+        mode='fallback';failure=type(exc).__name__
+        extracted=fallback_evidence(question,files)
+    order=list(dict.fromkeys(item['source_id'] for item in extracted))
+    used=[files[int(identifier.split('-')[1])-1] for identifier in order]
+    renumber={identifier:i+1 for i,identifier in enumerate(order)}
+    evidence=[{'source':renumber[item['source_id']],'fact':item['fact'],'quote':item['quote']} for item in extracted]
+    record('evidence',mode=mode,retained_sources=source_ids(used),fallback_used=mode=='fallback',extractor_error=failure)
+    return json.dumps({'validated_evidence':evidence},ensure_ascii=False),used
 
 
-def complete_from_verified_evidence(response: str, context: str, files: list[dict], question: str = '', source_answer_id: str = '') -> str:
-    """Make the relevant source mechanism visible rather than silently dropping it.
+def complete_from_verified_evidence(response,context,files,question='',source_answer_id=''):
+    """Only exact FAQ/explicit overview may use extractive source wording.
 
-    At most one verified primary guide is quoted, with a real citation. No
-    labels, test answers, guessed facts or unrelated retrieved documents are
-    added to the answer.
+    Ordinary synthesis is never padded or overwritten here. A conflicting draft
+    is corrected by generation under the fixed template, not by source append.
     """
-    value = json.loads(response)
-    if value.get('decision') != 'answer' or not context:
-        return response
-    facts = json.loads(context).get('validated_evidence', [])
-    if not facts:
-        return response
-    for evidence in facts:
-        number=evidence['source']
-        if 1<=number<=len(files):
-            exact=matching_course_qa(question,files[number-1])
-            if exact and exact['quote']==evidence['quote']:
-                if exact['quote'] not in value['answer']:
-                    heading='课程参考原文' if is_chinese_question(question) else 'Course reference excerpt'
-                    value['answer']+=f'\n\n{heading} [{number}]：'+exact['quote']
-                    value['evidence']=list(dict.fromkeys(value.get('evidence',[])+[number]))
-                return json.dumps(value,ensure_ascii=False)
+    value=json.loads(response)
+    if value.get('decision')!='answer' or not context:return response
+    items=json.loads(context).get('validated_evidence',[])
+    for item in items:
+        number=item['source']
+        if not 1<=number<=len(files):continue
+        exact=matching_course_qa(question,files[number-1])
+        if exact and exact['quote']==item['quote']:
+            value.update(answer=exact['quote'],evidence=[number],explanation='依据问题完全一致且来源已校验的参考资料。')
+            return json.dumps(value,ensure_ascii=False)
     if source_answer_id:
+        try:from .intents import is_control_overview_question
+        except ImportError:from intents import is_control_overview_question
+        if not is_control_overview_question(question,source_answer_id):return response
         guide=next((doc for doc in index()[0] if doc['id']==source_answer_id),None)
-        for item in facts:
+        for item in items:
             number=item['source']
             if not guide or not 1<=number<=len(files):continue
             identifier=str(files[number-1].get('metadata',{}).get('source_id','')).casefold()
-            quote=item['quote']
-            if identifier==source_answer_id and ' '.join(clean(quote).split()) in ' '.join(clean(guide['text']).split()):
-                # Exact-name overview questions can be answered extractively.
-                # This prevents a weak generator from adding mechanisms that
-                # contradict the same verified source it cites.
-                prefix=''
-                if re.search(r'如果.*忽视',question):prefix='缺少该控制时，以下保障无法得到保证：\n'
-                value['answer']=prefix+quote
-                value['evidence']=[number]
-                value['explanation']='依据已验证资料，直接给出对应控制的说明。'
+            if identifier==source_answer_id and ' '.join(clean(item['quote']).split()) in ' '.join(clean(guide['text']).split()):
+                value.update(answer=item['quote'],evidence=[number],explanation='依据已验证的控制概述。')
                 return json.dumps(value,ensure_ascii=False)
-    # Choose the most directly relevant validated guide, rather than taking
-    # whichever neighboring control the extractor happened to mention first.
-    query_terms=set(terms(question_stem(question)))
-    bundled={doc['id']:doc for doc in index()[0] if doc['id'].startswith('guide-')}
-    def verified_guide(item):
-        number=item.get('source')
-        if type(number) is not int or not 1<=number<=len(files):return None
-        identifier=str(files[number-1].get('metadata',{}).get('source_id','')).casefold()
-        doc=bundled.get(identifier)
-        if doc and ' '.join(clean(item['quote']).split()) in ' '.join(clean(doc['text']).split()):return doc
-        return None
-    cited=set(value.get('evidence',[]))
-    def names_control(doc, text):
-        if not doc:return False
-        chinese_parts=re.findall(r'[\u4e00-\u9fff]{4,}',doc['title'])
-        chinese_terms={part[i:i+4] for part in chinese_parts for i in range(len(part)-3)}
-        english_terms={word for word in terms(doc['title']) if word.isascii()}
-        return (any(word in text for word in chinese_terms) or
-                len(english_terms & set(terms(text)))>=max(1,min(2,len(english_terms))))
-    facts=sorted(facts,key=lambda item:(names_control(verified_guide(item),value['answer']),
-                                       bool(verified_guide(item)) and item['source'] in cited,
-                                       len(query_terms & set(terms(item['quote'])))),reverse=True)
-    evidence = facts[0]
-    number = evidence['source']
-    source_id = str(files[number-1].get('metadata', {}).get('source_id', '')).casefold()
-    quote = evidence['quote']
-    guide = verified_guide(evidence)
-    matches_topic = False
-    if guide:
-        title = guide['title']
-        chinese_parts = re.findall(r'[\u4e00-\u9fff]{4,}',title)
-        title_ngrams = {part[i:i+4] for part in chinese_parts for i in range(len(part)-3)}
-        english_terms = {word for word in terms(title) if word.isascii()}
-        # A draft may omit the very control name or mechanism it must explain.
-        # Test relevance against the original question as well as the draft;
-        # otherwise an incomplete draft suppresses its own corrective evidence.
-        topic_text = question + '\n' + value['answer']
-        matches_topic = any(gram in topic_text for gram in title_ngrams) or len(english_terms & set(terms(topic_text))) >= max(1,min(2,len(english_terms)))
-        matches_topic=matches_topic or number in cited
-    if guide and matches_topic and quote not in value['answer']:
-        heading = '实施依据' if re.search(r'[\u4e00-\u9fff]', quote) else 'Supporting control guidance'
-        value['answer'] += f'\n\n{heading} [{number}]：{quote}'
-        value['evidence'] = list(dict.fromkeys(value.get('evidence', []) + [number]))
-    return json.dumps(value, ensure_ascii=False)
+    return response

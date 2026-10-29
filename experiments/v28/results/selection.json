@@ -1,0 +1,18 @@
+{
+  "selected_variant": "H",
+  "retrieval_nonregression_met": true,
+  "eligible_profiles": [
+    "F",
+    "G",
+    "H",
+    "I"
+  ],
+  "selection_split": "validation",
+  "holdout_used_for_selection": false,
+  "configuration": {
+    "query_representation": false,
+    "contrastive_rerank": false
+  },
+  "protocol": "SELECTION_PROTOCOL.md",
+  "selection_frozen": true
+}

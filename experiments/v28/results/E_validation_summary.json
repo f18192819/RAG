@@ -1,0 +1,53 @@
+{
+  "samples": 27,
+  "scored_control_samples": 27,
+  "error_count": 0,
+  "target_control_accuracy": 0.8888888888888888,
+  "answer_primary_control_accuracy": 0.8888888888888888,
+  "candidate_recall": {
+    "1": 0.8148148148148148,
+    "3": 0.8518518518518519,
+    "5": 0.8518518518518519
+  },
+  "rerank_accuracy": 0.5555555555555556,
+  "MRR": 0.5740740740740741,
+  "evidence_survival": 0.08,
+  "final_semantic_accuracy": 0.5925925925925926,
+  "primary_unresolved_rate": 0.0,
+  "fallback_accuracy": 1.0,
+  "evidence_modes": {
+    "fallback": 2,
+    "llm": 22,
+    "deterministic_guide": 3
+  },
+  "failure_stages": {
+    "none": 16,
+    "evidence_drop": 9,
+    "rerank_miss": 2
+  },
+  "top_confusions": [
+    {
+      "desired": "guide-vulnerability",
+      "predicted": "guide-awareness",
+      "count": 1
+    },
+    {
+      "desired": "guide-endpoint-privilege",
+      "predicted": "guide-least",
+      "count": 1
+    },
+    {
+      "desired": "guide-cloud-iam",
+      "predicted": "guide-pam",
+      "count": 1
+    }
+  ],
+  "variant": "E",
+  "split": "validation",
+  "real_model_inference": true,
+  "split_manifest_sha256": "87dbb088dab833bb60e174b780eafc865c99ebfadbd87bccd995ff3f266921f8",
+  "strict_scoring_complete": true,
+  "scoring_error_count": 1,
+  "scorer_sha256": "0c3b5bb6a5d1b927f2d047df347db971653ff963fd20799725cea04fd7e8521d",
+  "primary_judge_blinded_to_expected": true
+}

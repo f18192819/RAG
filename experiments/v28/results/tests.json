@@ -1,0 +1,9 @@
+{
+  "tests_run": 72,
+  "failures": 0,
+  "errors": 0,
+  "successful": true,
+  "boundary_pairs": 10,
+  "boundary_production_subcases": 40,
+  "mocked_results_are_model_accuracy": false
+}

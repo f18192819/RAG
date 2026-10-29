@@ -1,0 +1,1840 @@
+{
+  "schema_version": 1,
+  "provenance": "Reviewed annotations of the cited source guides; no evaluation data used.",
+  "controls": {
+    "guide-sso": {
+      "title": "Single sign-on and identity federation / 单点登录与身份联合",
+      "protected_objects": [
+        "application identities",
+        "federated authentication"
+      ],
+      "failure_modes": [
+        "separate application credentials",
+        "inconsistent authentication"
+      ],
+      "lifecycle_stages": [
+        "authentication",
+        "access revocation"
+      ],
+      "primary_mechanisms": [
+        "Single sign-on and federation reduce independent password stores by connecting applications to a trusted identity provider through protocols such as SAML or OpenID Connect",
+        "SSO and identity federation centralize authentication and consistent MFA policy; session and application access revocation must be tested",
+        "Verify issuer, audience, signatures, assertion lifetime and logout behavior, and automate provisioning/deprovisioning where supported."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#IA-13"
+    },
+    "guide-identity": {
+      "title": "Identity lifecycle / 身份生命周期与权限复核",
+      "protected_objects": [
+        "employee accounts",
+        "access entitlements"
+      ],
+      "failure_modes": [
+        "stale accounts",
+        "permissions surviving role changes"
+      ],
+      "lifecycle_stages": [
+        "joiner mover leaver",
+        "access review"
+      ],
+      "primary_mechanisms": [
+        "Identity lifecycle management makes joiner, mover and leaver (JML) access changes timely and auditable",
+        "Manage account creation, job changes and termination so access remains aligned with current responsibilities and accountable business owners",
+        "Identity lifecycle management ties provisioning, transfers, reviews and timely deprovisioning to accountable owners",
+        "Evidence includes approved requests, access certifications and revocation records."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#AC-2"
+    },
+    "guide-pam": {
+      "title": "Privileged access management / 特权访问管理",
+      "protected_objects": [
+        "administrator credentials",
+        "privileged sessions"
+      ],
+      "failure_modes": [
+        "shared privileged identities",
+        "unaccountable high privilege actions"
+      ],
+      "lifecycle_stages": [
+        "privileged access approval",
+        "temporary elevation"
+      ],
+      "primary_mechanisms": [
+        "Privileged access management reduces misuse of administrative privileges through controlled approval, isolated administrative identity and time-limited privileged sessions",
+        "PAM combines separation of administrative identities, credential vaulting, approval, just-in-time time-limited elevation and session auditing",
+        "Reviewers verify approvals, expiry enforcement, credential rotation and recorded administrative sessions."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#AC-6"
+    },
+    "guide-least": {
+      "title": "Least privilege / 最小权限",
+      "protected_objects": [
+        "principals",
+        "resource permissions"
+      ],
+      "failure_modes": [
+        "excessive permissions",
+        "unnecessary access"
+      ],
+      "lifecycle_stages": [
+        "authorization design",
+        "access review"
+      ],
+      "primary_mechanisms": [
+        "Least privilege limits subjects to necessary resources and operations, with deny-by-default authorization and regular access review",
+        "Test both permitted actions and attempts outside the approved scope."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#AC-6"
+    },
+    "guide-mfa": {
+      "title": "Phishing-resistant multi-factor authentication / 抗钓鱼多因素认证",
+      "protected_objects": [
+        "authentication factors",
+        "account sign-in"
+      ],
+      "failure_modes": [
+        "phishing",
+        "credential replay",
+        "password-only authentication"
+      ],
+      "lifecycle_stages": [
+        "authentication",
+        "account recovery"
+      ],
+      "primary_mechanisms": [
+        "Multi-factor authentication combines different factor types; phishing-resistant authentication prevents captured credentials or proxy phishing from authenticating to a different origin",
+        "FIDO2/WebAuthn uses origin-bound public-key authentication",
+        "Enrollment, lost-device recovery and administrative exceptions need strong verification",
+        "Audit coverage of sensitive accounts and test that weak fallback cannot bypass required authentication."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [
+        "unsafe repeated behavior",
+        "training attendance without behavioral improvement"
+      ],
+      "confusable_with": {
+        "guide-awareness": {
+          "choose_this_when": [
+            "phishing",
+            "credential replay",
+            "password-only authentication"
+          ],
+          "choose_other_when": [
+            "unsafe repeated behavior",
+            "training attendance without behavioral improvement"
+          ]
+        }
+      },
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#IA-2"
+    },
+    "guide-password": {
+      "title": "Password storage / 口令哈希",
+      "protected_objects": [
+        "stored password verifiers"
+      ],
+      "failure_modes": [
+        "offline password cracking",
+        "plaintext password storage"
+      ],
+      "lifecycle_stages": [
+        "credential storage"
+      ],
+      "primary_mechanisms": [
+        "Salted, deliberately expensive password hashing raises the cost of offline password guessing after a credential database is stolen",
+        "Password storage uses a password hashing function such as Argon2id with unique salts and calibrated work factors; a separately protected pepper may add defense",
+        "Verify parameters and plan upgrades as hardware and threats evolve."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html"
+    },
+    "guide-zero": {
+      "title": "Risk-based conditional access and zero trust / 基于风险的条件访问与零信任",
+      "protected_objects": [
+        "resource access",
+        "user and device context"
+      ],
+      "failure_modes": [
+        "implicit trust from network location",
+        "unrestricted remote access"
+      ],
+      "lifecycle_stages": [
+        "per-request authorization",
+        "continuous verification"
+      ],
+      "primary_mechanisms": [
+        "Conditional access evaluates identity, device posture and compliance, location, resource sensitivity and current risk to make adaptive access decisions",
+        "It requires stronger authentication where appropriate and blocks non-compliant devices",
+        "Validate denied and allowed paths, session revocation and emergency-access procedures."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/207/final"
+    },
+    "guide-vulnerability": {
+      "title": "Vulnerability management / 漏洞管理闭环",
+      "protected_objects": [
+        "vulnerability findings",
+        "remediation ownership"
+      ],
+      "failure_modes": [
+        "unprioritized findings",
+        "unowned remediation",
+        "missing retest"
+      ],
+      "lifecycle_stages": [
+        "discovery prioritization remediation verification"
+      ],
+      "primary_mechanisms": [
+        "Closed-loop vulnerability management connects discovery, prioritization, remediation, validation and governed exceptions in a traceable workflow",
+        "Vulnerability management needs accountable remediation owners, risk-based deadlines, retesting and time-bound exceptions, rather than scanning reports alone",
+        "Evidence includes aging reports, closed tickets and independent verification."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#RA-5"
+    },
+    "guide-patch": {
+      "title": "Patch management / 补丁管理",
+      "protected_objects": [
+        "deployed software versions",
+        "security updates"
+      ],
+      "failure_modes": [
+        "outdated software",
+        "known exploitable flaws"
+      ],
+      "lifecycle_stages": [
+        "patch testing",
+        "staged deployment",
+        "verification"
+      ],
+      "primary_mechanisms": [
+        "Patch and remediation management reduces exposure to known software vulnerabilities by applying and verifying security fixes promptly, with priority for exploitable and externally exposed flaws",
+        "Maintain an asset and version inventory, prioritize exploitability, external exposure and business criticality, test representative systems, deploy in stages and verify remediation",
+        "Patch management combines inventory, risk prioritization, testing, staged deployment, rollback and post-installation verification, with tracked owners and deadlines."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/40/r4/final"
+    },
+    "guide-hardening": {
+      "title": "Secure configuration baseline / 安全配置基线",
+      "protected_objects": [
+        "system configurations",
+        "secure baselines"
+      ],
+      "failure_modes": [
+        "insecure defaults",
+        "configuration drift"
+      ],
+      "lifecycle_stages": [
+        "configuration deployment",
+        "baseline monitoring"
+      ],
+      "primary_mechanisms": [
+        "Configuration baselines should be versioned, tested, enforced and periodically checked for drift",
+        "Exceptions have an owner, justification and expiry; remediation and compliance scans provide evidence."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#CM-2"
+    },
+    "guide-edr": {
+      "title": "Endpoint detection and response / 端点检测与响应",
+      "protected_objects": [
+        "endpoint processes",
+        "files",
+        "host behavior"
+      ],
+      "failure_modes": [
+        "malicious execution",
+        "persistence",
+        "credential dumping"
+      ],
+      "lifecycle_stages": [
+        "detection investigation containment"
+      ],
+      "primary_mechanisms": [
+        "EDR detects malicious endpoint processes, files and persistence, supports investigation and enables containment such as host isolation",
+        "Endpoint detection and response requires sensor coverage, maintained detection rules, triage ownership and tested response playbooks",
+        "Validate the whole detection-to-response chain with controlled simulations and telemetry checks."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SI-4"
+    },
+    "guide-fde": {
+      "title": "Full disk encryption / 全盘加密",
+      "protected_objects": [
+        "endpoint data at rest",
+        "laptop storage",
+        "removable storage"
+      ],
+      "failure_modes": [
+        "lost device",
+        "stolen device",
+        "offline disk access"
+      ],
+      "lifecycle_stages": [
+        "storage protection",
+        "boot authentication",
+        "recovery"
+      ],
+      "primary_mechanisms": [
+        "Full disk encryption protects stored information when a device is lost, stolen or accessed offline, while authorized running sessions still need access controls",
+        "Full disk encryption requires managed deployment, protected boot authentication, secure recovery-key escrow and tested recovery; encryption does not protect data after an authorized session has unlocked it."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [
+        "unauthorized outbound upload",
+        "email exfiltration",
+        "unapproved cloud transfer"
+      ],
+      "confusable_with": {
+        "guide-dlp": {
+          "choose_this_when": [
+            "lost device",
+            "stolen device",
+            "offline disk access"
+          ],
+          "choose_other_when": [
+            "unauthorized outbound upload",
+            "email exfiltration",
+            "unapproved cloud transfer"
+          ]
+        }
+      },
+      "source": "https://csrc.nist.gov/pubs/sp/800/111/final"
+    },
+    "guide-allowlist": {
+      "title": "Application allowlisting / 应用白名单",
+      "protected_objects": [
+        "host application execution",
+        "scripts",
+        "executables"
+      ],
+      "failure_modes": [
+        "unapproved software execution",
+        "unknown binary execution"
+      ],
+      "lifecycle_stages": [
+        "execution authorization"
+      ],
+      "primary_mechanisms": [
+        "Application allowlisting needs an approved inventory, staged testing, controlled exceptions and ongoing monitoring; verify both approved execution and blocked unknown binaries, including scripts and interpreters where applicable."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [
+        "standing local administrator access",
+        "unnecessary elevated capabilities"
+      ],
+      "confusable_with": {
+        "guide-endpoint-privilege": {
+          "choose_this_when": [
+            "unapproved software execution",
+            "unknown binary execution"
+          ],
+          "choose_other_when": [
+            "standing local administrator access",
+            "unnecessary elevated capabilities"
+          ]
+        }
+      },
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#CM-7"
+    },
+    "guide-sql": {
+      "title": "SQL injection prevention / 参数化查询",
+      "protected_objects": [
+        "database queries",
+        "untrusted application input"
+      ],
+      "failure_modes": [
+        "input interpreted as SQL syntax"
+      ],
+      "lifecycle_stages": [
+        "query construction",
+        "server-side processing"
+      ],
+      "primary_mechanisms": [
+        "Parameterized statements bind values rather than concatenating input into SQL",
+        "Dynamic identifiers require an allowlist; database accounts still need least privilege",
+        "Verify with malicious input tests and code review of all query construction paths."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html"
+    },
+    "guide-xss": {
+      "title": "Cross-site scripting prevention / XSS防护",
+      "protected_objects": [
+        "browser output",
+        "untrusted content"
+      ],
+      "failure_modes": [
+        "data interpreted as executable browser script"
+      ],
+      "lifecycle_stages": [
+        "contextual output encoding"
+      ],
+      "primary_mechanisms": [
+        "Context-sensitive output encoding keeps untrusted data from becoming executable browser content",
+        "Sanitization and safe APIs are primary controls; Content Security Policy adds defense in depth rather than replacing them."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html"
+    },
+    "guide-csrf": {
+      "title": "CSRF protection / CSRF防护令牌",
+      "protected_objects": [
+        "authenticated state-changing requests",
+        "browser cookies"
+      ],
+      "failure_modes": [
+        "cross-origin induced actions",
+        "automatic cookie inclusion without request-intent verification"
+      ],
+      "lifecycle_stages": [
+        "request authorization"
+      ],
+      "primary_mechanisms": [
+        "CSRF protection prevents another site from inducing unwanted state-changing requests through a victim authenticated session",
+        "CSRF tokens must be secret, unpredictable and session-bound",
+        "Origin/Referer validation and appropriate SameSite cookies add defense; state changes should not use GET."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [
+        "session fixation",
+        "stale sessions",
+        "missing revocation"
+      ],
+      "confusable_with": {
+        "guide-session": {
+          "choose_this_when": [
+            "cross-origin induced actions",
+            "automatic cookie inclusion without request-intent verification"
+          ],
+          "choose_other_when": [
+            "session fixation",
+            "stale sessions",
+            "missing revocation"
+          ]
+        }
+      },
+      "source": "https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html"
+    },
+    "guide-session": {
+      "title": "Secure session management / 安全会话管理",
+      "protected_objects": [
+        "session identifiers",
+        "authenticated sessions"
+      ],
+      "failure_modes": [
+        "session fixation",
+        "stale sessions",
+        "missing revocation"
+      ],
+      "lifecycle_stages": [
+        "session creation rotation expiry revocation"
+      ],
+      "primary_mechanisms": [
+        "Secure sessions use unpredictable identifiers, renew them after login or privilege changes, and enforce server-side inactivity and absolute timeouts and logout revocation",
+        "Session cookies use Secure, HttpOnly and appropriate SameSite attributes",
+        "Verify fixation resistance, token renewal, expiry and revocation rather than relying on client-side deletion alone."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [
+        "cross-origin induced actions",
+        "automatic cookie inclusion without request-intent verification"
+      ],
+      "confusable_with": {
+        "guide-csrf": {
+          "choose_this_when": [
+            "session fixation",
+            "stale sessions",
+            "missing revocation"
+          ],
+          "choose_other_when": [
+            "cross-origin induced actions",
+            "automatic cookie inclusion without request-intent verification"
+          ]
+        }
+      },
+      "source": "https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html"
+    },
+    "guide-sdlc": {
+      "title": "Secure development lifecycle / 安全开发生命周期",
+      "protected_objects": [
+        "software development lifecycle",
+        "engineering process"
+      ],
+      "failure_modes": [
+        "security omitted from design and delivery",
+        "late uncoordinated security work"
+      ],
+      "lifecycle_stages": [
+        "requirements design implementation release maintenance"
+      ],
+      "primary_mechanisms": [
+        "Threat modeling identifies assets, trust boundaries and abuse cases; code review and security testing verify requirements",
+        "Release gates should track findings, owners, remediation and retests, rather than treating a single late penetration test as the entire process."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/218/final"
+    },
+    "guide-sca": {
+      "title": "Software composition analysis / 软件成分分析与SBOM",
+      "protected_objects": [
+        "software components",
+        "direct and transitive dependencies"
+      ],
+      "failure_modes": [
+        "unknown vulnerable dependencies",
+        "missing component inventory"
+      ],
+      "lifecycle_stages": [
+        "dependency inventory",
+        "component upgrade assessment"
+      ],
+      "primary_mechanisms": [
+        "Software composition analysis identifies direct and transitive dependencies, versions, known vulnerabilities and license risks; an SBOM records the component inventory",
+        "SCA results need reachability and exposure assessment, responsible owners, upgrade planning and verification",
+        "An SBOM is an inventory, not proof that components are secure; continuously correlate it with vulnerability intelligence."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://cheatsheetseries.owasp.org/cheatsheets/Software_Supply_Chain_Security_Cheat_Sheet.html"
+    },
+    "guide-secrets": {
+      "title": "Centralized secrets management / 应用凭据与机密集中管理",
+      "protected_objects": [
+        "application passwords",
+        "API tokens",
+        "workload credentials"
+      ],
+      "failure_modes": [
+        "hardcoded credentials",
+        "uncontrolled secret distribution"
+      ],
+      "lifecycle_stages": [
+        "secret delivery authorization rotation revocation"
+      ],
+      "primary_mechanisms": [
+        "Keep application secrets out of source code and distributed configuration by using a controlled vault or workload identity with least-privilege retrieval and audit trails",
+        "Secrets management should prefer short-lived credentials, prevent logging or repository exposure, and support rapid revocation",
+        "Test rotation without service disruption and verify that old credentials cease working."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [
+        "unprotected cloud keys",
+        "uncontrolled decryption permissions",
+        "unsafe key storage",
+        "uncontrolled key lifecycle"
+      ],
+      "confusable_with": {
+        "guide-cloud-kms": {
+          "choose_this_when": [
+            "hardcoded credentials",
+            "uncontrolled secret distribution"
+          ],
+          "choose_other_when": [
+            "unprotected cloud keys",
+            "uncontrolled decryption permissions"
+          ]
+        },
+        "guide-key": {
+          "choose_this_when": [
+            "hardcoded credentials",
+            "uncontrolled secret distribution"
+          ],
+          "choose_other_when": [
+            "unsafe key storage",
+            "uncontrolled key lifecycle"
+          ]
+        }
+      },
+      "source": "https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html"
+    },
+    "guide-cloud-responsibility": {
+      "title": "Cloud shared responsibility / 云责任共担",
+      "protected_objects": [
+        "cloud security responsibilities",
+        "provider customer roles"
+      ],
+      "failure_modes": [
+        "unassigned security tasks",
+        "incorrect assumptions about provider duties"
+      ],
+      "lifecycle_stages": [
+        "service design",
+        "responsibility allocation"
+      ],
+      "primary_mechanisms": [
+        "Cloud shared responsibility requires a documented responsibility matrix, verification of provider assurances and testing of customer-managed controls; outsourcing infrastructure does not transfer all accountability."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SA-9"
+    },
+    "guide-security-group": {
+      "title": "Cloud security groups / 安全组最小暴露",
+      "protected_objects": [
+        "cloud workload network exposure",
+        "resource ports"
+      ],
+      "failure_modes": [
+        "excessive inbound or outbound exposure",
+        "publicly reachable management ports"
+      ],
+      "lifecycle_stages": [
+        "resource network policy configuration"
+      ],
+      "primary_mechanisms": [
+        "Security groups reduce cloud workload exposure to the internet and unnecessary networks by restricting source, destination, protocol and port to required business flows",
+        "Security groups minimize network exposure with least-privilege ingress and egress, private connectivity and explicit approved sources",
+        "Review stale rules, owners and expirations; test allowed business flows and blocked unauthorized paths."
+      ],
+      "deployment_assumptions": [
+        "a workload network policy or cloud resource boundary is relevant"
+      ],
+      "not_primary_when": [
+        "cross-zone unauthorized access",
+        "lateral movement",
+        "excessive reachability"
+      ],
+      "confusable_with": {
+        "guide-segmentation": {
+          "choose_this_when": [
+            "excessive inbound or outbound exposure",
+            "publicly reachable management ports"
+          ],
+          "choose_other_when": [
+            "cross-zone unauthorized access",
+            "lateral movement",
+            "excessive reachability"
+          ]
+        }
+      },
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SC-7"
+    },
+    "guide-cspm": {
+      "title": "Cloud security posture management / 云配置态势管理",
+      "protected_objects": [
+        "cloud resource configurations",
+        "multi-account posture"
+      ],
+      "failure_modes": [
+        "configuration drift",
+        "unnoticed public resources",
+        "noncompliant configuration"
+      ],
+      "lifecycle_stages": [
+        "continuous configuration discovery and remediation"
+      ],
+      "primary_mechanisms": [
+        "CSPM continuously detects cloud misconfiguration and policy drift across accounts",
+        "Findings need accountable owners, tracked remediation and verification; coverage and false positives should be measured."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#CA-7"
+    },
+    "guide-container": {
+      "title": "Container security / 容器与镜像安全",
+      "protected_objects": [
+        "container images",
+        "workloads",
+        "orchestration settings"
+      ],
+      "failure_modes": [
+        "untrusted images",
+        "vulnerable components",
+        "excessive runtime privileges"
+      ],
+      "lifecycle_stages": [
+        "image admission",
+        "workload deployment",
+        "runtime"
+      ],
+      "primary_mechanisms": [
+        "Image vulnerability scanning and signature verification identify risky components and reject untrusted images before deployment; runtime isolation and permissions remain necessary",
+        "Container hardening minimizes image contents, runs without unnecessary root or capabilities, isolates workloads and restricts network access",
+        "Verify trusted-image admission, patching and detection of suspicious runtime behavior."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/190/final"
+    },
+    "guide-inventory": {
+      "title": "Asset inventory / 资产盘点",
+      "protected_objects": [
+        "hardware software and cloud assets",
+        "asset owners"
+      ],
+      "failure_modes": [
+        "unknown assets",
+        "missing ownership",
+        "unknown versions"
+      ],
+      "lifecycle_stages": [
+        "asset discovery",
+        "inventory maintenance"
+      ],
+      "primary_mechanisms": [
+        "Inventory hardware, software and cloud resources with versions, ownership, business purpose and criticality, and continuously reconcile discovery results",
+        "Asset inventory provides the scope for vulnerability management, configuration control and incident response",
+        "Reconcile discovered assets with approved records, investigate unknown systems and remove retired resources."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#CM-8"
+    },
+    "guide-segmentation": {
+      "title": "Network segmentation / 网络分段",
+      "protected_objects": [
+        "network trust zones",
+        "inter-zone paths"
+      ],
+      "failure_modes": [
+        "cross-zone unauthorized access",
+        "lateral movement",
+        "excessive reachability"
+      ],
+      "lifecycle_stages": [
+        "network architecture",
+        "boundary policy enforcement"
+      ],
+      "primary_mechanisms": [
+        "Network segmentation applies deny-by-default controls between zones and validates allowed dependencies",
+        "Test east-west restrictions and management-plane isolation; a VLAN without enforced access rules is insufficient."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [
+        "excessive inbound or outbound exposure",
+        "publicly reachable management ports"
+      ],
+      "confusable_with": {
+        "guide-security-group": {
+          "choose_this_when": [
+            "cross-zone unauthorized access",
+            "lateral movement",
+            "excessive reachability"
+          ],
+          "choose_other_when": [
+            "excessive inbound or outbound exposure",
+            "publicly reachable management ports"
+          ]
+        }
+      },
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SC-7"
+    },
+    "guide-ndr": {
+      "title": "Network detection and response / 网络检测与响应",
+      "protected_objects": [
+        "network flows",
+        "connection metadata",
+        "network behavior"
+      ],
+      "failure_modes": [
+        "anomalous communication",
+        "lateral movement",
+        "unexpected external connections"
+      ],
+      "lifecycle_stages": [
+        "network detection investigation containment"
+      ],
+      "primary_mechanisms": [
+        "Network detection and response identifies intrusions, anomalous external communications and lateral movement from traffic, protocol behavior and connection metadata",
+        "NDR needs visibility at critical boundaries and east-west links, a baseline of legitimate traffic, and correlation with asset and identity context",
+        "Analysts investigate alerts, collect evidence and trigger tested containment workflows; encrypted traffic still offers useful metadata."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SI-4"
+    },
+    "guide-tls": {
+      "title": "Transport encryption / 传输加密",
+      "protected_objects": [
+        "transport channels",
+        "peer certificate identities"
+      ],
+      "failure_modes": [
+        "peer impersonation",
+        "untrusted certificates",
+        "insecure transport"
+      ],
+      "lifecycle_stages": [
+        "connection establishment",
+        "certificate verification"
+      ],
+      "primary_mechanisms": [
+        "TLS deployment uses supported protocol versions and algorithms, validates certificate chains and hostnames, protects private keys and monitors expiry",
+        "Verify configurations and failed validation paths; encryption without authentication does not reliably prevent interception",
+        "Strict certificate validation prevents clients from connecting to impersonated servers or an intermediary using an untrusted certificate."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Security_Cheat_Sheet.html"
+    },
+    "guide-data-classification": {
+      "title": "Data classification / 数据分类分级",
+      "protected_objects": [
+        "data assets",
+        "data owners",
+        "handling requirements"
+      ],
+      "failure_modes": [
+        "unknown sensitivity",
+        "inconsistent data handling"
+      ],
+      "lifecycle_stages": [
+        "data inventory",
+        "classification and labeling"
+      ],
+      "primary_mechanisms": [
+        "Data classification applies protection according to information sensitivity and business impact, with accountable owners and a maintained inventory",
+        "Data classification maps handling, storage, access, transfer, retention and disposal rules to sensitivity levels",
+        "Verify labels against actual data, train users and periodically reassess scope and accuracy."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#RA-2"
+    },
+    "guide-minimization": {
+      "title": "Data minimization and purpose limitation / 数据最小化与目的限制",
+      "protected_objects": [
+        "personal-data collection",
+        "processing purposes"
+      ],
+      "failure_modes": [
+        "unnecessary collection",
+        "processing beyond stated purpose"
+      ],
+      "lifecycle_stages": [
+        "collection and purpose design"
+      ],
+      "primary_mechanisms": [
+        "Data minimization reduces exposure by limiting fields, recipients and retention and by preferring less identifying representations where suitable",
+        "Review collection forms, processing inventories, access and deletion behavior against documented purposes."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [
+        "unauthorized outbound upload",
+        "email exfiltration",
+        "unapproved cloud transfer",
+        "unassessed privacy impacts",
+        "large-scale sensitive processing risk"
+      ],
+      "confusable_with": {
+        "guide-dlp": {
+          "choose_this_when": [
+            "unnecessary collection",
+            "processing beyond stated purpose"
+          ],
+          "choose_other_when": [
+            "unauthorized outbound upload",
+            "email exfiltration",
+            "unapproved cloud transfer"
+          ]
+        },
+        "guide-dpia": {
+          "choose_this_when": [
+            "unnecessary collection",
+            "processing beyond stated purpose"
+          ],
+          "choose_other_when": [
+            "unassessed privacy impacts",
+            "large-scale sensitive processing risk"
+          ]
+        }
+      },
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#PT-3"
+    },
+    "guide-key": {
+      "title": "Cryptographic key lifecycle / 密钥生命周期管理",
+      "protected_objects": [
+        "cryptographic keys",
+        "encryption operations"
+      ],
+      "failure_modes": [
+        "unsafe key storage",
+        "uncontrolled key lifecycle"
+      ],
+      "lifecycle_stages": [
+        "key generation distribution use rotation revocation"
+      ],
+      "primary_mechanisms": [
+        "Manage cryptographic keys across secure generation, distribution, storage, authorized use, rotation, backup, recovery, revocation and destruction",
+        "Cryptographic keys need strong randomness, protected custody such as suitable KMS/HSM controls, separation of duties and auditability",
+        "Verify rotation, recovery and revocation, including dependent systems and encrypted-data access."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [
+        "hardcoded credentials",
+        "uncontrolled secret distribution"
+      ],
+      "confusable_with": {
+        "guide-secrets": {
+          "choose_this_when": [
+            "unsafe key storage",
+            "uncontrolled key lifecycle"
+          ],
+          "choose_other_when": [
+            "hardcoded credentials",
+            "uncontrolled secret distribution"
+          ]
+        }
+      },
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SC-12"
+    },
+    "guide-masking": {
+      "title": "Tokenization and masking / 令牌化与脱敏",
+      "protected_objects": [
+        "sensitive data values",
+        "nonproduction datasets"
+      ],
+      "failure_modes": [
+        "unnecessary exposure of real identifiers",
+        "reidentification"
+      ],
+      "lifecycle_stages": [
+        "test data preparation",
+        "controlled disclosure"
+      ],
+      "primary_mechanisms": [
+        "Tokenization substitutes controlled surrogate identifiers for sensitive values; masking obscures sensitive fields in displays and test datasets",
+        "Tokenization and masking reduce unnecessary exposure but do not automatically make data anonymous",
+        "Protect the mapping and re-identification keys, restrict reversal and test whether combinations of retained fields can identify individuals."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SI-19"
+    },
+    "guide-backup": {
+      "title": "Immutable backups / 不可变备份",
+      "protected_objects": [
+        "recovery copies",
+        "backup storage"
+      ],
+      "failure_modes": [
+        "ransomware alteration",
+        "deletion of recovery copies"
+      ],
+      "lifecycle_stages": [
+        "backup retention",
+        "restoration testing"
+      ],
+      "primary_mechanisms": [
+        "Isolated or immutable backup copies resist ransomware and accidental deletion, with backup administration separated from production access",
+        "Immutable backups require protected retention, monitored jobs and repeated restoration tests",
+        "Verify recovery point and recovery time objectives using representative data, not merely a successful backup-job status."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#CP-9"
+    },
+    "guide-integrity": {
+      "title": "Hash and digital-signature integrity checks / 哈希与数字签名完整性",
+      "protected_objects": [
+        "software packages",
+        "distributed data",
+        "verification keys"
+      ],
+      "failure_modes": [
+        "unauthorized modification",
+        "unverified origin"
+      ],
+      "lifecycle_stages": [
+        "publication distribution verification"
+      ],
+      "primary_mechanisms": [
+        "Hashes detect changes against a protected reference; digital signatures additionally authenticate origin with trusted keys",
+        "Verify signatures, certificate or key trust, algorithm suitability and protected baselines."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SI-7"
+    },
+    "guide-retention": {
+      "title": "Retention and secure disposal / 数据保留与安全销毁",
+      "protected_objects": [
+        "data records",
+        "identity documents",
+        "storage media"
+      ],
+      "failure_modes": [
+        "obsolete retained data",
+        "expired retention",
+        "unverified deletion"
+      ],
+      "lifecycle_stages": [
+        "retention expiry",
+        "secure disposal"
+      ],
+      "primary_mechanisms": [
+        "Define retention periods and accountable owners based on business, contractual and applicable legal needs, then securely delete or destroy expired data with evidence",
+        "Retention schedules should address backups, replicas and legal holds",
+        "Secure disposal selects sanitization methods appropriate to the media and sensitivity, verifies completion and records authorized destruction."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SI-12"
+    },
+    "guide-supplier": {
+      "title": "Supplier security and privacy clauses / 供应商安全与隐私条款",
+      "protected_objects": [
+        "data-processing contracts",
+        "processor obligations"
+      ],
+      "failure_modes": [
+        "missing security obligations",
+        "audit and incident terms absent"
+      ],
+      "lifecycle_stages": [
+        "contract formation",
+        "processing agreement"
+      ],
+      "primary_mechanisms": [
+        "Binding processor contracts allocate enforceable safeguards and accountability, permit audits and inspections, and require assistance with breach notification and privacy obligations",
+        "Specify processing scope, authorized instructions, incident cooperation and end-of-service handling rather than price alone",
+        "Guidance depends on applicable jurisdiction."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://www.edpb.europa.eu/sme/learn-the-basics/data-controller-or-data-processor_en"
+    },
+    "guide-transfer": {
+      "title": "Cross-border data transfers / 跨境传输评估",
+      "protected_objects": [
+        "international personal-data transfers",
+        "recipients"
+      ],
+      "failure_modes": [
+        "unassessed destination and recipient safeguards"
+      ],
+      "lifecycle_stages": [
+        "transfer assessment",
+        "authorization"
+      ],
+      "primary_mechanisms": [
+        "For personal-data exports, assess the lawful processing basis, applicable transfer tool, destination law, recipient safeguards and transfer impact, documenting supplementary measures and periodic review",
+        "Exact requirements depend on jurisdiction; financial payment settlement is a different topic."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://www.edpb.europa.eu/sme/be-compliant/international-data-transfers_en"
+    },
+    "guide-dpia": {
+      "title": "Privacy impact assessment / 数据保护影响评估",
+      "protected_objects": [
+        "planned high-risk personal-data processing",
+        "data-subject rights"
+      ],
+      "failure_modes": [
+        "unassessed privacy impacts",
+        "large-scale sensitive processing risk"
+      ],
+      "lifecycle_stages": [
+        "predeployment necessity proportionality and risk assessment"
+      ],
+      "primary_mechanisms": [
+        "DPIAs identify and mitigate privacy risks before deployment; consult responsible privacy specialists and revisit the assessment when the processing changes",
+        "Maintain the assessment, mitigation owners, decisions and review evidence."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [
+        "unnecessary collection",
+        "processing beyond stated purpose"
+      ],
+      "confusable_with": {
+        "guide-minimization": {
+          "choose_this_when": [
+            "unassessed privacy impacts",
+            "large-scale sensitive processing risk"
+          ],
+          "choose_other_when": [
+            "unnecessary collection",
+            "processing beyond stated purpose"
+          ]
+        }
+      },
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#RA-8"
+    },
+    "guide-notification": {
+      "title": "Incident and breach reporting / 事件通报与泄露通知",
+      "protected_objects": [
+        "incident notifications",
+        "privacy-breach reporting"
+      ],
+      "failure_modes": [
+        "missing escalation",
+        "unprepared notifications",
+        "unrecorded notification decisions"
+      ],
+      "lifecycle_stages": [
+        "incident classification and reporting"
+      ],
+      "primary_mechanisms": [
+        "Incident notification supports timely internal escalation, regulatory reporting and affected-party notice when applicable, with documented responsibilities and deadlines",
+        "Incident reporting requires defined escalation thresholds, accountable decision makers, evidence preservation, approved communication templates and exercises",
+        "Notification duties and deadlines depend on the applicable law and facts; avoid treating one jurisdiction's limit as universal."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#IR-6"
+    },
+    "guide-siem": {
+      "title": "Central log correlation / 集中日志关联",
+      "protected_objects": [
+        "security logs",
+        "correlated events"
+      ],
+      "failure_modes": [
+        "fragmented logs",
+        "unlinked security signals"
+      ],
+      "lifecycle_stages": [
+        "event collection correlation investigation"
+      ],
+      "primary_mechanisms": [
+        "Central log correlation connects host, network, application and identity events using consistent fields, time and entities to reveal attack chains",
+        "SIEM needs reliable ingestion, synchronized time, protected retention, detection rules, tuning and triage workflows",
+        "Verify coverage and correlation through representative end-to-end tests and tracked incident investigations."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#AU-6"
+    },
+    "guide-ir": {
+      "title": "Incident response playbooks / 事件响应预案",
+      "protected_objects": [
+        "incident response decisions",
+        "evidence",
+        "recovery coordination"
+      ],
+      "failure_modes": [
+        "uncoordinated containment",
+        "unclear incident authority"
+      ],
+      "lifecycle_stages": [
+        "preparation detection containment eradication recovery lessons"
+      ],
+      "primary_mechanisms": [
+        "Incident response playbooks define decision authority, coordination, investigation, containment, eradication, recovery and communications for security incidents",
+        "Incident response playbooks should define decision authority, evidence handling and recovery criteria, with coordination across technical, business and legal roles",
+        "Exercises and real incidents produce lessons, updated procedures and verified corrective actions."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#IR-8"
+    },
+    "guide-risk": {
+      "title": "Risk assessment / 风险评估",
+      "protected_objects": [
+        "business assets",
+        "threats",
+        "security investments"
+      ],
+      "failure_modes": [
+        "priorities detached from likelihood and business impact"
+      ],
+      "lifecycle_stages": [
+        "risk identification estimation treatment review"
+      ],
+      "primary_mechanisms": [
+        "Risk assessment defines scope and criteria, identifies threats and vulnerabilities, evaluates likelihood and impact, and assigns accountable risk owners",
+        "Risk assessment supports prioritized treatment and documented acceptance of residual risk",
+        "Review changes and evidence periodically; counting vulnerabilities alone does not establish business risk."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#RA-3"
+    },
+    "guide-awareness": {
+      "title": "Security awareness exercises / 安全意识培训与演练",
+      "protected_objects": [
+        "human security behavior",
+        "role-relevant learning"
+      ],
+      "failure_modes": [
+        "unsafe repeated behavior",
+        "training attendance without behavioral improvement"
+      ],
+      "lifecycle_stages": [
+        "learning practice feedback and effectiveness measurement"
+      ],
+      "primary_mechanisms": [
+        "Security awareness is reinforced by role-relevant practice, reporting procedures and feedback",
+        "Measure reporting quality, repeated mistakes and follow-up improvements rather than attendance alone."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [
+        "phishing",
+        "credential replay",
+        "password-only authentication"
+      ],
+      "confusable_with": {
+        "guide-mfa": {
+          "choose_this_when": [
+            "unsafe repeated behavior",
+            "training attendance without behavioral improvement"
+          ],
+          "choose_other_when": [
+            "phishing",
+            "credential replay",
+            "password-only authentication"
+          ]
+        }
+      },
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#AT-2"
+    },
+    "guide-third-party": {
+      "title": "Third-party and supplier risk management / 第三方与供应商风险管理",
+      "protected_objects": [
+        "suppliers",
+        "outsourced services",
+        "supply-chain relationships"
+      ],
+      "failure_modes": [
+        "unassessed supplier risk",
+        "uncontrolled supplier access"
+      ],
+      "lifecycle_stages": [
+        "supplier selection monitoring and exit"
+      ],
+      "primary_mechanisms": [
+        "Supplier reviews prioritize critical services and sensitive data, establish security and notification requirements, monitor changes and verify revocation and data return or deletion at termination",
+        "Evidence includes assessments, contract commitments, review results and tracked remediation."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SR-6"
+    },
+    "guide-recovery": {
+      "title": "Business continuity and recovery exercises / 业务连续性与灾难恢复演练",
+      "protected_objects": [
+        "business services",
+        "critical dependencies",
+        "recovery objectives"
+      ],
+      "failure_modes": [
+        "unvalidated continuity",
+        "unmet recovery time and point objectives"
+      ],
+      "lifecycle_stages": [
+        "continuity planning",
+        "recovery exercises"
+      ],
+      "primary_mechanisms": [
+        "Continuity and disaster recovery exercises test dependency assumptions, RTO/RPO and restoration procedures through tabletop and technical scenarios",
+        "Record gaps, assign remediation and repeat tests to verify improvements."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#CP-4"
+    },
+    "guide-change": {
+      "title": "Change control / 变更控制",
+      "protected_objects": [
+        "production changes",
+        "approved configuration state"
+      ],
+      "failure_modes": [
+        "unauthorized changes",
+        "missing rollback or accountability"
+      ],
+      "lifecycle_stages": [
+        "change approval testing deployment rollback"
+      ],
+      "primary_mechanisms": [
+        "Assess the security and business impact of changes, obtain approval, test, schedule deployment and prepare rollback before implementation",
+        "Configuration change control separates request, approval and execution where warranted and confirms the resulting state",
+        "Emergency changes still require tracking and timely retrospective review; retain test, authorization and verification evidence."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#CM-3"
+    },
+    "guide-ddos": {
+      "title": "DDoS mitigation and rate limiting / DDoS缓解与速率限制",
+      "protected_objects": [
+        "network and application availability",
+        "resource capacity"
+      ],
+      "failure_modes": [
+        "traffic flooding",
+        "resource exhaustion"
+      ],
+      "lifecycle_stages": [
+        "upstream mitigation",
+        "rate limiting",
+        "availability protection"
+      ],
+      "primary_mechanisms": [
+        "DDoS defenses maintain network and application availability under abusive traffic while preserving legitimate business access",
+        "DDoS mitigation filters or absorbs abusive traffic before critical resources saturate, with upstream coordination, resource quotas, rate limiting and tested failover",
+        "Establish normal traffic baselines, tune thresholds and exercise response plans without blocking legitimate demand."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SC-5"
+    },
+    "guide-dns": {
+      "title": "DNS security monitoring / DNS安全监测",
+      "protected_objects": [
+        "DNS queries",
+        "resolvers",
+        "name-service metadata"
+      ],
+      "failure_modes": [
+        "DNS-specific anomalies",
+        "malicious name resolution",
+        "DNS tunneling"
+      ],
+      "lifecycle_stages": [
+        "DNS protection monitoring and investigation"
+      ],
+      "primary_mechanisms": [
+        "Centralize DNS query and response logs; correlate reputation, frequency, novel names and entropy to detect tunneling while preserving host and investigation context",
+        "DNS monitoring can expose malicious-domain communications, suspicious new domains and DNS tunneling through query and response analysis",
+        "DNS security monitoring correlates query logs, reputation and anomalies with assets and identity, then investigates and blocks verified malicious activity",
+        "Protect resolver configurations, validate DNSSEC where applicable and review false positives; monitoring and DNS authenticity address different risks."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/81/r3/final"
+    },
+    "guide-cloud-audit": {
+      "title": "Centralized cloud audit logging / 云审计日志集中化",
+      "protected_objects": [
+        "cloud control-plane events",
+        "administrative activity logs"
+      ],
+      "failure_modes": [
+        "missing cloud audit coverage",
+        "erasable administrative evidence"
+      ],
+      "lifecycle_stages": [
+        "cloud audit collection and protected retention"
+      ],
+      "primary_mechanisms": [
+        "Cloud audit logs record control-plane API calls, identity activity and resource changes across accounts and regions for attribution and investigation",
+        "Centralized cloud audit logging needs organization-wide coverage, synchronized timestamps, protected retention, restricted deletion, integrity controls and actionable alerts",
+        "Verify ingestion, identity attribution and end-to-end investigation through test events."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#AU-12"
+    },
+    "guide-cloud-iam": {
+      "title": "Cloud IAM least privilege / 云身份最小权限",
+      "protected_objects": [
+        "cloud principals",
+        "cloud policy permissions"
+      ],
+      "failure_modes": [
+        "overbroad cloud roles",
+        "excessive cloud resource access"
+      ],
+      "lifecycle_stages": [
+        "cloud authorization",
+        "policy review"
+      ],
+      "primary_mechanisms": [
+        "Use resource-, action- and condition-specific grants with workload identities or short-lived credentials, reviewing trust policies and cross-account access",
+        "Cloud IAM least privilege avoids broad wildcard actions and resources, separates duties and continuously reviews effective permissions and unused grants",
+        "Test allowed business operations and denial of escalation paths, and rotate or revoke exposed credentials promptly."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#AC-6"
+    },
+    "guide-cloud-kms": {
+      "title": "Managed key services / 托管密钥服务",
+      "protected_objects": [
+        "cloud encryption keys",
+        "managed cryptographic operations"
+      ],
+      "failure_modes": [
+        "unprotected cloud keys",
+        "uncontrolled decryption permissions"
+      ],
+      "lifecycle_stages": [
+        "managed key generation use rotation revocation"
+      ],
+      "primary_mechanisms": [
+        "Managed key services centralize key protection and lifecycle operations, often using envelope encryption and hardware-backed safeguards",
+        "Separate key administration from data use, restrict decrypt permissions and test recovery, rotation and revocation; a KMS does not correct overly broad application permissions automatically."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [
+        "hardcoded credentials",
+        "uncontrolled secret distribution"
+      ],
+      "confusable_with": {
+        "guide-secrets": {
+          "choose_this_when": [
+            "unprotected cloud keys",
+            "uncontrolled decryption permissions"
+          ],
+          "choose_other_when": [
+            "hardcoded credentials",
+            "uncontrolled secret distribution"
+          ]
+        }
+      },
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SC-12"
+    },
+    "guide-dlp": {
+      "title": "Data loss prevention / 数据防泄漏",
+      "protected_objects": [
+        "sensitive data in motion",
+        "outbound files",
+        "sharing channels"
+      ],
+      "failure_modes": [
+        "unauthorized outbound upload",
+        "email exfiltration",
+        "unapproved cloud transfer"
+      ],
+      "lifecycle_stages": [
+        "data movement inspection and enforcement"
+      ],
+      "primary_mechanisms": [
+        "DLP identifies and blocks unauthorized exfiltration of sensitive information through endpoint, email, network and cloud channels",
+        "Data loss prevention detects and controls sensitive-data movement with inspection, policy enforcement, blocking or alerting and approved exceptions",
+        "Cover relevant channels, tune classifiers and test both prohibited transfers and legitimate workflows; investigate incidents and review false positives."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [
+        "lost device",
+        "stolen device",
+        "offline disk access",
+        "unnecessary collection",
+        "processing beyond stated purpose"
+      ],
+      "confusable_with": {
+        "guide-fde": {
+          "choose_this_when": [
+            "unauthorized outbound upload",
+            "email exfiltration",
+            "unapproved cloud transfer"
+          ],
+          "choose_other_when": [
+            "lost device",
+            "stolen device",
+            "offline disk access"
+          ]
+        },
+        "guide-minimization": {
+          "choose_this_when": [
+            "unauthorized outbound upload",
+            "email exfiltration",
+            "unapproved cloud transfer"
+          ],
+          "choose_other_when": [
+            "unnecessary collection",
+            "processing beyond stated purpose"
+          ]
+        }
+      },
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#AC-4"
+    },
+    "guide-rest-encryption": {
+      "title": "Encryption at rest / 静态数据加密",
+      "protected_objects": [
+        "stored database files",
+        "snapshots",
+        "backups"
+      ],
+      "failure_modes": [
+        "plaintext exposure after storage disclosure"
+      ],
+      "lifecycle_stages": [
+        "storage encryption and key separation"
+      ],
+      "primary_mechanisms": [
+        "Protect stored plaintext in disks, storage snapshots, database files and backups against unauthorized disclosure when those copies leak",
+        "Encryption at rest reduces exposure from lost media or unauthorized storage access, using appropriate cryptography and protected keys",
+        "Inventory sensitive stores, enable encryption, restrict decrypt authority and verify key rotation, access logging and recovery",
+        "Encryption is not a substitute for application authorization or data minimization."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SC-28"
+    },
+    "guide-host-backup": {
+      "title": "Host backup and restore testing / 主机备份与恢复验证",
+      "protected_objects": [
+        "host operating systems",
+        "host configurations",
+        "host data"
+      ],
+      "failure_modes": [
+        "unrestorable host state",
+        "unverified host backups"
+      ],
+      "lifecycle_stages": [
+        "host backup and restore testing"
+      ],
+      "primary_mechanisms": [
+        "Recover critical data, configurations and host state after ransomware, accidental deletion or hardware damage, limiting business disruption",
+        "Host backup and restore testing verifies recoverability, clean system state and required recovery time and recovery point objectives",
+        "Test representative restores, document failures and fix gaps; backups without verified restoration are insufficient assurance."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#CP-10"
+    },
+    "guide-rbac": {
+      "title": "Role-based access control / 基于角色的访问控制",
+      "protected_objects": [
+        "business roles",
+        "role permissions",
+        "user-role assignments"
+      ],
+      "failure_modes": [
+        "unstructured entitlements",
+        "inconsistent role-based access"
+      ],
+      "lifecycle_stages": [
+        "role design and entitlement review"
+      ],
+      "primary_mechanisms": [
+        "Role-based access control maps job responsibilities to approved permission bundles, with separation-of-duties constraints and periodic membership review",
+        "Avoid oversized roles, govern role changes and verify access when employees join, transfer or leave."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#AC-3"
+    },
+    "guide-endpoint-privilege": {
+      "title": "Endpoint least privilege / 终端最小权限",
+      "protected_objects": [
+        "local operating-system privileges",
+        "endpoint user accounts"
+      ],
+      "failure_modes": [
+        "standing local administrator access",
+        "unnecessary elevated capabilities"
+      ],
+      "lifecycle_stages": [
+        "endpoint administration",
+        "controlled elevation"
+      ],
+      "primary_mechanisms": [
+        "Endpoint least privilege removes unnecessary local administrator rights, separates administrative and everyday identities, and grants time-limited elevation only after approval",
+        "Monitor privileged actions, review exceptions and test that routine applications work without excessive rights."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [
+        "unapproved software execution",
+        "unknown binary execution"
+      ],
+      "confusable_with": {
+        "guide-allowlist": {
+          "choose_this_when": [
+            "standing local administrator access",
+            "unnecessary elevated capabilities"
+          ],
+          "choose_other_when": [
+            "unapproved software execution",
+            "unknown binary execution"
+          ]
+        }
+      },
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#AC-6"
+    },
+    "guide-sast-dast": {
+      "title": "Static and dynamic application security testing / 静态与动态安全测试",
+      "protected_objects": [
+        "source code",
+        "built artifacts",
+        "running applications"
+      ],
+      "failure_modes": [
+        "security defects found late",
+        "insufficient automated application testing"
+      ],
+      "lifecycle_stages": [
+        "development pipeline",
+        "static and dynamic testing"
+      ],
+      "primary_mechanisms": [
+        "Shift security testing before release by combining static analysis, dependency checks and dynamic tests in the pipeline, with remediation gates for high-risk findings",
+        "SAST inspects code for insecure patterns while DAST exercises deployed application behavior; neither alone proves absence of vulnerabilities",
+        "Integrate tests into development and release gates, triage findings, assign owners, remediate and retest confirmed flaws."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/218/final"
+    },
+    "guide-memory": {
+      "title": "Memory safety / 内存安全语言与防护",
+      "protected_objects": [
+        "parser implementations",
+        "memory operations",
+        "untrusted binary input"
+      ],
+      "failure_modes": [
+        "out-of-bounds access",
+        "use-after-free",
+        "memory corruption"
+      ],
+      "lifecycle_stages": [
+        "new implementation or rewrite",
+        "defect-class prevention"
+      ],
+      "primary_mechanisms": [
+        "Memory safety reduces memory-corruption defects, including out-of-bounds access and use-after-free flaws, rather than merely making exploitation harder",
+        "Memory-safe languages prevent broad classes of memory corruption; mitigations such as ASLR, non-executable memory and stack protections reduce exploitability in remaining unsafe components",
+        "Minimize unsafe interfaces, test parsers and verify build-hardening settings",
+        "Mitigation features do not repair the underlying defect."
+      ],
+      "deployment_assumptions": [
+        "implementation can be changed; prevention of implementation defects is requested"
+      ],
+      "not_primary_when": [
+        "untrusted execution impact",
+        "excessive runtime capabilities"
+      ],
+      "confusable_with": {
+        "guide-sandbox": {
+          "choose_this_when": [
+            "out-of-bounds access",
+            "use-after-free",
+            "memory corruption"
+          ],
+          "choose_other_when": [
+            "untrusted execution impact",
+            "excessive runtime capabilities"
+          ]
+        }
+      },
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SI-16"
+    },
+    "guide-sandbox": {
+      "title": "Sandbox isolation / 沙箱隔离",
+      "protected_objects": [
+        "runtime components",
+        "untrusted code or document processing"
+      ],
+      "failure_modes": [
+        "untrusted execution impact",
+        "excessive runtime capabilities"
+      ],
+      "lifecycle_stages": [
+        "runtime containment",
+        "existing component isolation"
+      ],
+      "primary_mechanisms": [
+        "Restrict untrusted parsers and code with separate low-privilege execution, file and network access limits, system-call restrictions and resource quotas",
+        "Sandbox isolation uses strong boundaries and least privilege with resource limits, monitored interfaces and controlled data exchange",
+        "Patch the isolation layer and test escape resistance; process separation alone is not sufficient when shared privileges remain broad."
+      ],
+      "deployment_assumptions": [
+        "runtime isolation is available; containment does not repair implementation defects"
+      ],
+      "not_primary_when": [
+        "out-of-bounds access",
+        "use-after-free",
+        "memory corruption"
+      ],
+      "confusable_with": {
+        "guide-memory": {
+          "choose_this_when": [
+            "untrusted execution impact",
+            "excessive runtime capabilities"
+          ],
+          "choose_other_when": [
+            "out-of-bounds access",
+            "use-after-free",
+            "memory corruption"
+          ]
+        }
+      },
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SC-39"
+    },
+    "guide-secure-boot": {
+      "title": "Secure boot / 安全启动",
+      "protected_objects": [
+        "boot chain",
+        "firmware and bootloader authenticity"
+      ],
+      "failure_modes": [
+        "untrusted boot components",
+        "modified boot code"
+      ],
+      "lifecycle_stages": [
+        "boot-time trust verification"
+      ],
+      "primary_mechanisms": [
+        "Before the operating system loads, verify firmware and bootloader components against protected trust anchors; combine signature checks with version/rollback policy and protected recovery secrets",
+        "Secure boot establishes a verified chain of trust through signed boot components and controlled trust anchors",
+        "Protect enrollment and update keys, manage revocation and recovery, and test rejection of unsigned or modified components",
+        "Measured boot records measurements and is distinct from enforcing signature checks."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [
+        "unsigned updates",
+        "vulnerable firmware",
+        "unsafe rollback"
+      ],
+      "confusable_with": {
+        "guide-firmware": {
+          "choose_this_when": [
+            "untrusted boot components",
+            "modified boot code"
+          ],
+          "choose_other_when": [
+            "unsigned updates",
+            "vulnerable firmware",
+            "unsafe rollback"
+          ]
+        }
+      },
+      "source": "https://csrc.nist.gov/pubs/sp/800/193/final"
+    },
+    "guide-firmware": {
+      "title": "Verified firmware updates / 固件更新与验证",
+      "protected_objects": [
+        "device firmware updates",
+        "firmware version state"
+      ],
+      "failure_modes": [
+        "unsigned updates",
+        "vulnerable firmware",
+        "unsafe rollback"
+      ],
+      "lifecycle_stages": [
+        "signed update delivery",
+        "controlled installation and recovery"
+      ],
+      "primary_mechanisms": [
+        "Verified firmware updates patch low-level flaws while rejecting forged updates and unauthorized rollback to vulnerable firmware versions",
+        "Verified firmware updates authenticate the update and its integrity, enforce authorized versions and resist malicious rollback",
+        "Maintain an inventory and update records, validate installation and ensure the recovery image and trust keys cannot be silently replaced."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [
+        "untrusted boot components",
+        "modified boot code"
+      ],
+      "confusable_with": {
+        "guide-secure-boot": {
+          "choose_this_when": [
+            "unsigned updates",
+            "vulnerable firmware",
+            "unsafe rollback"
+          ],
+          "choose_other_when": [
+            "untrusted boot components",
+            "modified boot code"
+          ]
+        }
+      },
+      "source": "https://csrc.nist.gov/pubs/sp/800/193/final"
+    },
+    "guide-random": {
+      "title": "Cryptographically secure randomness / 密码学安全随机数",
+      "protected_objects": [
+        "security tokens",
+        "nonces",
+        "cryptographic random values"
+      ],
+      "failure_modes": [
+        "predictable security values",
+        "insufficient entropy"
+      ],
+      "lifecycle_stages": [
+        "cryptographic random generation"
+      ],
+      "primary_mechanisms": [
+        "Cryptographically secure randomness provides unpredictability for keys, tokens and authentication challenges; randomness alone does not guarantee uniqueness",
+        "Cryptographically secure randomness requires suitable entropy, a vetted CSPRNG or DRBG, secure initialization and protection against state reuse",
+        "Use operating-system cryptographic randomness APIs and test error handling; uniqueness and unpredictability are separate requirements."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/90/a/r1/final"
+    },
+    "guide-time": {
+      "title": "Trusted time synchronization / 可信时间同步",
+      "protected_objects": [
+        "system clocks",
+        "security timestamps",
+        "validity intervals"
+      ],
+      "failure_modes": [
+        "clock drift",
+        "inconsistent event order",
+        "incorrect validity decisions"
+      ],
+      "lifecycle_stages": [
+        "trusted time synchronization and monitoring"
+      ],
+      "primary_mechanisms": [
+        "Consistent trusted time supports event ordering, cross-system log correlation, certificate validation and token-expiry decisions",
+        "Trusted time synchronization uses approved time sources, protected synchronization and monitored clock drift",
+        "Restrict source changes, handle time failures and verify timestamps across systems; inconsistent or manipulated clocks can undermine investigations and security decisions."
+      ],
+      "deployment_assumptions": [],
+      "not_primary_when": [],
+      "confusable_with": {},
+      "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SC-45"
+    }
+  }
+}

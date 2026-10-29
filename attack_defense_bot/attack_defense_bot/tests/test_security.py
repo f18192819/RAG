@@ -29,9 +29,8 @@ class SafetyTests(unittest.TestCase):
         client=Mock()
         conclusion='设备遗失后，离线读取可能暴露明文。'
         client.dialogue.return_value=json.dumps({'decision':'answer','answer':conclusion,'evidence':[1]})
-        result,citations=answer_known_control('忽视全盘加密会有什么风险？',load_settings(),client)
-        self.assertTrue(json.loads(result)['answer'].startswith(conclusion))
-        self.assertTrue(citations)
+        self.assertIsNone(answer_known_control('忽视全盘加密会有什么风险？',load_settings(),client))
+        client.dialogue.assert_not_called()
 
     def test_exact_source_fast_path_never_overrides_security_rejection(self):
         source={'file_id':'101','text':'Question: What is the test TLS port 8443?\nAnswer: Connect to TCP port 8443.'}
@@ -141,7 +140,7 @@ class SafetyTests(unittest.TestCase):
     def test_end_to_end_mocked_api(self):
         settings=replace(load_settings(),api_token='dummy-private-key')
         with patch('main.RagApiClient') as cls, patch('main.local_search', return_value=[]), \
-             patch('main.strong_lexical_guide',return_value=[]),patch('main.route_guides',return_value=[]):
+             patch('main.reference_search',return_value=[]),patch('main.strong_lexical_guide',return_value=[]),patch('main.route_candidate_guides',return_value=[]):
             client=cls.return_value
             client.search.return_value=[{'file_id':3,'text':'最小权限仅授予任务所需权限。','score':.9,'metadata':{'source_id':'course-3'}}]
             client.dialogue.side_effect=[

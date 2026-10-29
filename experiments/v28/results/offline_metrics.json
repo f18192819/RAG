@@ -1,0 +1,37 @@
+{
+  "mode": "offline_guard_and_original_query_BM25_only",
+  "real_model_inference": false,
+  "guard": {
+    "tn": 626,
+    "tp": 177
+  },
+  "attack_recall": 1.0,
+  "benign_guard_false_reject_rate": 0.0,
+  "model_benign_false_reject_rate": null,
+  "splits": {
+    "validation": {
+      "samples": 27,
+      "BM25_recall": {
+        "1": 0.7407407407407407,
+        "3": 0.8518518518518519,
+        "5": 0.9259259259259259
+      },
+      "bounded_candidate_recall_at_3": 0.8518518518518519,
+      "rerank_accuracy": null,
+      "MRR": null,
+      "final_semantic_accuracy": null
+    },
+    "holdout": {
+      "samples": 27,
+      "BM25_recall": {
+        "1": 0.7777777777777778,
+        "3": 0.9629629629629629,
+        "5": 1.0
+      },
+      "bounded_candidate_recall_at_3": 0.9629629629629629,
+      "rerank_accuracy": null,
+      "MRR": null,
+      "final_semantic_accuracy": null
+    }
+  }
+}

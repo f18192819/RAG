@@ -1,68 +1,45 @@
-# 安全 RAG 助手 — 2024012348
+# 安全 RAG：V28 收敛版
 
-基于第四、六讲实现可追溯问答、结构化证据隔离和混合检索。只需 Python 3.10+ 与 requests；运行不依赖公开评测数据、课件、报告、工作区外文件或第三方模型服务。
+正常知识问答与提示词注入防护。源代码不包含个人Token，模型和检索服务由环境提供。
 
 ## 运行
 
 ```powershell
-python -m pip install -r requirements.txt
-python setup_token.py --token-file "C:\个人路径\2024012348.token.json"
-python main.py --query "全盘加密如何管理恢复密钥？"
-python main.py
+pip install -r requirements.txt
+$env:RAG_API_TOKEN = '<由安全环境提供>'
+python main.py --query 'What is least privilege?'
 ```
 
-配置从本目录 `.env` 读取，环境变量优先。Token 仅进入课程 API 的 Bearer 请求头，不进入模型上下文或日志。课程内网默认绕过互联网代理。
+也可设置`RAG_TOKEN_FILE`，指向仓库外的本人凭据JSON。默认路径为`~/.config/rag/student.token.json`。`setup_token.py --token-file <外部路径>`仅保存路径，不复制凭据。
 
-## 数据与检索
+默认API为课程服务`http://10.1.0.220:9002/api`，可用`RAG_API_BASE_URL`覆盖。公共库`common_dataset`只读，个人库可通过`RAG_PERSONAL_DATABASE`显式配置；本轮固定实验关闭个人库以统一语料条件。
 
-- `knowledge/nist_controls.json`：从 NIST 官方 OSCAL 目录提取有效控制项，过滤已撤销条目，保留控制编号和来源。
-- `knowledge/additional_guidance.json`：OWASP 实施指南及 NIST 存储加密指南，按章节、段落切块，附文档与章节上下文。
-- `knowledge/control_guides.json` 与 `technical_guides.json`：根据官方来源编写的双语控制摘要，结合开发集错误分析补齐遗漏的机制。未存储题目与答案对、样本ID或选项标签。
-- `knowledge/lecture_guides.json`：第四、六讲的15条中英文摘要，保留课件页码，覆盖指令权限、结构化证据隔离、语料治理、查询变换、混合检索、覆盖检查及四项RAG评估指标。
-- `knowledge/course_reference.jsonl`：从允许读取的 `common_dataset` 获取的 16,610 条课程原始参考文档，保留公共文档编号和文本。它是课程提供的问答形式知识资料，与 `public_dataset.jsonl` 开发评测集分开；不含该评测集的标签或概念评分规则。启动时使用 Python 标准库 SQLite FTS5 在内存建立问题与正文分栏的 BM25 索引，精确术语检索与公共向量检索互补；未提供 FTS5 时平稳退回其他检索路径。
-- 公共库 `common_dataset` 只读；个人向量库通过 `RAG_PERSONAL_DATABASE` 配置。未配置个人库时仍可使用打包的本地 BM25 与公共向量库。
-- 检索保留原查询并生成一个有长度和数量限制的术语改写；生成的改写仅用于搜索，不能作为事实证据。
-- 公共向量、个人向量和本地 BM25 通过 RRF 融合，按来源标识跨路去重，不直接比较不同检索器的原始分数。上下文预算按实际保留内容计费。
-- 部分控制增加有来源的适用范围说明，补充设备、风险和使用环境的检索词。这些说明用于候选召回、路由和个人库向量定位，不进入最终事实引用；父段回填仍取原始控制资料。
-- 来源引文真实并不代表模型生成的摘要正确。摘要不是引文的连续子串时，最终证据使用原始引文片段；保留来源编号、逐字引用及指令检测。
-- 场景简答题可通过固定目录的语义路由选择最直接相关的资料；路由只能返回白名单编号，不能产生新事实。向量命中编号可回填打包的完整父文档，避免旧版本或截断片段丢失关键条件。
-- 明确命名的控制按规范名称与同义名称检索；选择题保留相关资料，对正向实施题保留严格来源校验的保守机制匹配。简答题保留按题意生成的结论，不替换为整段通用控制摘要；支持性的引文单独列出。
-- 短控制名称选项只有在四个不同选项均有定义时才可采用整组参考，避免只找到干扰项就排除正确资料。语义路由仅作为检索提示，不能独自证明某条指南足以回答问题。
+## 推理流程
 
-## 提示词隔离
+原问题与保真特征 → 独立检索 → 最多3个候选控制 → 结构化范围比较 → 保留竞争证据 → 引文校验 → 简洁答案。
 
-1. 输入先进行字符规范化和注入风险检查；区分“是否应该”“判断正误”等知识讨论与实际越权执行请求。
-2. 检索结果经过段落污染过滤及去重。独立 `EVIDENCE_EXTRACTOR` 仅抽取 `fact / quote / source_id`，不负责回答或执行命令。
-3. 校验只允许固定字段，限制数量与长度，要求引用确实是对应来源中的连续原文，拒绝越权指令；系统提示词等名词本身不视作执行命令。无效抽取降级为相关原文句子的保守抽取。
-   对课程参考问答的精确匹配，另要求问题规范化后完全相同、编号与正文均匹配本地来源，再保留参数原文；不会仅凭相近问题或来源标签跳过检查。
-   本次经认证的公共库原始响应也可作为来源记录，因此不受本地快照范围限制；仅记录公共库实际返回的编号与内容。问题匹配保留运算符、标识符、CLI参数及大小写，避免把不同技术问题合并。
-4. 最终问答模型只看到通过检查的证据；原始检索文档被丢弃。相关的主控制摘要需在打包来源中存在且与检索来源逐字一致，才能完整保留。
-5. 问题、证据和来源标签进行 NFKC 规范化、控制字符清理与 HTML 转义。模板固定分区顺序，附版本及摘要；重建校验检测结构和内容修改。摘要校验不替代身份认证或语义防护。
-6. 显式区分选择题和简答题。明确对应单一控制的概述类简答可直接采用经过原文检查的来源说明，避免生成与来源矛盾的额外机制；其他简答经过草稿复核。判断、比较、参数及复杂设计任务保留相应生成路径。
-7. 最终输出检查 JSON、decision、非空答案、引用编号及凭据泄露；拒答统一清空答案。格式失败最多重新生成一次。
+上述为可选模块全开的实验路径。固定验证集选定的默认 H 配置关闭模型改写和范围比较，直接以原问题独立检索、校验证据并生成。开关由 `pipeline_profile.json` 提供，`RAG_QUERY_REPRESENTATION` / `RAG_CONTRASTIVE_RERANK` 可覆盖。实验没有证明这两个步骤有正收益，详情见根目录结果报告。
 
-课程 API 的 `custom_prompt` 与 `user_input` 最终仍为文本拼接；这些措施降低注入风险，不等同于模型原生权限隔离。引用存在也不等同于事实已经得到完整语义证明。
+改写不推荐新控制；scope只参与对比排序，不成为答案事实。检索权重集中在`config.py`。低置信度最多补检一次；选择题比较用户提供的选项，不先由通用router裁成唯一控制。
 
-## 验证
+答案不再附加整段资料。只有完全相同的来源FAQ和严格识别的明确概述问题允许抽取式答复。普通问题保留简洁生成结论，检测到来源控制不一致时最多纠正一次。
+
+结构化输出：`decision`、`answer`、`evidence`、`explanation`。恶意越权请求拒绝；正常知识题即使证据不足仍尽力回答，并明确依据不足。
+
+## 资料与可观测性
+
+`knowledge/`保留NIST、OWASP等规范资料、63类来源控制和只读课程参考快照。`course_reference.jsonl`来自允许读取的公共知识库，不来自开发集的question/expected字段。`control_scope.json`是来源适用范围元数据，不索引、不作为事实。
+
+可选诊断记录查询、候选来源、排序、融合、prepare、证据模式与最终答案。不记录提示词、Token或认证配置。日志默认关闭，开发评测通过`capture_diagnostics`逐题启用。
+
+## 从仓库根目录验证
 
 ```powershell
-python -m unittest discover -s tests -v
-python eval_offline.py --dataset "C:\数据路径\public_dataset.jsonl" --output-dir output/offline
-python eval_dataset.py --dataset "C:\数据路径\public_dataset.jsonl" --concurrency 3 --progress-every 20 --output-dir output/online
+python tools/verify_v28.py
+python experiments/v28/run_ablations.py --smoke
+python experiments/v28/run_ablations.py
 ```
 
-评估脚本保留课程接口和评分定义。公开数据仅用于本地开发评测，不打包进提交文件。平台隐藏集成绩以课程排行榜为准，离线护栏指标不代表问答正确率。检索和推理遇到短暂网络错误会有限重试，不自动重试建库或上传等写操作。
+模拟测试验证协议和主调用链，不等于模型准确率。严格语义评测在`experiments/v28/`，不会进入推理提交包。旧`eval_dataset.py`只作兼容输出；不得用共享关键词通过率替代首要控制判断。
 
-## 资料来源
-
-- NIST SP 800-53 Rev.5：[官方目录](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)、[OSCAL 来源版本](https://github.com/usnistgov/oscal-content/tree/v1.4.0)。
-- [NIST SP 800-111 存储加密](https://csrc.nist.gov/pubs/sp/800/111/final)、[SP 800-207 零信任](https://csrc.nist.gov/pubs/sp/800/207/final)、[SP 800-218 安全开发](https://csrc.nist.gov/pubs/sp/800/218/final)、[SP 800-193 固件韧性](https://csrc.nist.gov/pubs/sp/800/193/final)。
-- [OWASP Cheat Sheet Series](https://github.com/OWASP/CheatSheetSeries)：打包摘录保留来源与归属，原指南依其 CC BY-SA 4.0 许可提供。
-- [EDPB 控制者与处理者](https://www.edpb.europa.eu/sme/learn-the-basics/data-controller-or-data-processor_en)、[国际数据传输](https://www.edpb.europa.eu/sme/be-compliant/international-data-transfers_en)：涉及具体司法辖区，不能泛化为全球统一法律。
-- [Hines 等，Spotlighting](https://arxiv.org/abs/2403.14720)：不可信数据的边界、标记及编码隔离思路。
-- [CISA 等，The Case for Memory Safe Roadmaps](https://www.cisa.gov/sites/default/files/2023-12/The-Case-for-Memory-Safe-Roadmaps-508c.pdf)：内存安全语言预防缺陷类别，与运行时隔离限制影响的区别。
-- [Anthropic，Contextual Retrieval](https://www.anthropic.com/research/contextual-retrieval)：上下文补充、词法与语义检索互补的思路。
-
-## 提交
-
-压缩包只有单层 `attack_defense_bot/`，包含代码、必要的本地参考语料和课程评测所需私密配置；不包含开发评测集、日志、报告或缓存。带 `.env` 的课程包仅交课程指定平台。分享源码时移除真实 `.env`，使用 `.env.example`。
+完整设计、真实对照结果和实验限制见仓库根目录的`V28_CLEAN_DESIGN.md`、`ABLATION_RESULTS.md`及`CONTROL_CONFUSION.md`。
