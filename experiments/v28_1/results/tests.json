@@ -1,0 +1,10 @@
+{
+  "tests_run": 84,
+  "failures": 0,
+  "errors": 0,
+  "successful": true,
+  "boundary_pairs": 10,
+  "boundary_subcases": 40,
+  "mechanism_controls": 9,
+  "mocked_tests_are_model_accuracy": false
+}

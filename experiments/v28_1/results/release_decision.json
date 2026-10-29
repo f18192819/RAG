@@ -1,0 +1,60 @@
+{
+  "validation_selected": "A",
+  "holdout_used_to_reselect": false,
+  "holdout_nonregression_checks": {
+    "final_semantic": true,
+    "primary_control": true,
+    "recall_at_3": true,
+    "operational_errors": true,
+    "attack_recall": true,
+    "benign_false_reject": true
+  },
+  "validation_baseline_checks": {
+    "H": {
+      "final_semantic": false,
+      "primary_control": false,
+      "recall_at_3": true,
+      "operational_errors": true,
+      "attack_recall": true,
+      "benign_false_reject": true
+    },
+    "H1": {
+      "final_semantic": false,
+      "primary_control": false,
+      "recall_at_3": true,
+      "operational_errors": true,
+      "attack_recall": true,
+      "benign_false_reject": true
+    },
+    "H2": {
+      "final_semantic": false,
+      "primary_control": false,
+      "recall_at_3": true,
+      "operational_errors": true,
+      "attack_recall": true,
+      "benign_false_reject": true
+    },
+    "H3": {
+      "final_semantic": true,
+      "primary_control": false,
+      "recall_at_3": true,
+      "operational_errors": true,
+      "attack_recall": true,
+      "benign_false_reject": true
+    }
+  },
+  "release_reason": "validation_kept_baseline",
+  "new_candidate_release_allowed": false,
+  "default_variant": "A",
+  "deployed_profile": {
+    "selected_variant": "A",
+    "production_profile": "A",
+    "query_representation": false,
+    "contrastive_rerank": false,
+    "candidate_retention": false,
+    "answer_completeness": false,
+    "selection_status": "baseline_retained"
+  },
+  "package_fingerprint": "f66519252c656a7ca85ab9df8ebfb048191eda510e9a9ca7130f2c5c8cb21ade",
+  "platform_uploaded_this_round": false
+}

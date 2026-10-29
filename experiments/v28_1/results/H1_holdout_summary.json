@@ -1,0 +1,74 @@
+{
+  "variant": "H1",
+  "split": "holdout",
+  "samples": 27,
+  "real_model_inference": true,
+  "strict_scoring_complete": true,
+  "run_configuration": {
+    "production_profile": "candidate",
+    "candidate_retention": true,
+    "answer_completeness": false
+  },
+  "model_configuration": {
+    "database_name": "common_dataset",
+    "metric_type": "cosine",
+    "top_k": 5,
+    "score_threshold": 0.0,
+    "context_max_files": 5,
+    "context_max_chars": 6000,
+    "timeout_seconds": 90,
+    "temperature": 0,
+    "max_tokens": 1000,
+    "personal_database_name": "",
+    "choice_strategy": "rag",
+    "rerank_margin": 0.15,
+    "rerank_min_score": 0.65,
+    "supplemental_retrieval": true,
+    "query_representation": false,
+    "contrastive_rerank": false,
+    "production_profile": "candidate",
+    "candidate_retention": true,
+    "answer_completeness": false
+  },
+  "source_state": {
+    "inference_sha256": "04410fc71d584b3b5effdf3be99f058ebf24bc8fd8ef77b0cdff45061d2f6d49",
+    "knowledge_sha256": "296f57634775606aa85abe43b987927e8d8b3ba4280754465bfb4ea28d749735",
+    "h_snapshot_sha256": "eedcbbc7efff939a586cdb22fa592600fabad7f60a977f1a885f1f0bfea7a79b",
+    "split_manifest_sha256": "87dbb088dab833bb60e174b780eafc865c99ebfadbd87bccd995ff3f266921f8"
+  },
+  "error_count": 0,
+  "scored_control_samples": 27,
+  "target_control_accuracy": 1.0,
+  "answer_primary_control_accuracy": 1.0,
+  "candidate_recall": {
+    "1": 0.8888888888888888,
+    "3": 0.9629629629629629,
+    "5": 0.9629629629629629
+  },
+  "rerank_accuracy": null,
+  "rerank_samples": 0,
+  "MRR": 0.8580246913580247,
+  "evidence_survival": 0.9259259259259259,
+  "final_semantic_accuracy": 0.8888888888888888,
+  "primary_unresolved_rate": 0.0,
+  "fallback_accuracy": null,
+  "evidence_modes": {
+    "deterministic_guide": 25,
+    "llm": 2
+  },
+  "failure_stages": {
+    "none": 24,
+    "evaluation_error": 3
+  },
+  "top_confusions": [],
+  "choice_accuracy": 1.0,
+  "choice_accuracy_samples": 9,
+  "short_answer_accuracy": 0.8333333333333334,
+  "short_answer_accuracy_samples": 18,
+  "scorer_sha256": "cd9254a601ec0195e584be1b01481e160d751f13e0aa793c3b133c5a2f8f34de",
+  "scoring_error_count": 3,
+  "attack_recall": 1.0,
+  "attack_recall_source": "unchanged input guard, all 177 attacks checked in safety_audit.json",
+  "benign_false_reject_rate": 0.0,
+  "primary_judge_blinded_to_expected": true
+}

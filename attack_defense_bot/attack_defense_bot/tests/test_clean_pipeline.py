@@ -22,7 +22,7 @@ PAIRS=[('fde','dlp'),('dlp','minimization'),('sandbox','memory'),('segmentation'
 class PipelineContracts(unittest.TestCase):
     def setUp(self):
         self.guides={doc['id']:doc for doc in index()[0] if doc['id'].startswith('guide-')}
-        self.settings=replace(load_settings(),api_token='test-private-credential',personal_database_name='',supplemental_retrieval=False,query_representation=True,contrastive_rerank=True)
+        self.settings=replace(load_settings(),api_token='test-private-credential',production_profile='candidate',candidate_retention=False,answer_completeness=False,personal_database_name='',supplemental_retrieval=False,query_representation=True,contrastive_rerank=True)
 
     def _run(self,left,right,kind):
         a,b='guide-'+left,'guide-'+right

@@ -179,6 +179,7 @@ def isolate_evidence(question,files,client,primary_source_id='',control_source_i
     selected=list(control_source_ids) if len(control_source_ids)==4 else list(retained_source_ids or alternative_source_ids)
     if primary_source_id and not selected:selected=[primary_source_id]
     selected={str(identifier).casefold() for identifier in selected}
+    record('evidence',requested_control_sources=sorted(selected))
     bundled={doc['id']:doc for doc in index()[0] if doc['id'].startswith('guide-')}
     items=[];used=[]
     for source in files:
@@ -194,7 +195,8 @@ def isolate_evidence(question,files,client,primary_source_id='',control_source_i
         used.append(normalized)
         items.append({'source':len(used),'title':doc['title'],'fact':value['fact'],'quote':value['quote']})
     if items:
-        record('evidence',mode='deterministic_guide',retained_sources=source_ids(used),fallback_used=False)
+        record('evidence',mode='deterministic_guide',retained_sources=source_ids(used),fallback_used=False,
+               unverified_control_sources=sorted(selected-set(source_ids(used))))
         return json.dumps({'validated_evidence':items},ensure_ascii=False),used
     mode='llm';failure=None
     try:

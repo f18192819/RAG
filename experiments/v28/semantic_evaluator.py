@@ -39,6 +39,25 @@ def strict_mechanism_coverage(answer,concepts,reference=''):
 UNSET=object()
 
 
+def failure_stage(trace,evaluation):
+    if evaluation.get('scoring_error'):return 'evaluation_error'
+    if evaluation['final_semantic_correct']:return 'none'
+    desired=evaluation['expected_control']
+    if not desired:return 'unmapped_control'
+    catalog=trace.get('retrieval',{}).get('candidate_sources',[])
+    fused=trace.get('fusion',{}).get('sources',[])
+    if desired not in catalog and desired not in fused:return 'retrieval_miss'
+    router=trace.get('router',{})
+    actual_rerank=bool(router.get('ranking')) and not router.get('explicit_named') and router.get('ranking_valid',True)
+    if desired not in fused:
+        if actual_rerank and desired in router.get('candidate_controls',[]) and desired not in router.get('retained_controls',[]):
+            return 'rerank_miss'
+        return 'fusion_loss'
+    if desired not in trace.get('prepared',{}).get('sources',[]):return 'context_loss'
+    if desired not in trace.get('evidence',{}).get('retained_sources',[]):return 'evidence_extraction_miss'
+    return 'generation_incomplete' if evaluation['target_control_correct'] else 'generation_wrong_primary'
+
+
 def evaluate(row,response,trace,canonical,primary_override=UNSET):
     desired=canonical.get(row.get('provenance',{}).get('augmentation_group',''))
     expected=row['expected'];decision=response.get('decision','error')
@@ -66,21 +85,18 @@ def evaluate(row,response,trace,canonical,primary_override=UNSET):
     ranked=[item['source_id'] for item in rankings] or trace.get('fusion',{}).get('sources',[])
     position=ranked.index(desired)+1 if desired in ranked else None
     retained=trace.get('evidence',{}).get('retained_sources',[])
-    stage='none'
-    if desired and not semantic_correct:
-        if desired not in candidates:stage='retrieval_miss'
-        elif position!=1:stage='rerank_miss'
-        elif desired not in retained:stage='evidence_drop'
-        else:stage='generation_miss'
-    return {'expected_control':desired,'predicted_control':predicted,'target_control_correct':control_correct,
+    result={'expected_control':desired,'predicted_control':predicted,'target_control_correct':control_correct,
             'answer_primary_control_correct':control_correct,'mechanism_coverage':coverage,
             'final_semantic_correct':bool(semantic_correct),'choice_correct':bool(choice_correct),
             'candidate_recall':{str(k):desired in candidates[:k] for k in [1,3,5]},
-            'rerank_correct':position==1,'reciprocal_rank':1/position if position else 0.0,
+            'rerank_correct':position==1,'rerank_applied':bool(rankings) and not trace.get('router',{}).get('explicit_named',False),
+            'reciprocal_rank':1/position if position else 0.0,
             'evidence_survived':desired in retained,'correct_source_retrieved':desired in candidates,
             'source_survival':{stage:desired in trace.get(stage,{}).get(field,[]) for stage,field in
                 [('retrieval','candidate_sources'),('fusion','sources'),('prepared','sources'),('evidence','retained_sources')]},
-            'failure_stage':stage,'primary_unresolved':not bool(predicted)}
+            'primary_unresolved':not bool(predicted)}
+    result['failure_stage']=failure_stage(trace,result)
+    return result
 
 
 def aggregate(results):
@@ -89,12 +105,14 @@ def aggregate(results):
     retrieved=[row for row in scored if row['correct_source_retrieved']]
     modes=Counter(row.get('evidence',{}).get('mode','unknown') for row in results)
     fallback=[row['evaluation'] for row in results if row.get('evidence',{}).get('mode')=='fallback' and 'evaluation' in row]
+    reranked=[row for row in scored if row.get('rerank_applied')]
     confusion=Counter((row['expected_control'],row['predicted_control'] or 'unresolved') for row in scored if not row['target_control_correct'] and row['predicted_control']!=row['expected_control'])
     return {'samples':len(results),'scored_control_samples':len(scored),
         'error_count':sum(bool(row.get('error_type')) for row in results),
         'target_control_accuracy':mean('target_control_correct'),'answer_primary_control_accuracy':mean('answer_primary_control_correct'),
         'candidate_recall':{str(k):sum(row['candidate_recall'][str(k)] for row in scored)/len(scored) if scored else None for k in [1,3,5]},
-        'rerank_accuracy':mean('rerank_correct'),'MRR':mean('reciprocal_rank'),
+        'rerank_accuracy':sum(row['rerank_correct'] for row in reranked)/len(reranked) if reranked else None,
+        'rerank_samples':len(reranked),'MRR':mean('reciprocal_rank'),
         'evidence_survival':sum(row['evidence_survived'] for row in retrieved)/len(retrieved) if retrieved else None,
         'final_semantic_accuracy':mean('final_semantic_correct'),'primary_unresolved_rate':mean('primary_unresolved'),
         'fallback_accuracy':sum(row['final_semantic_correct'] for row in fallback)/len(fallback) if fallback else None,

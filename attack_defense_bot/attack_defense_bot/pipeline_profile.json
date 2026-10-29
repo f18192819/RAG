@@ -1,6 +1,9 @@
 {
-  "selected_variant": "H",
+  "selected_variant": "A",
+  "production_profile": "A",
   "query_representation": false,
   "contrastive_rerank": false,
-  "selection_status": "validation_selected"
+  "candidate_retention": false,
+  "answer_completeness": false,
+  "selection_status": "baseline_retained"
 }

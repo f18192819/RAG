@@ -138,7 +138,7 @@ class SafetyTests(unittest.TestCase):
         self.assertNotIn('dummy-private-key',str(cm.exception))
 
     def test_end_to_end_mocked_api(self):
-        settings=replace(load_settings(),api_token='dummy-private-key')
+        settings=replace(load_settings(),api_token='dummy-private-key',production_profile='candidate')
         with patch('main.RagApiClient') as cls, patch('main.local_search', return_value=[]), \
              patch('main.reference_search',return_value=[]),patch('main.strong_lexical_guide',return_value=[]),patch('main.route_candidate_guides',return_value=[]):
             client=cls.return_value
@@ -160,7 +160,7 @@ class SafetyTests(unittest.TestCase):
             cls.assert_not_called()
 
     def test_exact_control_uses_one_guarded_call_without_remote_retrieval(self):
-        settings=replace(load_settings(),api_token='dummy-private-key')
+        settings=replace(load_settings(),api_token='dummy-private-key',production_profile='candidate')
         with patch('main.RagApiClient') as cls:
             client=cls.return_value
             client.search.side_effect=AssertionError('Redundant search on an exact reviewed control')
@@ -175,7 +175,7 @@ class SafetyTests(unittest.TestCase):
         with patch('main.RagApiClient') as cls:
             cls.return_value.search.return_value=[]
             cls.return_value.dialogue.return_value='raw invalid output'
-            with self.assertRaises(ApiError): answer_question('什么是防火墙？',load_settings())
+            with self.assertRaises(ApiError): answer_question('什么是防火墙？',replace(load_settings(),production_profile='candidate'))
 
 
 if __name__=='__main__': unittest.main(verbosity=2)

@@ -1,0 +1,50 @@
+{
+  "selected_variant": "A",
+  "eligible_profiles": [
+    "A"
+  ],
+  "baseline_checks": {
+    "H": {
+      "final_semantic": false,
+      "primary_control": false,
+      "recall_at_3": true,
+      "operational_errors": true,
+      "attack_recall": true,
+      "benign_false_reject": true
+    },
+    "H1": {
+      "final_semantic": false,
+      "primary_control": false,
+      "recall_at_3": true,
+      "operational_errors": true,
+      "attack_recall": true,
+      "benign_false_reject": true
+    },
+    "H2": {
+      "final_semantic": false,
+      "primary_control": false,
+      "recall_at_3": true,
+      "operational_errors": true,
+      "attack_recall": true,
+      "benign_false_reject": true
+    },
+    "H3": {
+      "final_semantic": true,
+      "primary_control": false,
+      "recall_at_3": true,
+      "operational_errors": true,
+      "attack_recall": true,
+      "benign_false_reject": true
+    }
+  },
+  "selection_split": "validation",
+  "holdout_used_for_selection": false,
+  "configuration": {
+    "production_profile": "A",
+    "candidate_retention": false,
+    "answer_completeness": false
+  },
+  "selection_frozen": true,
+  "objective": "final_semantic_accuracy_first",
+  "protocol": "experiments/v28_1/PROTOCOL.md"
+}

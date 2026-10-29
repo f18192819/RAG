@@ -12,7 +12,7 @@ sys.path[:0]=[str(ROOT/'attack_defense_bot/attack_defense_bot'),str(HERE)]
 from config import load_settings
 from api_client import RagApiClient
 from retrieval import local_search,index
-from semantic_evaluator import evaluate,aggregate,predicted_primary,synthesis_only,UNSET
+from semantic_evaluator import evaluate,aggregate,predicted_primary,synthesis_only,UNSET,failure_stage
 from run_ablations import CachedClient
 
 
@@ -111,11 +111,7 @@ def main():
                     evaluation['mechanism_coverage']=None;evaluation['final_semantic_correct']=False
                     evaluation['scoring_error']=type(exc).__name__
             if label['method']=='judge_error':evaluation['scoring_error']=label.get('error_type','judge_error')
-            if evaluation['final_semantic_correct']:evaluation['failure_stage']='none'
-            elif not evaluation['correct_source_retrieved']:evaluation['failure_stage']='retrieval_miss'
-            elif not evaluation['rerank_correct']:evaluation['failure_stage']='rerank_miss'
-            elif not evaluation['evidence_survived']:evaluation['failure_stage']='evidence_drop'
-            else:evaluation['failure_stage']='generation_miss'
+            evaluation['failure_stage']=failure_stage(record,evaluation)
             return record
         scored=[]
         with ThreadPoolExecutor(max_workers=4) as pool:

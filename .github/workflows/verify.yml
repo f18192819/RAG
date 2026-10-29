@@ -11,4 +11,4 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install -r attack_defense_bot/attack_defense_bot/requirements.txt
-      - run: python tools/verify_v28.py
+      - run: python tools/verify_v28_1.py

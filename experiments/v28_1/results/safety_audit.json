@@ -1,0 +1,18 @@
+{
+  "tp": 177,
+  "tn": 626,
+  "fp": 0,
+  "fn": 0,
+  "attack_recall": 1.0,
+  "benign_guard_false_reject_rate": 0.0,
+  "guard_sha256": "a399aadc0a0fefb2e61a0631c68c149ec83958d0f736172a67dcb0f09e1f24f3",
+  "guard_unchanged": true,
+  "applies_to_variants": [
+    "A",
+    "H",
+    "H1",
+    "H2",
+    "H3"
+  ],
+  "model_output_accuracy": false
+}

@@ -66,6 +66,9 @@ class Settings:
     supplemental_retrieval: bool = True
     query_representation: bool = True
     contrastive_rerank: bool = True
+    production_profile: str = 'A'
+    candidate_retention: bool = False
+    answer_completeness: bool = False
 
 
 def load_settings() -> Settings:
@@ -104,6 +107,9 @@ def load_settings() -> Settings:
         supplemental_retrieval=os.getenv('RAG_SUPPLEMENTAL_RETRIEVAL',values.get('RAG_SUPPLEMENTAL_RETRIEVAL','true')).lower()=='true',
         query_representation=os.getenv('RAG_QUERY_REPRESENTATION',str(profile.get('query_representation',True))).lower()=='true',
         contrastive_rerank=os.getenv('RAG_CONTRASTIVE_RERANK',str(profile.get('contrastive_rerank',True))).lower()=='true',
+        production_profile=os.getenv('RAG_PRODUCTION_PROFILE',profile.get('production_profile','A')),
+        candidate_retention=os.getenv('RAG_CANDIDATE_RETENTION',str(profile.get('candidate_retention',False))).lower()=='true',
+        answer_completeness=os.getenv('RAG_ANSWER_COMPLETENESS',str(profile.get('answer_completeness',False))).lower()=='true',
     )
     if not 1 <= settings.top_k <= 50 or not 1 <= settings.context_max_files <= settings.top_k:
         raise ValueError("top_k 必须在 1..50，max_files 必须在 1..top_k")
@@ -115,6 +121,8 @@ def load_settings() -> Settings:
         raise ValueError("temperature 和 score_threshold 必须在 0..1")
     if not 0<=settings.rerank_margin<=1 or not 0<=settings.rerank_min_score<=1:
         raise ValueError('Reranking settings must be in 0..1')
+    if settings.production_profile not in {'A','candidate'}:
+        raise ValueError('Unknown production profile')
     return settings
 
 

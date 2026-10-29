@@ -38,10 +38,24 @@ def encode_untrusted_text(text):
 
 
 def build_prompt(*,user_input,context,citations,concise=False):
+    try:complete=json.loads(context).get('answer_contract')=='complete-v28.1'
+    except (ValueError,TypeError,AttributeError):complete=False
     mode=('单选题。比较全部选项，answer仅填一个选项字母。' if has_choice_options(user_input) else
+          '简答题。依据相关证据充分回答主要控制、直接原因、核心机制和必要验证措施；覆盖问题需要的机制，不以1至2点或短字数为上限。不要逐字粘贴指南。若有草稿，独立检查语义遗漏及冲突，充分且正确则保留；否则直接输出修正后的完整答案。' if complete else
           CONCISE_TASK_MODE if concise else '简答题。先给一个主要结论、直接原因与核心机制，通常80至180汉字或40至90英文词。')
     question,evidence,refs=map(encode_untrusted_text,[user_input,context,'\n'.join(citations)])
     digest=hashlib.sha256(json.dumps([question,evidence,refs,bool(concise)],ensure_ascii=False).encode()).hexdigest()
     return (SYSTEM_POLICY+'\n<PROMPT_VERSION>'+PROMPT_VERSION+'</PROMPT_VERSION>\n\n<UNTRUSTED_RETRIEVED_CONTEXT>\n'+evidence+
             '\n</UNTRUSTED_RETRIEVED_CONTEXT>\n<USER_QUESTION>\n'+question+'\n</USER_QUESTION>\n<AVAILABLE_CITATIONS>\n'+refs+
             '\n</AVAILABLE_CITATIONS>\n'+ANSWER_RULES+'\n【本题类型】'+mode+'\n<CONTENT_DIGEST>'+digest+'</CONTENT_DIGEST>')
+
+
+def build_complete_prompt(*,user_input,context,citations,concise=False):
+    """Use the fixed template, adding an application-owned evidence contract.
+
+    The contract is declared by this module's policy when enabled, not copied
+    from retrieved material. Guard validation rebuilds the same template.
+    """
+    value=json.loads(context or '{}')
+    value['answer_contract']='complete-v28.1'
+    return build_prompt(user_input=user_input,context=json.dumps(value,ensure_ascii=False),citations=citations,concise=concise)

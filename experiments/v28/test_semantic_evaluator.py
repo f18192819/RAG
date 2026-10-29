@@ -37,7 +37,7 @@ class StrictEvaluationTests(unittest.TestCase):
     def test_stage_survival_distinguishes_evidence_drop(self):
         trace={**self.trace,'evidence':{'retained_sources':[]}}
         score=evaluate(self.row,{'decision':'answer','answer':'应优先采用MFA。'},trace,self.canonical)
-        self.assertEqual(score['failure_stage'],'evidence_drop')
+        self.assertEqual(score['failure_stage'],'evidence_extraction_miss')
         self.assertTrue(score['source_survival']['retrieval']);self.assertFalse(score['source_survival']['evidence'])
 
     def test_split_integrity_and_control_disjointness(self):

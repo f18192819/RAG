@@ -1,0 +1,18 @@
+{
+  "H1_validation": {
+    "reserved_cases": 15,
+    "losses": []
+  },
+  "H3_validation": {
+    "reserved_cases": 15,
+    "losses": []
+  },
+  "H1_holdout": {
+    "reserved_cases": 10,
+    "losses": []
+  },
+  "H3_holdout": {
+    "reserved_cases": 10,
+    "losses": []
+  }
+}

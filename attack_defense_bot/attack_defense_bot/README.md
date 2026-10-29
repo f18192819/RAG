@@ -1,4 +1,4 @@
-# 安全 RAG：V28 收敛版
+# 安全 RAG：V28.1 可靠性修复
 
 正常知识问答与提示词注入防护。源代码不包含个人Token，模型和检索服务由环境提供。
 
@@ -18,7 +18,11 @@ python main.py --query 'What is least privilege?'
 
 原问题与保真特征 → 独立检索 → 最多3个候选控制 → 结构化范围比较 → 保留竞争证据 → 引文校验 → 简洁答案。
 
-上述为可选模块全开的实验路径。固定验证集选定的默认 H 配置关闭模型改写和范围比较，直接以原问题独立检索、校验证据并生成。开关由 `pipeline_profile.json` 提供，`RAG_QUERY_REPRESENTATION` / `RAG_CONTRASTIVE_RERANK` 可覆盖。实验没有证明这两个步骤有正收益，详情见根目录结果报告。
+上述为候选生产链。V28.1 默认入口恢复 A 基线（v17 检索、充分生成与独立复核，共用当前安全护栏和外部凭据，取消最终追加来源段落）。新候选通过验证集及最终保留集门槛后才可发布。实际默认配置见 `pipeline_profile.json` 和根目录 `V28_1_RESULTS.md`。
+
+候选链用 `RAG_PRODUCTION_PROFILE=candidate` 显式选择；`RAG_CANDIDATE_RETENTION` 和 `RAG_ANSWER_COMPLETENESS` 是两个独立实验开关。前者使独立检索结果实际参与决策，为最多三份候选预留上下文，并向证据校验传递保留ID；后者要求回答原因、机制和验证，仅在来源控制冲突或有明显机制遗漏信号时进行一次条件复核。低覆盖信号是触发器，不是答案正确性判定。
+
+这些开关只影响候选链。A 使用自己的 v17 检索与复核逻辑，不会因为候选链开关为 false 而关闭其基线行为。
 
 改写不推荐新控制；scope只参与对比排序，不成为答案事实。检索权重集中在`config.py`。低置信度最多补检一次；选择题比较用户提供的选项，不先由通用router裁成唯一控制。
 
@@ -35,9 +39,8 @@ python main.py --query 'What is least privilege?'
 ## 从仓库根目录验证
 
 ```powershell
-python tools/verify_v28.py
-python experiments/v28/run_ablations.py --smoke
-python experiments/v28/run_ablations.py
+python tools/verify_v28_1.py
+python experiments/v28_1/run_experiments.py
 ```
 
 模拟测试验证协议和主调用链，不等于模型准确率。严格语义评测在`experiments/v28/`，不会进入推理提交包。旧`eval_dataset.py`只作兼容输出；不得用共享关键词通过率替代首要控制判断。

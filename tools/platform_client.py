@@ -15,12 +15,13 @@ from credentials import load_credentials
 BASE='http://10.1.0.220:9010'
 SLUG='assignment3'
 INFERENCE={'__init__.py','api_client.py','config.py','credentials.py','data_processor.py',
- 'diagnostics.py','evidence.py','guard.py','intents.py','main.py','prompt_builder.py',
+ 'diagnostics.py','evidence.py','guard.py','intents.py','main.py','prompt_builder.py','answer_review.py',
  'question_format.py','query_planning.py','control_routing.py','reference_search.py','retrieval.py','utils.py'}
 
 
 def inference_fingerprint():
     files=[PACKAGE/name for name in sorted(INFERENCE)]+[PACKAGE/'requirements.txt']
+    files+=sorted((PACKAGE/'baseline_v17').glob('*.py'))
     files+=sorted((PACKAGE/'knowledge').glob('*.json'))+sorted((PACKAGE/'knowledge').glob('*.jsonl'))
     digest=hashlib.sha256()
     for path in files:
@@ -30,23 +31,17 @@ def inference_fingerprint():
 
 
 def require_completed_ablation():
-    folder=ROOT/'experiments/v28/results'
-    manifest_sha=hashlib.sha256((ROOT/'experiments/v28/splits.json').read_bytes()).hexdigest()
-    selection_path=folder/'selection.json'
-    if not selection_path.exists():raise SystemExit('Validation must select a frozen clean profile before upload.')
-    selection=json.loads(selection_path.read_text(encoding='utf-8'))
-    chosen=selection['selected_variant']
+    # V28's gate selected an inferior clean profile while excluding A. Never
+    # authorize another upload with that historical selection record.
+    release_path=ROOT/'experiments/v28_1/results/release_decision.json'
+    if not release_path.exists():raise SystemExit('V28.1 requires a baseline-aware validation and holdout release decision; no upload attempted.')
+    release=json.loads(release_path.read_text(encoding='utf-8'))
+    if not release.get('new_candidate_release_allowed'):
+        raise SystemExit('V28.1 did not establish a non-regressing new candidate; platform upload blocked.')
     profile=json.loads((PACKAGE/'pipeline_profile.json').read_text(encoding='utf-8'))
-    for variant,split in [(key,'validation') for key in 'ABCDEFGHI']+[('A','holdout'),(chosen,'holdout')]:
-        path=folder/(variant+'_'+split+'_summary.json')
-        if not path.exists():raise SystemExit('Real ablation/holdout results are required before the one platform upload.')
-        result=json.loads(path.read_text(encoding='utf-8'))
-        if not result.get('real_model_inference') or not result.get('strict_scoring_complete') or result.get('split_manifest_sha256')!=manifest_sha:
-            raise SystemExit('Missing or stale real ablation evidence; no platform upload attempted.')
-        if variant in 'FGHI' and result.get('inference_source_sha256')!=inference_fingerprint():
-            raise SystemExit('Inference code changed after validation; no platform upload attempted.')
-        if variant==chosen and result.get('run_configuration')!={key:profile[key] for key in ['query_representation','contrastive_rerank']}:
-            raise SystemExit('Selected profile differs from evaluated configuration; no upload attempted.')
+    if release.get('deployed_profile')!=profile or release.get('package_fingerprint')!=inference_fingerprint():
+        raise SystemExit('Code or profile differs from the verified V28.1 release; no upload attempted.')
+    return
 
 
 def session():
@@ -60,6 +55,7 @@ def session():
 def build_submission(version):
     target=ROOT/'output'/('course_'+version+'.zip');target.parent.mkdir(exist_ok=True)
     files=[PACKAGE/name for name in sorted(INFERENCE)]+[PACKAGE/'requirements.txt',PACKAGE/'README.md',PACKAGE/'pipeline_profile.json']
+    files+=sorted((PACKAGE/'baseline_v17').glob('*.py'))
     files+=sorted((PACKAGE/'knowledge').glob('*.json'))+sorted((PACKAGE/'knowledge').glob('*.jsonl'))
     with zipfile.ZipFile(target,'w',zipfile.ZIP_DEFLATED) as z:
         for path in files:
@@ -72,14 +68,14 @@ def build_submission(version):
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('action',choices=['status','submit','board','build'])
-    parser.add_argument('--version',default='v28_clean');args=parser.parse_args()
+    parser.add_argument('--version',default='v28_1');args=parser.parse_args()
     if args.action=='build':
         target,manifest=build_submission(args.version);print(json.dumps(manifest,ensure_ascii=False));return
     if args.action=='submit':require_completed_ablation()
     client=session()
     latest_url=f'{BASE}/api/assignments/{SLUG}/submissions/latest'
     if args.action=='submit':
-        record=ROOT/'experiments/v28/results/platform_submission.json'
+        record=ROOT/'experiments/v28_1/results/platform_submission.json'
         if record.exists():raise SystemExit('This task permits one platform upload; a submission attempt is already recorded.')
         latest=client.get(latest_url,timeout=20);latest.raise_for_status()
         if latest.json() and latest.json()['status'] in {'queued','preparing','installing','evaluating'}:
@@ -96,7 +92,7 @@ def main():
     elif args.action=='status':
         response=client.get(latest_url,timeout=20);response.raise_for_status();item=response.json()
         print(json.dumps(item,ensure_ascii=False))
-        record=ROOT/'experiments/v28/results/platform_submission.json'
+        record=ROOT/'experiments/v28_1/results/platform_submission.json'
         if record.exists():
             attempt=json.loads(record.read_text(encoding='utf-8'))
             if item and item.get('id')==attempt.get('submission_id'):
