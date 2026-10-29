@@ -1,8 +1,9 @@
 {
   "archive": "course_v28_1.zip",
-  "sha256": "9b7edbfe2babd683000c2762b0080f5a07cc1fdc79951783c276241738388920",
+  "sha256": "9eaf6ffc757105a137a8b007f97e1c43c47a8d17dcb9f7d1399c01fe5bc4f7f6",
   "files": [
     "__init__.py",
+    "answer_compiler.py",
     "answer_review.py",
     "api_client.py",
     "config.py",
@@ -24,6 +25,7 @@
     "README.md",
     "pipeline_profile.json",
     "baseline_v17\\__init__.py",
+    "baseline_v17\\answer_compiler.py",
     "baseline_v17\\api_client.py",
     "baseline_v17\\config.py",
     "baseline_v17\\data_processor.py",
@@ -47,6 +49,6 @@
   "known_credential_scan": true,
   "isolated_baseline_import": true,
   "guard_unchanged": true,
-  "package_fingerprint": "f66519252c656a7ca85ab9df8ebfb048191eda510e9a9ca7130f2c5c8cb21ade",
+  "package_fingerprint": "ce50d4832a3c915a292fe7e4fb541a3cfc78e4a606dd4c5a2f749277bad7ecaa",
   "development_labels_in_inference": false
 }

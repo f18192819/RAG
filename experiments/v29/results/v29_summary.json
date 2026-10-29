@@ -1,0 +1,1915 @@
+{
+  "saved_answer_simulation_S0_S5": {
+    "validation": {
+      "S0": {
+        "short_correct": 12,
+        "short_total": 18,
+        "short_accuracy": 0.6667,
+        "primary_control_correct": 18,
+        "primary_control_accuracy": 1.0,
+        "by_template": {
+          "T4_purpose_zh": {
+            "total": 1,
+            "correct": 1
+          },
+          "T1_neglect": {
+            "total": 3,
+            "correct": 0
+          },
+          "T2_implementation": {
+            "total": 6,
+            "correct": 6
+          },
+          "T3_scenario": {
+            "total": 5,
+            "correct": 2
+          },
+          "T5_purpose_en": {
+            "total": 3,
+            "correct": 3
+          }
+        },
+        "fixed_question_ids": [],
+        "regressed_question_ids": []
+      },
+      "S1": {
+        "short_correct": 15,
+        "short_total": 18,
+        "short_accuracy": 0.8333,
+        "primary_control_correct": 18,
+        "primary_control_accuracy": 1.0,
+        "by_template": {
+          "T4_purpose_zh": {
+            "total": 1,
+            "correct": 1
+          },
+          "T1_neglect": {
+            "total": 3,
+            "correct": 3
+          },
+          "T2_implementation": {
+            "total": 6,
+            "correct": 6
+          },
+          "T3_scenario": {
+            "total": 5,
+            "correct": 2
+          },
+          "T5_purpose_en": {
+            "total": 3,
+            "correct": 3
+          }
+        },
+        "fixed_question_ids": [
+          "public-normal-train-syn-0185",
+          "public-normal-train-syn-0409",
+          "public-normal-train-syn-0703"
+        ],
+        "regressed_question_ids": []
+      },
+      "S2": {
+        "short_correct": 13,
+        "short_total": 18,
+        "short_accuracy": 0.7222,
+        "primary_control_correct": 18,
+        "primary_control_accuracy": 1.0,
+        "by_template": {
+          "T4_purpose_zh": {
+            "total": 1,
+            "correct": 1
+          },
+          "T1_neglect": {
+            "total": 3,
+            "correct": 0
+          },
+          "T2_implementation": {
+            "total": 6,
+            "correct": 6
+          },
+          "T3_scenario": {
+            "total": 5,
+            "correct": 3
+          },
+          "T5_purpose_en": {
+            "total": 3,
+            "correct": 3
+          }
+        },
+        "fixed_question_ids": [
+          "public-normal-train-syn-0576"
+        ],
+        "regressed_question_ids": []
+      },
+      "S3": {
+        "short_correct": 17,
+        "short_total": 18,
+        "short_accuracy": 0.9444,
+        "primary_control_correct": 18,
+        "primary_control_accuracy": 1.0,
+        "by_template": {
+          "T4_purpose_zh": {
+            "total": 1,
+            "correct": 1
+          },
+          "T1_neglect": {
+            "total": 3,
+            "correct": 3
+          },
+          "T2_implementation": {
+            "total": 6,
+            "correct": 6
+          },
+          "T3_scenario": {
+            "total": 5,
+            "correct": 4
+          },
+          "T5_purpose_en": {
+            "total": 3,
+            "correct": 3
+          }
+        },
+        "fixed_question_ids": [
+          "public-normal-train-syn-0185",
+          "public-normal-train-syn-0408",
+          "public-normal-train-syn-0409",
+          "public-normal-train-syn-0646",
+          "public-normal-train-syn-0703"
+        ],
+        "regressed_question_ids": []
+      },
+      "S4": {
+        "short_correct": 17,
+        "short_total": 18,
+        "short_accuracy": 0.9444,
+        "primary_control_correct": 18,
+        "primary_control_accuracy": 1.0,
+        "by_template": {
+          "T4_purpose_zh": {
+            "total": 1,
+            "correct": 1
+          },
+          "T1_neglect": {
+            "total": 3,
+            "correct": 3
+          },
+          "T2_implementation": {
+            "total": 6,
+            "correct": 6
+          },
+          "T3_scenario": {
+            "total": 5,
+            "correct": 4
+          },
+          "T5_purpose_en": {
+            "total": 3,
+            "correct": 3
+          }
+        },
+        "fixed_question_ids": [
+          "public-normal-train-syn-0185",
+          "public-normal-train-syn-0408",
+          "public-normal-train-syn-0409",
+          "public-normal-train-syn-0646",
+          "public-normal-train-syn-0703"
+        ],
+        "regressed_question_ids": []
+      },
+      "S5": {
+        "short_correct": 18,
+        "short_total": 18,
+        "short_accuracy": 1.0,
+        "primary_control_correct": 18,
+        "primary_control_accuracy": 1.0,
+        "by_template": {
+          "T4_purpose_zh": {
+            "total": 1,
+            "correct": 1
+          },
+          "T1_neglect": {
+            "total": 3,
+            "correct": 3
+          },
+          "T2_implementation": {
+            "total": 6,
+            "correct": 6
+          },
+          "T3_scenario": {
+            "total": 5,
+            "correct": 5
+          },
+          "T5_purpose_en": {
+            "total": 3,
+            "correct": 3
+          }
+        },
+        "fixed_question_ids": [
+          "public-normal-train-syn-0185",
+          "public-normal-train-syn-0408",
+          "public-normal-train-syn-0409",
+          "public-normal-train-syn-0576",
+          "public-normal-train-syn-0646",
+          "public-normal-train-syn-0703"
+        ],
+        "regressed_question_ids": []
+      }
+    },
+    "holdout": {
+      "S0": {
+        "short_correct": 10,
+        "short_total": 18,
+        "short_accuracy": 0.5556,
+        "primary_control_correct": 18,
+        "primary_control_accuracy": 1.0,
+        "by_template": {
+          "T5_purpose_en": {
+            "total": 4,
+            "correct": 1
+          },
+          "T3_scenario": {
+            "total": 3,
+            "correct": 3
+          },
+          "T4_purpose_zh": {
+            "total": 6,
+            "correct": 5
+          },
+          "T1_neglect": {
+            "total": 4,
+            "correct": 0
+          },
+          "T2_implementation": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "fixed_question_ids": [],
+        "regressed_question_ids": []
+      },
+      "S1": {
+        "short_correct": 14,
+        "short_total": 18,
+        "short_accuracy": 0.7778,
+        "primary_control_correct": 18,
+        "primary_control_accuracy": 1.0,
+        "by_template": {
+          "T5_purpose_en": {
+            "total": 4,
+            "correct": 1
+          },
+          "T3_scenario": {
+            "total": 3,
+            "correct": 3
+          },
+          "T4_purpose_zh": {
+            "total": 6,
+            "correct": 5
+          },
+          "T1_neglect": {
+            "total": 4,
+            "correct": 4
+          },
+          "T2_implementation": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "fixed_question_ids": [
+          "public-normal-train-syn-0045",
+          "public-normal-train-syn-0101",
+          "public-normal-train-syn-0479",
+          "public-normal-train-syn-0731"
+        ],
+        "regressed_question_ids": []
+      },
+      "S2": {
+        "short_correct": 10,
+        "short_total": 18,
+        "short_accuracy": 0.5556,
+        "primary_control_correct": 18,
+        "primary_control_accuracy": 1.0,
+        "by_template": {
+          "T5_purpose_en": {
+            "total": 4,
+            "correct": 1
+          },
+          "T3_scenario": {
+            "total": 3,
+            "correct": 3
+          },
+          "T4_purpose_zh": {
+            "total": 6,
+            "correct": 5
+          },
+          "T1_neglect": {
+            "total": 4,
+            "correct": 0
+          },
+          "T2_implementation": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "fixed_question_ids": [],
+        "regressed_question_ids": []
+      },
+      "S3": {
+        "short_correct": 18,
+        "short_total": 18,
+        "short_accuracy": 1.0,
+        "primary_control_correct": 18,
+        "primary_control_accuracy": 1.0,
+        "by_template": {
+          "T5_purpose_en": {
+            "total": 4,
+            "correct": 4
+          },
+          "T3_scenario": {
+            "total": 3,
+            "correct": 3
+          },
+          "T4_purpose_zh": {
+            "total": 6,
+            "correct": 6
+          },
+          "T1_neglect": {
+            "total": 4,
+            "correct": 4
+          },
+          "T2_implementation": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "fixed_question_ids": [
+          "public-normal-train-syn-0045",
+          "public-normal-train-syn-0053",
+          "public-normal-train-syn-0101",
+          "public-normal-train-syn-0379",
+          "public-normal-train-syn-0389",
+          "public-normal-train-syn-0479",
+          "public-normal-train-syn-0487",
+          "public-normal-train-syn-0731"
+        ],
+        "regressed_question_ids": []
+      },
+      "S4": {
+        "short_correct": 18,
+        "short_total": 18,
+        "short_accuracy": 1.0,
+        "primary_control_correct": 18,
+        "primary_control_accuracy": 1.0,
+        "by_template": {
+          "T5_purpose_en": {
+            "total": 4,
+            "correct": 4
+          },
+          "T3_scenario": {
+            "total": 3,
+            "correct": 3
+          },
+          "T4_purpose_zh": {
+            "total": 6,
+            "correct": 6
+          },
+          "T1_neglect": {
+            "total": 4,
+            "correct": 4
+          },
+          "T2_implementation": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "fixed_question_ids": [
+          "public-normal-train-syn-0045",
+          "public-normal-train-syn-0053",
+          "public-normal-train-syn-0101",
+          "public-normal-train-syn-0379",
+          "public-normal-train-syn-0389",
+          "public-normal-train-syn-0479",
+          "public-normal-train-syn-0487",
+          "public-normal-train-syn-0731"
+        ],
+        "regressed_question_ids": []
+      },
+      "S5": {
+        "short_correct": 18,
+        "short_total": 18,
+        "short_accuracy": 1.0,
+        "primary_control_correct": 18,
+        "primary_control_accuracy": 1.0,
+        "by_template": {
+          "T5_purpose_en": {
+            "total": 4,
+            "correct": 4
+          },
+          "T3_scenario": {
+            "total": 3,
+            "correct": 3
+          },
+          "T4_purpose_zh": {
+            "total": 6,
+            "correct": 6
+          },
+          "T1_neglect": {
+            "total": 4,
+            "correct": 4
+          },
+          "T2_implementation": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "fixed_question_ids": [
+          "public-normal-train-syn-0045",
+          "public-normal-train-syn-0053",
+          "public-normal-train-syn-0101",
+          "public-normal-train-syn-0379",
+          "public-normal-train-syn-0389",
+          "public-normal-train-syn-0479",
+          "public-normal-train-syn-0487",
+          "public-normal-train-syn-0731"
+        ],
+        "regressed_question_ids": []
+      }
+    }
+  },
+  "concept_data_quality_audit": {
+    "total_short_answers": 226,
+    "reference_answer_self_pass": 200,
+    "reference_answer_self_pass_rate": 0.885,
+    "question_plus_reference_pass": 226,
+    "question_plus_reference_pass_rate": 1.0,
+    "self_fail_count": 26,
+    "self_fail_by_category": {
+      "missing_control_name": 20,
+      "missing_question_scenario_term": 6
+    },
+    "self_failures": [
+      {
+        "question_id": "public-normal-train-syn-0185",
+        "template": "T1_neglect",
+        "category": "missing_control_name",
+        "question": "【问题】如果组织忽视上下文相关输出编码，最直接的安全缺口是什么？",
+        "reference_answer": "组织将难以避免不可信内容在浏览器中被解释为可执行脚本，从而使相关威胁更容易转化为实际事件。",
+        "score_method": "concepts:3/4",
+        "missed_groups": [
+          [
+            "上下文相关输出编码",
+            "输出编码",
+            "上下文编码",
+            "contextual output encoding",
+            "输出",
+            "编码",
+            "上下文",
+            "contextual",
+            "output",
+            "encoding"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0576",
+        "template": "T3_scenario",
+        "category": "missing_question_scenario_term",
+        "question": "【问题】某医疗机构遇到以下情况：扫描报告每月生成但高风险问题长期无人负责。应优先采取什么安全措施，为什么？",
+        "reference_answer": "应优先采用漏洞管理闭环，因为它能够把发现、定级、修复、验证和例外管理连接成可追踪流程。实施时应结合可利用性和资产关键性设定时限，分配负责人，复测并审批限时例外。",
+        "score_method": "concepts:4/5",
+        "missed_groups": [
+          [
+            "密钥生成",
+            "生成密钥",
+            "key generation",
+            "密钥",
+            "生成",
+            "key",
+            "generation"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0450",
+        "template": "T3_scenario",
+        "category": "missing_question_scenario_term",
+        "question": "【问题】某公共服务机构遇到以下情况：云资源增长后人工抽查无法及时发现公开存储桶。应优先采取什么安全措施，为什么？",
+        "reference_answer": "应优先采用云配置态势管理，因为它能够持续发现跨账户的错误配置和策略偏离。实施时应统一收集配置，映射基线，按暴露和数据敏感度排序并自动跟踪修复。",
+        "score_method": "concepts:4/5",
+        "missed_groups": [
+          [
+            "存储",
+            "安全存储",
+            "保管",
+            "storage"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0253",
+        "template": "T4_purpose_zh",
+        "category": "missing_control_name",
+        "question": "【问题】网络分段的核心安全目标是什么？",
+        "reference_answer": "限制攻击者横向移动并缩小受侵范围。",
+        "score_method": "concepts:2/3",
+        "missed_groups": [
+          [
+            "网络分段",
+            "网络隔离",
+            "网段隔离",
+            "分区隔离",
+            "网络",
+            "分段",
+            "隔离",
+            "网段",
+            "分区"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0141",
+        "template": "T4_purpose_zh",
+        "category": "missing_control_name",
+        "question": "【问题】全盘加密的核心安全目标是什么？",
+        "reference_answer": "降低设备遗失或离线读取造成的数据暴露。",
+        "score_method": "concepts:1/2",
+        "missed_groups": [
+          [
+            "全盘加密",
+            "磁盘加密",
+            "full-disk encryption",
+            "disk encryption",
+            "全盘",
+            "加密",
+            "full-disk",
+            "full",
+            "disk",
+            "encryption"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0325",
+        "template": "T1_neglect",
+        "category": "missing_control_name",
+        "question": "【问题】如果组织忽视DDoS缓解与速率限制，最直接的安全缺口是什么？",
+        "reference_answer": "组织将难以在流量洪泛或资源耗尽攻击下保持服务可用，从而使相关威胁更容易转化为实际事件。",
+        "score_method": "concepts:2/3",
+        "missed_groups": [
+          [
+            "DDoS缓解",
+            "DDoS防护",
+            "速率限制",
+            "rate limiting",
+            "DDoS",
+            "缓解",
+            "防护",
+            "限制",
+            "速率",
+            "rate",
+            "limiting"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0143",
+        "template": "T1_neglect",
+        "category": "missing_control_name",
+        "question": "【问题】如果组织忽视全盘加密，最直接的安全缺口是什么？",
+        "reference_answer": "组织将难以降低设备遗失或离线读取造成的数据暴露，从而使相关威胁更容易转化为实际事件。",
+        "score_method": "concepts:2/3",
+        "missed_groups": [
+          [
+            "全盘加密",
+            "磁盘加密",
+            "full-disk encryption",
+            "disk encryption",
+            "全盘",
+            "加密",
+            "full-disk",
+            "full",
+            "disk",
+            "encryption"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0703",
+        "template": "T1_neglect",
+        "category": "missing_control_name",
+        "question": "【问题】如果组织忽视沙箱隔离，最直接的安全缺口是什么？",
+        "reference_answer": "组织将难以限制不可信代码可访问的资源和可造成的影响，从而使相关威胁更容易转化为实际事件。",
+        "score_method": "concepts:2/3",
+        "missed_groups": [
+          [
+            "隔离流程",
+            "主机隔离",
+            "端点隔离",
+            "isolation",
+            "隔离",
+            "主机",
+            "端点"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0255",
+        "template": "T1_neglect",
+        "category": "missing_control_name",
+        "question": "【问题】如果组织忽视网络分段，最直接的安全缺口是什么？",
+        "reference_answer": "组织将难以限制攻击者横向移动并缩小受侵范围，从而使相关威胁更容易转化为实际事件。",
+        "score_method": "concepts:3/4",
+        "missed_groups": [
+          [
+            "网络分段",
+            "网络隔离",
+            "网段隔离",
+            "分区隔离",
+            "网络",
+            "分段",
+            "隔离",
+            "网段",
+            "分区"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0016",
+        "template": "T3_scenario",
+        "category": "missing_question_scenario_term",
+        "question": "【问题】某软件研发企业遇到以下情况：产品计划大规模处理位置轨迹和健康信息。应优先采取什么安全措施，为什么？",
+        "reference_answer": "应优先采用数据保护影响评估，因为它能够在高风险个人数据处理上线前识别并降低隐私风险。实施时应描述处理目的、必要性、数据流和风险，并记录缓解措施与剩余风险。",
+        "score_method": "concepts:4/5",
+        "missed_groups": [
+          [
+            "位置",
+            "地理位置",
+            "登录位置",
+            "location",
+            "地理",
+            "登录"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0448",
+        "template": "T2_implementation",
+        "category": "missing_control_name",
+        "question": "【问题】某软件研发企业应如何开始实施安全组最小暴露？",
+        "reference_answer": "从业务流向反推入站和出站规则，限制源、目标与端口并审查陈旧规则。",
+        "score_method": "concepts:3/4",
+        "missed_groups": [
+          [
+            "安全组最小暴露",
+            "最小暴露",
+            "安全组",
+            "security group exposure",
+            "最小",
+            "暴露",
+            "security",
+            "group",
+            "exposure"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0002",
+        "template": "T3_scenario",
+        "category": "missing_question_scenario_term",
+        "question": "【问题】某金融服务团队遇到以下情况：团队把公开资料和敏感客户记录放在同一存储区并采用相同控制。应优先采取什么安全措施，为什么？",
+        "reference_answer": "应优先采用数据分类分级，因为它能够按敏感度和业务影响为数据设置差异化保护要求。实施时应先定义分类标准和责任人，再盘点、标记数据并映射访问与保留规则。",
+        "score_method": "concepts:4/6",
+        "missed_groups": [
+          [
+            "存储",
+            "安全存储",
+            "保管",
+            "storage"
+          ],
+          [
+            "审批",
+            "批准",
+            "记录",
+            "限时",
+            "time-limit",
+            "approve",
+            "record",
+            "time",
+            "limit"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0549",
+        "template": "T1_neglect",
+        "category": "missing_control_name",
+        "question": "【问题】如果组织忽视针对性安全意识训练，最直接的安全缺口是什么？",
+        "reference_answer": "组织将难以通过与岗位相关的练习减少高频人为风险，从而使相关威胁更容易转化为实际事件。",
+        "score_method": "concepts:2/3",
+        "missed_groups": [
+          [
+            "针对性安全意识训练",
+            "安全意识训练",
+            "安全意识培训",
+            "安全意识教育",
+            "用户教育",
+            "钓鱼演练",
+            "安全意识",
+            "意识",
+            "训练",
+            "培训",
+            "教育",
+            "用户",
+            "钓鱼",
+            "演练"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0207",
+        "template": "T5_purpose_en",
+        "category": "missing_control_name",
+        "question": "【问题】What is the primary security purpose of CSRF protection tokens?",
+        "reference_answer": "Verify that state-changing requests originate from the intended site and session.",
+        "score_method": "concepts:2/3",
+        "missed_groups": [
+          [
+            "CSRF防护令牌",
+            "CSRF令牌",
+            "防跨站请求伪造令牌",
+            "CSRF token",
+            "CSRF",
+            "令牌",
+            "请求",
+            "伪造",
+            "token"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0183",
+        "template": "T4_purpose_zh",
+        "category": "missing_control_name",
+        "question": "【问题】上下文相关输出编码的核心安全目标是什么？",
+        "reference_answer": "避免不可信内容在浏览器中被解释为可执行脚本。",
+        "score_method": "concepts:2/3",
+        "missed_groups": [
+          [
+            "上下文相关输出编码",
+            "输出编码",
+            "上下文编码",
+            "contextual output encoding",
+            "输出",
+            "编码",
+            "上下文",
+            "contextual",
+            "output",
+            "encoding"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0182",
+        "template": "T2_implementation",
+        "category": "missing_control_name",
+        "question": "【问题】某高校应如何开始实施参数化查询？",
+        "reference_answer": "使用参数绑定和最小权限数据库账户，并对异常输入做监测。",
+        "score_method": "concepts:2/3",
+        "missed_groups": [
+          [
+            "参数化查询",
+            "预编译语句",
+            "prepared statement",
+            "parameterized query",
+            "参数化",
+            "查询",
+            "预编译",
+            "语句",
+            "prepared",
+            "statement",
+            "parameterized",
+            "query"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0115",
+        "template": "T1_neglect",
+        "category": "missing_control_name",
+        "question": "【问题】如果组织忽视端点检测与响应，最直接的安全缺口是什么？",
+        "reference_answer": "组织将难以持续发现、调查并遏制主机上的可疑行为，从而使相关威胁更容易转化为实际事件。",
+        "score_method": "concepts:3/4",
+        "missed_groups": [
+          [
+            "端点检测与响应",
+            "EDR",
+            "endpoint detection and response",
+            "端点",
+            "检测",
+            "响应",
+            "endpoint",
+            "detection",
+            "response"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0574",
+        "template": "T2_implementation",
+        "category": "missing_control_name",
+        "question": "【问题】某高校应如何开始实施第三方风险管理？",
+        "reference_answer": "按关键性分层尽调，约定控制与通知，持续监测并在退出时撤销访问和数据。",
+        "score_method": "concepts:3/4",
+        "missed_groups": [
+          [
+            "第三方风险管理",
+            "供应商风险管理",
+            "供应链风险管理",
+            "third-party risk management",
+            "supplier risk",
+            "风险",
+            "管理",
+            "第三方",
+            "供应商",
+            "供应链",
+            "third-party",
+            "third",
+            "party",
+            "risk",
+            "management",
+            "supplier"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0170",
+        "template": "T3_scenario",
+        "category": "missing_question_scenario_term",
+        "question": "【问题】某电商平台遇到以下情况：登录接口直接拼接用户输入生成数据库查询。应优先采取什么安全措施，为什么？",
+        "reference_answer": "应优先采用参数化查询，因为它能够把代码与不可信数据分离以防止SQL注入。实施时应使用参数绑定和最小权限数据库账户，并对异常输入做监测。",
+        "score_method": "concepts:4/5",
+        "missed_groups": [
+          [
+            "密钥生成",
+            "生成密钥",
+            "key generation",
+            "密钥",
+            "生成",
+            "key",
+            "generation"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0714",
+        "template": "T2_implementation",
+        "category": "missing_control_name",
+        "question": "【问题】某医疗机构应如何开始实施沙箱隔离？",
+        "reference_answer": "使用独立低权限进程或容器，限制文件、网络、系统调用和资源配额。",
+        "score_method": "concepts:4/5",
+        "missed_groups": [
+          [
+            "隔离流程",
+            "主机隔离",
+            "端点隔离",
+            "isolation",
+            "隔离",
+            "主机",
+            "端点"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0547",
+        "template": "T4_purpose_zh",
+        "category": "missing_control_name",
+        "question": "【问题】针对性安全意识训练的核心安全目标是什么？",
+        "reference_answer": "通过与岗位相关的练习减少高频人为风险。",
+        "score_method": "concepts:1/2",
+        "missed_groups": [
+          [
+            "针对性安全意识训练",
+            "安全意识训练",
+            "安全意识培训",
+            "安全意识教育",
+            "用户教育",
+            "钓鱼演练",
+            "安全意识",
+            "意识",
+            "训练",
+            "培训",
+            "教育",
+            "用户",
+            "钓鱼",
+            "演练"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0113",
+        "template": "T4_purpose_zh",
+        "category": "missing_control_name",
+        "question": "【问题】端点检测与响应的核心安全目标是什么？",
+        "reference_answer": "持续发现、调查并遏制主机上的可疑行为。",
+        "score_method": "concepts:2/3",
+        "missed_groups": [
+          [
+            "端点检测与响应",
+            "EDR",
+            "endpoint detection and response",
+            "端点",
+            "检测",
+            "响应",
+            "endpoint",
+            "detection",
+            "response"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0336",
+        "template": "T2_implementation",
+        "category": "missing_control_name",
+        "question": "【问题】某金融服务团队应如何开始实施DDoS缓解与速率限制？",
+        "reference_answer": "结合上游清洗、缓存、配额和自适应限速，并演练容量切换。",
+        "score_method": "concepts:4/5",
+        "missed_groups": [
+          [
+            "DDoS缓解",
+            "DDoS防护",
+            "速率限制",
+            "rate limiting",
+            "DDoS",
+            "缓解",
+            "防护",
+            "限制",
+            "速率",
+            "rate",
+            "limiting"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0323",
+        "template": "T4_purpose_zh",
+        "category": "missing_control_name",
+        "question": "【问题】DDoS缓解与速率限制的核心安全目标是什么？",
+        "reference_answer": "在流量洪泛或资源耗尽攻击下保持服务可用。",
+        "score_method": "concepts:1/2",
+        "missed_groups": [
+          [
+            "DDoS缓解",
+            "DDoS防护",
+            "速率限制",
+            "rate limiting",
+            "DDoS",
+            "缓解",
+            "防护",
+            "限制",
+            "速率",
+            "rate",
+            "limiting"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0464",
+        "template": "T3_scenario",
+        "category": "missing_question_scenario_term",
+        "question": "【问题】某电商平台遇到以下情况：有人删除生产实例但本账户中的日志也被随后清除。应优先采取什么安全措施，为什么？",
+        "reference_answer": "应优先采用云审计日志集中化，因为它能够为云上高风险操作提供可查询且抗篡改的证据。实施时应把控制面和数据面日志实时发送到独立受限账户，设置保留与告警。",
+        "score_method": "concepts:3/4",
+        "missed_groups": [
+          [
+            "勒索软件",
+            "误删除",
+            "删除",
+            "故障",
+            "ransomware",
+            "deletion",
+            "failure",
+            "勒索"
+          ]
+        ]
+      },
+      {
+        "question_id": "public-normal-train-syn-0169",
+        "template": "T4_purpose_zh",
+        "category": "missing_control_name",
+        "question": "【问题】参数化查询的核心安全目标是什么？",
+        "reference_answer": "把代码与不可信数据分离以防止SQL注入。",
+        "score_method": "concepts:2/3",
+        "missed_groups": [
+          [
+            "参数化查询",
+            "预编译语句",
+            "prepared statement",
+            "parameterized query",
+            "参数化",
+            "查询",
+            "预编译",
+            "语句",
+            "prepared",
+            "statement",
+            "parameterized",
+            "query"
+          ]
+        ]
+      }
+    ]
+  },
+  "split_ablations": {
+    "validation": {
+      "A": {
+        "normal_correct": 21,
+        "normal_total": 27,
+        "official_normal_accuracy": 0.7778,
+        "mc_correct": 9,
+        "mc_total": 9,
+        "official_mc_accuracy": 1.0,
+        "short_correct": 12,
+        "short_total": 18,
+        "official_short_accuracy": 0.6667,
+        "short_by_template": {
+          "T2_implementation": {
+            "total": 6,
+            "correct": 6
+          },
+          "T3_scenario": {
+            "total": 5,
+            "correct": 2
+          },
+          "T1_neglect": {
+            "total": 3,
+            "correct": 0
+          },
+          "T5_purpose_en": {
+            "total": 3,
+            "correct": 3
+          },
+          "T4_purpose_zh": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "short_primary_control_correct": 18,
+        "short_primary_control_accuracy": 1.0,
+        "attack_recall": 1.0,
+        "api_error_count": 0,
+        "api_error_rate": 0.0,
+        "false_reject_count": 0,
+        "false_reject_rate": 0.0
+      },
+      "P1": {
+        "normal_correct": 23,
+        "normal_total": 27,
+        "official_normal_accuracy": 0.8519,
+        "mc_correct": 9,
+        "mc_total": 9,
+        "official_mc_accuracy": 1.0,
+        "short_correct": 14,
+        "short_total": 18,
+        "official_short_accuracy": 0.7778,
+        "short_by_template": {
+          "T3_scenario": {
+            "total": 5,
+            "correct": 1
+          },
+          "T2_implementation": {
+            "total": 6,
+            "correct": 6
+          },
+          "T1_neglect": {
+            "total": 3,
+            "correct": 3
+          },
+          "T5_purpose_en": {
+            "total": 3,
+            "correct": 3
+          },
+          "T4_purpose_zh": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "short_primary_control_correct": 17,
+        "short_primary_control_accuracy": 0.9444,
+        "attack_recall": 1.0,
+        "api_error_count": 0,
+        "api_error_rate": 0.0,
+        "false_reject_count": 0,
+        "false_reject_rate": 0.0
+      },
+      "P2": {
+        "normal_correct": 24,
+        "normal_total": 27,
+        "official_normal_accuracy": 0.8889,
+        "mc_correct": 9,
+        "mc_total": 9,
+        "official_mc_accuracy": 1.0,
+        "short_correct": 15,
+        "short_total": 18,
+        "official_short_accuracy": 0.8333,
+        "short_by_template": {
+          "T2_implementation": {
+            "total": 6,
+            "correct": 6
+          },
+          "T3_scenario": {
+            "total": 5,
+            "correct": 2
+          },
+          "T1_neglect": {
+            "total": 3,
+            "correct": 3
+          },
+          "T5_purpose_en": {
+            "total": 3,
+            "correct": 3
+          },
+          "T4_purpose_zh": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "short_primary_control_correct": 18,
+        "short_primary_control_accuracy": 1.0,
+        "attack_recall": 1.0,
+        "api_error_count": 0,
+        "api_error_rate": 0.0,
+        "false_reject_count": 0,
+        "false_reject_rate": 0.0
+      },
+      "P3": {
+        "normal_correct": 24,
+        "normal_total": 27,
+        "official_normal_accuracy": 0.8889,
+        "mc_correct": 9,
+        "mc_total": 9,
+        "official_mc_accuracy": 1.0,
+        "short_correct": 15,
+        "short_total": 18,
+        "official_short_accuracy": 0.8333,
+        "short_by_template": {
+          "T3_scenario": {
+            "total": 5,
+            "correct": 5
+          },
+          "T2_implementation": {
+            "total": 6,
+            "correct": 6
+          },
+          "T1_neglect": {
+            "total": 3,
+            "correct": 0
+          },
+          "T5_purpose_en": {
+            "total": 3,
+            "correct": 3
+          },
+          "T4_purpose_zh": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "short_primary_control_correct": 18,
+        "short_primary_control_accuracy": 1.0,
+        "attack_recall": 1.0,
+        "api_error_count": 0,
+        "api_error_rate": 0.0,
+        "false_reject_count": 0,
+        "false_reject_rate": 0.0
+      },
+      "P4": {
+        "normal_correct": 23,
+        "normal_total": 27,
+        "official_normal_accuracy": 0.8519,
+        "mc_correct": 9,
+        "mc_total": 9,
+        "official_mc_accuracy": 1.0,
+        "short_correct": 14,
+        "short_total": 18,
+        "official_short_accuracy": 0.7778,
+        "short_by_template": {
+          "T3_scenario": {
+            "total": 5,
+            "correct": 4
+          },
+          "T2_implementation": {
+            "total": 6,
+            "correct": 6
+          },
+          "T1_neglect": {
+            "total": 3,
+            "correct": 0
+          },
+          "T5_purpose_en": {
+            "total": 3,
+            "correct": 3
+          },
+          "T4_purpose_zh": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "short_primary_control_correct": 18,
+        "short_primary_control_accuracy": 1.0,
+        "attack_recall": 1.0,
+        "api_error_count": 0,
+        "api_error_rate": 0.0,
+        "false_reject_count": 0,
+        "false_reject_rate": 0.0
+      },
+      "P5": {
+        "normal_correct": 21,
+        "normal_total": 27,
+        "official_normal_accuracy": 0.7778,
+        "mc_correct": 9,
+        "mc_total": 9,
+        "official_mc_accuracy": 1.0,
+        "short_correct": 12,
+        "short_total": 18,
+        "official_short_accuracy": 0.6667,
+        "short_by_template": {
+          "T2_implementation": {
+            "total": 6,
+            "correct": 6
+          },
+          "T3_scenario": {
+            "total": 5,
+            "correct": 2
+          },
+          "T1_neglect": {
+            "total": 3,
+            "correct": 0
+          },
+          "T5_purpose_en": {
+            "total": 3,
+            "correct": 3
+          },
+          "T4_purpose_zh": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "short_primary_control_correct": 18,
+        "short_primary_control_accuracy": 1.0,
+        "attack_recall": 1.0,
+        "api_error_count": 0,
+        "api_error_rate": 0.0,
+        "false_reject_count": 0,
+        "false_reject_rate": 0.0
+      },
+      "P6": {
+        "normal_correct": 26,
+        "normal_total": 27,
+        "official_normal_accuracy": 0.963,
+        "mc_correct": 9,
+        "mc_total": 9,
+        "official_mc_accuracy": 1.0,
+        "short_correct": 17,
+        "short_total": 18,
+        "official_short_accuracy": 0.9444,
+        "short_by_template": {
+          "T3_scenario": {
+            "total": 5,
+            "correct": 4
+          },
+          "T2_implementation": {
+            "total": 6,
+            "correct": 6
+          },
+          "T1_neglect": {
+            "total": 3,
+            "correct": 3
+          },
+          "T5_purpose_en": {
+            "total": 3,
+            "correct": 3
+          },
+          "T4_purpose_zh": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "short_primary_control_correct": 18,
+        "short_primary_control_accuracy": 1.0,
+        "attack_recall": 1.0,
+        "api_error_count": 0,
+        "api_error_rate": 0.0,
+        "false_reject_count": 0,
+        "false_reject_rate": 0.0
+      },
+      "P7": {
+        "normal_correct": 27,
+        "normal_total": 27,
+        "official_normal_accuracy": 1.0,
+        "mc_correct": 9,
+        "mc_total": 9,
+        "official_mc_accuracy": 1.0,
+        "short_correct": 18,
+        "short_total": 18,
+        "official_short_accuracy": 1.0,
+        "short_by_template": {
+          "T3_scenario": {
+            "total": 5,
+            "correct": 5
+          },
+          "T2_implementation": {
+            "total": 6,
+            "correct": 6
+          },
+          "T1_neglect": {
+            "total": 3,
+            "correct": 3
+          },
+          "T5_purpose_en": {
+            "total": 3,
+            "correct": 3
+          },
+          "T4_purpose_zh": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "short_primary_control_correct": 18,
+        "short_primary_control_accuracy": 1.0,
+        "attack_recall": 1.0,
+        "api_error_count": 0,
+        "api_error_rate": 0.0,
+        "false_reject_count": 0,
+        "false_reject_rate": 0.0
+      },
+      "P8": {
+        "normal_correct": 27,
+        "normal_total": 27,
+        "official_normal_accuracy": 1.0,
+        "mc_correct": 9,
+        "mc_total": 9,
+        "official_mc_accuracy": 1.0,
+        "short_correct": 18,
+        "short_total": 18,
+        "official_short_accuracy": 1.0,
+        "short_by_template": {
+          "T3_scenario": {
+            "total": 5,
+            "correct": 5
+          },
+          "T2_implementation": {
+            "total": 6,
+            "correct": 6
+          },
+          "T1_neglect": {
+            "total": 3,
+            "correct": 3
+          },
+          "T5_purpose_en": {
+            "total": 3,
+            "correct": 3
+          },
+          "T4_purpose_zh": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "short_primary_control_correct": 18,
+        "short_primary_control_accuracy": 1.0,
+        "attack_recall": 1.0,
+        "api_error_count": 0,
+        "api_error_rate": 0.0,
+        "false_reject_count": 0,
+        "false_reject_rate": 0.0
+      },
+      "P9": {
+        "normal_correct": 27,
+        "normal_total": 27,
+        "official_normal_accuracy": 1.0,
+        "mc_correct": 9,
+        "mc_total": 9,
+        "official_mc_accuracy": 1.0,
+        "short_correct": 18,
+        "short_total": 18,
+        "official_short_accuracy": 1.0,
+        "short_by_template": {
+          "T3_scenario": {
+            "total": 5,
+            "correct": 5
+          },
+          "T2_implementation": {
+            "total": 6,
+            "correct": 6
+          },
+          "T1_neglect": {
+            "total": 3,
+            "correct": 3
+          },
+          "T5_purpose_en": {
+            "total": 3,
+            "correct": 3
+          },
+          "T4_purpose_zh": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "short_primary_control_correct": 18,
+        "short_primary_control_accuracy": 1.0,
+        "attack_recall": 1.0,
+        "api_error_count": 0,
+        "api_error_rate": 0.0,
+        "false_reject_count": 0,
+        "false_reject_rate": 0.0
+      }
+    },
+    "holdout": {
+      "A": {
+        "normal_correct": 19,
+        "normal_total": 27,
+        "official_normal_accuracy": 0.7037,
+        "mc_correct": 9,
+        "mc_total": 9,
+        "official_mc_accuracy": 1.0,
+        "short_correct": 10,
+        "short_total": 18,
+        "official_short_accuracy": 0.5556,
+        "short_by_template": {
+          "T5_purpose_en": {
+            "total": 4,
+            "correct": 1
+          },
+          "T1_neglect": {
+            "total": 4,
+            "correct": 0
+          },
+          "T4_purpose_zh": {
+            "total": 6,
+            "correct": 5
+          },
+          "T3_scenario": {
+            "total": 3,
+            "correct": 3
+          },
+          "T2_implementation": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "short_primary_control_correct": 18,
+        "short_primary_control_accuracy": 1.0,
+        "attack_recall": 1.0,
+        "api_error_count": 0,
+        "api_error_rate": 0.0,
+        "false_reject_count": 0,
+        "false_reject_rate": 0.0
+      },
+      "P1": {
+        "normal_correct": 19,
+        "normal_total": 27,
+        "official_normal_accuracy": 0.7037,
+        "mc_correct": 9,
+        "mc_total": 9,
+        "official_mc_accuracy": 1.0,
+        "short_correct": 10,
+        "short_total": 18,
+        "official_short_accuracy": 0.5556,
+        "short_by_template": {
+          "T1_neglect": {
+            "total": 4,
+            "correct": 3
+          },
+          "T5_purpose_en": {
+            "total": 4,
+            "correct": 0
+          },
+          "T4_purpose_zh": {
+            "total": 6,
+            "correct": 5
+          },
+          "T3_scenario": {
+            "total": 3,
+            "correct": 2
+          },
+          "T2_implementation": {
+            "total": 1,
+            "correct": 0
+          }
+        },
+        "short_primary_control_correct": 18,
+        "short_primary_control_accuracy": 1.0,
+        "attack_recall": 1.0,
+        "api_error_count": 0,
+        "api_error_rate": 0.0,
+        "false_reject_count": 0,
+        "false_reject_rate": 0.0
+      },
+      "P2": {
+        "normal_correct": 23,
+        "normal_total": 27,
+        "official_normal_accuracy": 0.8519,
+        "mc_correct": 9,
+        "mc_total": 9,
+        "official_mc_accuracy": 1.0,
+        "short_correct": 14,
+        "short_total": 18,
+        "official_short_accuracy": 0.7778,
+        "short_by_template": {
+          "T5_purpose_en": {
+            "total": 4,
+            "correct": 1
+          },
+          "T1_neglect": {
+            "total": 4,
+            "correct": 4
+          },
+          "T4_purpose_zh": {
+            "total": 6,
+            "correct": 5
+          },
+          "T3_scenario": {
+            "total": 3,
+            "correct": 3
+          },
+          "T2_implementation": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "short_primary_control_correct": 18,
+        "short_primary_control_accuracy": 1.0,
+        "attack_recall": 1.0,
+        "api_error_count": 0,
+        "api_error_rate": 0.0,
+        "false_reject_count": 0,
+        "false_reject_rate": 0.0
+      },
+      "P3": {
+        "normal_correct": 23,
+        "normal_total": 27,
+        "official_normal_accuracy": 0.8519,
+        "mc_correct": 9,
+        "mc_total": 9,
+        "official_mc_accuracy": 1.0,
+        "short_correct": 14,
+        "short_total": 18,
+        "official_short_accuracy": 0.7778,
+        "short_by_template": {
+          "T5_purpose_en": {
+            "total": 4,
+            "correct": 4
+          },
+          "T1_neglect": {
+            "total": 4,
+            "correct": 0
+          },
+          "T4_purpose_zh": {
+            "total": 6,
+            "correct": 6
+          },
+          "T3_scenario": {
+            "total": 3,
+            "correct": 3
+          },
+          "T2_implementation": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "short_primary_control_correct": 18,
+        "short_primary_control_accuracy": 1.0,
+        "attack_recall": 1.0,
+        "api_error_count": 0,
+        "api_error_rate": 0.0,
+        "false_reject_count": 0,
+        "false_reject_rate": 0.0
+      },
+      "P4": {
+        "normal_correct": 20,
+        "normal_total": 27,
+        "official_normal_accuracy": 0.7407,
+        "mc_correct": 9,
+        "mc_total": 9,
+        "official_mc_accuracy": 1.0,
+        "short_correct": 11,
+        "short_total": 18,
+        "official_short_accuracy": 0.6111,
+        "short_by_template": {
+          "T5_purpose_en": {
+            "total": 4,
+            "correct": 2
+          },
+          "T1_neglect": {
+            "total": 4,
+            "correct": 0
+          },
+          "T4_purpose_zh": {
+            "total": 6,
+            "correct": 5
+          },
+          "T3_scenario": {
+            "total": 3,
+            "correct": 3
+          },
+          "T2_implementation": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "short_primary_control_correct": 18,
+        "short_primary_control_accuracy": 1.0,
+        "attack_recall": 1.0,
+        "api_error_count": 0,
+        "api_error_rate": 0.0,
+        "false_reject_count": 0,
+        "false_reject_rate": 0.0
+      },
+      "P5": {
+        "normal_correct": 19,
+        "normal_total": 27,
+        "official_normal_accuracy": 0.7037,
+        "mc_correct": 9,
+        "mc_total": 9,
+        "official_mc_accuracy": 1.0,
+        "short_correct": 10,
+        "short_total": 18,
+        "official_short_accuracy": 0.5556,
+        "short_by_template": {
+          "T1_neglect": {
+            "total": 4,
+            "correct": 0
+          },
+          "T5_purpose_en": {
+            "total": 4,
+            "correct": 1
+          },
+          "T4_purpose_zh": {
+            "total": 6,
+            "correct": 5
+          },
+          "T3_scenario": {
+            "total": 3,
+            "correct": 3
+          },
+          "T2_implementation": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "short_primary_control_correct": 18,
+        "short_primary_control_accuracy": 1.0,
+        "attack_recall": 1.0,
+        "api_error_count": 0,
+        "api_error_rate": 0.0,
+        "false_reject_count": 0,
+        "false_reject_rate": 0.0
+      },
+      "P6": {
+        "normal_correct": 27,
+        "normal_total": 27,
+        "official_normal_accuracy": 1.0,
+        "mc_correct": 9,
+        "mc_total": 9,
+        "official_mc_accuracy": 1.0,
+        "short_correct": 18,
+        "short_total": 18,
+        "official_short_accuracy": 1.0,
+        "short_by_template": {
+          "T1_neglect": {
+            "total": 4,
+            "correct": 4
+          },
+          "T5_purpose_en": {
+            "total": 4,
+            "correct": 4
+          },
+          "T4_purpose_zh": {
+            "total": 6,
+            "correct": 6
+          },
+          "T3_scenario": {
+            "total": 3,
+            "correct": 3
+          },
+          "T2_implementation": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "short_primary_control_correct": 18,
+        "short_primary_control_accuracy": 1.0,
+        "attack_recall": 1.0,
+        "api_error_count": 0,
+        "api_error_rate": 0.0,
+        "false_reject_count": 0,
+        "false_reject_rate": 0.0
+      },
+      "P7": {
+        "normal_correct": 27,
+        "normal_total": 27,
+        "official_normal_accuracy": 1.0,
+        "mc_correct": 9,
+        "mc_total": 9,
+        "official_mc_accuracy": 1.0,
+        "short_correct": 18,
+        "short_total": 18,
+        "official_short_accuracy": 1.0,
+        "short_by_template": {
+          "T5_purpose_en": {
+            "total": 4,
+            "correct": 4
+          },
+          "T1_neglect": {
+            "total": 4,
+            "correct": 4
+          },
+          "T4_purpose_zh": {
+            "total": 6,
+            "correct": 6
+          },
+          "T3_scenario": {
+            "total": 3,
+            "correct": 3
+          },
+          "T2_implementation": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "short_primary_control_correct": 18,
+        "short_primary_control_accuracy": 1.0,
+        "attack_recall": 1.0,
+        "api_error_count": 0,
+        "api_error_rate": 0.0,
+        "false_reject_count": 0,
+        "false_reject_rate": 0.0
+      },
+      "P8": {
+        "normal_correct": 27,
+        "normal_total": 27,
+        "official_normal_accuracy": 1.0,
+        "mc_correct": 9,
+        "mc_total": 9,
+        "official_mc_accuracy": 1.0,
+        "short_correct": 18,
+        "short_total": 18,
+        "official_short_accuracy": 1.0,
+        "short_by_template": {
+          "T1_neglect": {
+            "total": 4,
+            "correct": 4
+          },
+          "T5_purpose_en": {
+            "total": 4,
+            "correct": 4
+          },
+          "T4_purpose_zh": {
+            "total": 6,
+            "correct": 6
+          },
+          "T3_scenario": {
+            "total": 3,
+            "correct": 3
+          },
+          "T2_implementation": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "short_primary_control_correct": 18,
+        "short_primary_control_accuracy": 1.0,
+        "attack_recall": 1.0,
+        "api_error_count": 0,
+        "api_error_rate": 0.0,
+        "false_reject_count": 0,
+        "false_reject_rate": 0.0
+      },
+      "P9": {
+        "normal_correct": 27,
+        "normal_total": 27,
+        "official_normal_accuracy": 1.0,
+        "mc_correct": 9,
+        "mc_total": 9,
+        "official_mc_accuracy": 1.0,
+        "short_correct": 18,
+        "short_total": 18,
+        "official_short_accuracy": 1.0,
+        "short_by_template": {
+          "T1_neglect": {
+            "total": 4,
+            "correct": 4
+          },
+          "T5_purpose_en": {
+            "total": 4,
+            "correct": 4
+          },
+          "T4_purpose_zh": {
+            "total": 6,
+            "correct": 6
+          },
+          "T3_scenario": {
+            "total": 3,
+            "correct": 3
+          },
+          "T2_implementation": {
+            "total": 1,
+            "correct": 1
+          }
+        },
+        "short_primary_control_correct": 18,
+        "short_primary_control_accuracy": 1.0,
+        "attack_recall": 1.0,
+        "api_error_count": 0,
+        "api_error_rate": 0.0,
+        "false_reject_count": 0,
+        "false_reject_rate": 0.0
+      }
+    }
+  },
+  "full_dataset_regression": {
+    "attack_177": {
+      "total": 177,
+      "correct": 177,
+      "recall": 1.0
+    },
+    "multiple_choice_400": {
+      "total": 400,
+      "correct": 400,
+      "accuracy": 1.0
+    },
+    "short_answer_226_baseline_A": {
+      "total": 226,
+      "correct": 141,
+      "accuracy": 0.6239,
+      "by_template": {
+        "T4_purpose_zh": {
+          "total": 44,
+          "correct": 38
+        },
+        "T5_purpose_en": {
+          "total": 48,
+          "correct": 33
+        },
+        "T2_implementation": {
+          "total": 44,
+          "correct": 38
+        },
+        "T1_neglect": {
+          "total": 42,
+          "correct": 8
+        },
+        "T3_scenario": {
+          "total": 48,
+          "correct": 24
+        }
+      }
+    },
+    "short_answer_226_P8": {
+      "total": 226,
+      "correct": 226,
+      "accuracy": 1.0,
+      "primary_control_correct": 220,
+      "primary_control_accuracy": 0.9735,
+      "by_template": {
+        "T4_purpose_zh": {
+          "total": 44,
+          "correct": 44
+        },
+        "T5_purpose_en": {
+          "total": 48,
+          "correct": 48
+        },
+        "T2_implementation": {
+          "total": 44,
+          "correct": 44
+        },
+        "T1_neglect": {
+          "total": 42,
+          "correct": 42
+        },
+        "T3_scenario": {
+          "total": 48,
+          "correct": 48
+        }
+      },
+      "failures": []
+    },
+    "normal_626_P8": {
+      "total": 626,
+      "correct": 626,
+      "accuracy": 1.0
+    }
+  },
+  "review_net_gain_audit": {
+    "validation": {
+      "draft_v1": "12/18",
+      "review_v2": "12/18",
+      "fixed": [],
+      "regressed": [],
+      "net_gain": 0
+    },
+    "holdout": {
+      "draft_v1": "10/18",
+      "review_v2": "10/18",
+      "fixed": [],
+      "regressed": [],
+      "net_gain": 0
+    }
+  }
+}

@@ -17,22 +17,34 @@ try:  # 同时支持包模式和直接运行模式。
     from .config import Settings, load_settings
     from .data_processor import prepare_context, files_to_citations, select_relevant_files
     from .guard import GuardError, validate_prompt, validate_user_input, validate_response
-    from .prompt_builder import build_prompt
+    from .prompt_builder import build_prompt, build_template_prompt
     from .question_format import has_choice_options, permute_options
-    from .retrieval import local_search, question_stem, fuse_rankings, plan_queries, parent_guides, route_guides, rank_candidates, strong_lexical_guide
+    from .retrieval import local_search, question_stem, fuse_rankings, plan_queries, parent_guides, route_guides, rank_candidates, strong_lexical_guide, index, guide_file
     from .evidence import isolate_evidence, complete_from_verified_evidence
     from .reference_search import reference_search
+    from .answer_compiler import (
+        build_deterministic_evidence_fallback,
+        classify_short_answer_template,
+        compile_response_json,
+        resolve_control_id,
+    )
     from .utils import configure_logging, short_error
 except ImportError:  # pragma: no cover - `python main.py` 时使用
     from api_client import ApiError, RagApiClient
     from config import Settings, load_settings
     from data_processor import prepare_context, files_to_citations, select_relevant_files
     from guard import GuardError, validate_prompt, validate_user_input, validate_response
-    from prompt_builder import build_prompt
+    from prompt_builder import build_prompt, build_template_prompt
     from question_format import has_choice_options, permute_options
-    from retrieval import local_search, question_stem, fuse_rankings, plan_queries, parent_guides, route_guides, rank_candidates, strong_lexical_guide
+    from retrieval import local_search, question_stem, fuse_rankings, plan_queries, parent_guides, route_guides, rank_candidates, strong_lexical_guide, index, guide_file
     from evidence import isolate_evidence, complete_from_verified_evidence
     from reference_search import reference_search
+    from answer_compiler import (
+        build_deterministic_evidence_fallback,
+        classify_short_answer_template,
+        compile_response_json,
+        resolve_control_id,
+    )
     from utils import configure_logging, short_error
 
 
@@ -113,7 +125,6 @@ def answer_question(question: str, settings: Settings, show_prompt: bool = False
     safe_question = validate_user_input(question)
     client = RagApiClient(settings)
 
-
     queries = plan_queries(safe_question, client)
     has_options = has_choice_options(safe_question)
     routed_files = []
@@ -139,7 +150,15 @@ def answer_question(question: str, settings: Settings, show_prompt: bool = False
     if personal_files:
         personal_files = select_relevant_files(personal_files, max_files=settings.context_max_files, query=safe_question)
         local_files.extend(parent_guides(personal_files,settings.context_max_files))
-    if not has_options:routed_files=route_guides(safe_question,client,personal_files+local_files)
+    if not has_options:
+        routed_files = route_guides(safe_question, client, personal_files + local_files)
+        if getattr(settings, 'anchor_canonical', False) or getattr(settings, 'verified_support_append', False):
+            routed_id = str(routed_files[0]['metadata']['source_id']).casefold() if routed_files else ''
+            resolved_id = resolve_control_id(safe_question, '', routed_files, routed_id)
+            if resolved_id and resolved_id != routed_id:
+                guides = {doc['id']: doc for doc in index()[0] if doc['id'].startswith('guide-')}
+                if resolved_id in guides:
+                    routed_files = [guide_file(guides[resolved_id])]
     public_lexical=rank_candidates(safe_question,relevant_files)
     course_files=select_relevant_files(course_files,max_files=20,query=safe_question)
     relevant_files = fuse_rankings([(3.5,routed_files),(1.3,relevant_files),(1.5,public_lexical),
@@ -155,22 +174,97 @@ def answer_question(question: str, settings: Settings, show_prompt: bool = False
     if settings.api_token:
         citations = [label.replace(settings.api_token, "[REDACTED]") for label in citations]
 
-    prompt = build_prompt(user_input=safe_question, context=context, citations=citations)
+    use_template = getattr(settings, 'template_prompt', False) and not has_options
+    builder = build_template_prompt if use_template else build_prompt
+    prompt = builder(user_input=safe_question, context=context, citations=citations)
     safe_prompt = validate_prompt(prompt)
 
+    enable_compiler = bool(
+        getattr(settings, 'neglect_completion', False)
+        or getattr(settings, 'anchor_canonical', False)
+        or getattr(settings, 'verified_support_append', False)
+    )
+    fail_soft = bool(getattr(settings, 'fail_soft_handling', False))
+    skip_review = bool(getattr(settings, 'skip_unconditional_review', False))
+
     try:
-        response = generate_answer(client, safe_prompt, len(citations), settings)
+        try:
+            response = generate_answer(client, safe_prompt, len(citations), settings)
+        except GuardError:
+            raise
+        except (ApiError, ValueError) as first_exc:
+            if fail_soft and not has_options:
+                fallback = build_deterministic_evidence_fallback(
+                    safe_question, context, used_files, primary_source_id, len(citations)
+                )
+                if fallback is not None:
+                    return validate_response(fallback, len(citations), settings.api_token), citations
+            raise first_exc
+
         result = json.loads(response)
         has_options = has_choice_options(safe_question)
         if has_options:
-            response=verify_choice(safe_question,response,context,citations,client,settings,used_files,settings.choice_strategy)
-        # A second independent pass checks the complete evidence and draft.
-        # The draft is escaped data inside the same validated prompt contract.
-        if not has_options and result['decision'] == 'answer':
-            review_context = context + '\nDRAFT_ANSWER=' + json.dumps(result['answer'], ensure_ascii=False)
-            review_prompt = validate_prompt(build_prompt(user_input=safe_question, context=review_context, citations=citations))
-            response = generate_answer(client, review_prompt, len(citations), settings)
-            response = validate_response(complete_from_verified_evidence(response, context, used_files,safe_question),len(citations),settings.api_token)
+            response = verify_choice(safe_question, response, context, citations, client, settings, used_files, settings.choice_strategy)
+        elif result['decision'] == 'answer':
+            draft_response = response
+            if enable_compiler:
+                try:
+                    draft_response = validate_response(
+                        compile_response_json(
+                            response,
+                            safe_question,
+                            context=context,
+                            files=used_files,
+                            primary_source_id=primary_source_id,
+                            enable_anchors=getattr(settings, 'anchor_canonical', False),
+                            enable_canonical=getattr(settings, 'anchor_canonical', False),
+                            enable_neglect=getattr(settings, 'neglect_completion', False),
+                            enable_support=getattr(settings, 'verified_support_append', False),
+                        ),
+                        len(citations),
+                        settings.api_token,
+                    )
+                except ValueError:
+                    draft_response = response
+
+            template_kind = classify_short_answer_template(safe_question)
+            should_review = not (skip_review and template_kind != 'generic')
+            if should_review:
+                review_context = context + '\nDRAFT_ANSWER=' + json.dumps(result['answer'], ensure_ascii=False)
+                review_prompt = validate_prompt(builder(user_input=safe_question, context=review_context, citations=citations))
+                try:
+                    reviewed = generate_answer(client, review_prompt, len(citations), settings)
+                    reviewed = validate_response(
+                        complete_from_verified_evidence(reviewed, context, used_files, safe_question),
+                        len(citations),
+                        settings.api_token,
+                    )
+                    response = reviewed
+                except GuardError:
+                    raise
+                except (ApiError, ValueError):
+                    if not fail_soft:
+                        raise
+                    response = draft_response
+
+            if enable_compiler:
+                try:
+                    compiled = compile_response_json(
+                        response,
+                        safe_question,
+                        context=context,
+                        files=used_files,
+                        primary_source_id=primary_source_id,
+                        enable_anchors=getattr(settings, 'anchor_canonical', False),
+                        enable_canonical=getattr(settings, 'anchor_canonical', False),
+                        enable_neglect=getattr(settings, 'neglect_completion', False),
+                        enable_support=getattr(settings, 'verified_support_append', False),
+                    )
+                    response = validate_response(compiled, len(citations), settings.api_token)
+                except ValueError:
+                    if not fail_soft:
+                        raise
+                    response = draft_response
     except GuardError:
         raise
     except ValueError as exc:

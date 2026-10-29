@@ -14,4 +14,6 @@ __pycache__/
 /experiments/v28_1/cache/
 /experiments/v28_1/judge_cache/
 /experiments/v28_1/snapshot_h/knowledge/
+/experiments/v29/cache/
+/experiments/v29/judge_cache/
 *.log

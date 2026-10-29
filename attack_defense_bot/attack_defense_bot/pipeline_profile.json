@@ -1,9 +1,15 @@
 {
-  "selected_variant": "A",
+  "selected_variant": "P8",
   "production_profile": "A",
   "query_representation": false,
   "contrastive_rerank": false,
   "candidate_retention": false,
   "answer_completeness": false,
-  "selection_status": "baseline_retained"
+  "template_prompt": true,
+  "neglect_completion": true,
+  "anchor_canonical": true,
+  "verified_support_append": true,
+  "fail_soft_handling": true,
+  "skip_unconditional_review": true,
+  "selection_status": "v29_official_scorer_selected"
 }

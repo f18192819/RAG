@@ -14,7 +14,7 @@ from credentials import load_credentials
 
 BASE='http://10.1.0.220:9010'
 SLUG='assignment3'
-INFERENCE={'__init__.py','api_client.py','config.py','credentials.py','data_processor.py',
+INFERENCE={'__init__.py','answer_compiler.py','api_client.py','config.py','credentials.py','data_processor.py',
  'diagnostics.py','evidence.py','guard.py','intents.py','main.py','prompt_builder.py','answer_review.py',
  'question_format.py','query_planning.py','control_routing.py','reference_search.py','retrieval.py','utils.py'}
 

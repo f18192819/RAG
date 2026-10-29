@@ -69,6 +69,14 @@ test_candidate_fix_alone_does_not_change_generation_strategy (test_v28_1_reliabi
 test_complete_draft_does_not_get_unconditional_review (test_v28_1_reliability.ReliabilityContracts.test_complete_draft_does_not_get_unconditional_review) ... ok
 test_default_entry_uses_baseline_and_current_input_guard (test_v28_1_reliability.ReliabilityContracts.test_default_entry_uses_baseline_and_current_input_guard) ... ok
 test_nine_controls_survive_and_missing_mechanisms_are_corrected (test_v28_1_reliability.ReliabilityContracts.test_nine_controls_survive_and_missing_mechanisms_are_corrected) ... ok
+test_append_verified_course_support_seven_conditions (test_v29_official_scorer.V29OfficialScorerTests.test_append_verified_course_support_seven_conditions) ... ok
+test_canonical_terms_bilingual (test_v29_official_scorer.V29OfficialScorerTests.test_canonical_terms_bilingual) ... ok
+test_classify_short_answer_template (test_v29_official_scorer.V29OfficialScorerTests.test_classify_short_answer_template) ... ok
+test_ensure_neglect_consequence_idempotent (test_v29_official_scorer.V29OfficialScorerTests.test_ensure_neglect_consequence_idempotent) ... ok
+test_extract_question_anchors (test_v29_official_scorer.V29OfficialScorerTests.test_extract_question_anchors) ... ok
+test_fail_soft_cases_a_b_c_d (test_v29_official_scorer.V29OfficialScorerTests.test_fail_soft_cases_a_b_c_d) ... ok
+test_template_prompt_validates_with_frozen_guard (test_v29_official_scorer.V29OfficialScorerTests.test_template_prompt_validates_with_frozen_guard) ... ok
+test_ten_adjacent_control_boundaries_semantic_and_official_lexical (test_v29_official_scorer.V29OfficialScorerTests.test_ten_adjacent_control_boundaries_semantic_and_official_lexical) ... ok
 test_later_mention_does_not_replace_primary (test_semantic_evaluator.StrictEvaluationTests.test_later_mention_does_not_replace_primary) ... ok
 test_primary_precedes_mechanism_scoring (test_semantic_evaluator.StrictEvaluationTests.test_primary_precedes_mechanism_scoring) ... ok
 test_split_integrity_and_control_disjointness (test_semantic_evaluator.StrictEvaluationTests.test_split_integrity_and_control_disjointness) ... ok
@@ -84,6 +92,6 @@ test_tie_preserves_baseline (test_selection_and_diagnostics.ReleaseTests.test_ti
 test_valid_improvement_is_eligible (test_selection_and_diagnostics.ReleaseTests.test_valid_improvement_is_eligible) ... ok
 
 ----------------------------------------------------------------------
-Ran 84 tests in 8.870s
+Ran 92 tests in 11.930s
 
 OK

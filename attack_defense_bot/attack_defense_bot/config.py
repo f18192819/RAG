@@ -69,6 +69,12 @@ class Settings:
     production_profile: str = 'A'
     candidate_retention: bool = False
     answer_completeness: bool = False
+    template_prompt: bool = False
+    neglect_completion: bool = False
+    anchor_canonical: bool = False
+    verified_support_append: bool = False
+    fail_soft_handling: bool = False
+    skip_unconditional_review: bool = False
 
 
 def load_settings() -> Settings:
@@ -110,6 +116,12 @@ def load_settings() -> Settings:
         production_profile=os.getenv('RAG_PRODUCTION_PROFILE',profile.get('production_profile','A')),
         candidate_retention=os.getenv('RAG_CANDIDATE_RETENTION',str(profile.get('candidate_retention',False))).lower()=='true',
         answer_completeness=os.getenv('RAG_ANSWER_COMPLETENESS',str(profile.get('answer_completeness',False))).lower()=='true',
+        template_prompt=os.getenv('RAG_TEMPLATE_PROMPT',str(profile.get('template_prompt',False))).lower()=='true',
+        neglect_completion=os.getenv('RAG_NEGLECT_COMPLETION',str(profile.get('neglect_completion',False))).lower()=='true',
+        anchor_canonical=os.getenv('RAG_ANCHOR_CANONICAL',str(profile.get('anchor_canonical',False))).lower()=='true',
+        verified_support_append=os.getenv('RAG_VERIFIED_SUPPORT_APPEND',str(profile.get('verified_support_append',False))).lower()=='true',
+        fail_soft_handling=os.getenv('RAG_FAIL_SOFT_HANDLING',str(profile.get('fail_soft_handling',False))).lower()=='true',
+        skip_unconditional_review=os.getenv('RAG_SKIP_UNCONDITIONAL_REVIEW',str(profile.get('skip_unconditional_review',False))).lower()=='true',
     )
     if not 1 <= settings.top_k <= 50 or not 1 <= settings.context_max_files <= settings.top_k:
         raise ValueError("top_k 必须在 1..50，max_files 必须在 1..top_k")

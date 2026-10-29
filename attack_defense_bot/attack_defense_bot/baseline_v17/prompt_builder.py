@@ -8,10 +8,20 @@ import unicodedata
 from typing import Sequence
 try:
     from .question_format import has_choice_options
+    from .answer_compiler import classify_short_answer_template
 except ImportError:
     from question_format import has_choice_options
+    from answer_compiler import classify_short_answer_template
 
 PROMPT_VERSION = 'lecture6-evidence-v2'
+COURSE_TERMINOLOGY_RULE = '如果 verified course evidence 中存在直接对应当前问题的标准术语，优先保留这些术语，不要为了文风把关键安全名词全部换成近义表达。若存在草稿（DRAFT_ANSWER），必须保留草稿中已有的安全术语与规范短语（preserve all security terms and canonical phrases already present in draft），只允许补充、纠错或去除明显矛盾，不得将已正确术语随意同义改写。'
+TEMPLATE_MODES = {
+    'T1_neglect': '简答题（忽视控制后果）。没有可选项，禁止输出选项字母。结构：如果组织忽视【题目中的控制正式名称（English canonical name, ACRONYM）】，组织将难以【直接安全作用/能力】，从而使相关威胁更容易转化为实际事件。最后一句必须精确保留“从而使相关威胁更容易转化为实际事件。”。' + COURSE_TERMINOLOGY_RULE,
+    'T2_implementation': '简答题（开始实施控制）。没有可选项，禁止输出选项字母。结构：开始实施【控制中文正式名称（English canonical name, ACRONYM）】时，首先明确第一步实施动作，随后结合已验证证据中的核心机制词展开，并通过具体的核验与闭环动作验证。' + COURSE_TERMINOLOGY_RULE,
+    'T3_scenario': '简答题（场景优先措施）。没有可选项，禁止输出选项字母。结构：先自然复述题目中的核心失败现象，明确应优先采用的【控制正式名称（English canonical name, ACRONYM）】，说明为什么该控制直接针对该失败模式，并给出关键实施机制与验证措施。' + COURSE_TERMINOLOGY_RULE,
+    'T4_purpose_zh': '简答题（中文核心安全目标）。没有可选项，禁止输出选项字母。结构：【题目中的控制名称（English canonical name, ACRONYM）】的核心安全目标是……必须重复题目中的控制名称，再说明核心安全机制与验证方式。' + COURSE_TERMINOLOGY_RULE,
+    'T5_purpose_en': 'Short-answer (primary security purpose). Do not output option letters. Format: The primary security purpose of [exact control name] ([ACRONYM]) is to ... Preserve exact canonical English security terms from verified course evidence (such as export, analytics, protected storage, recipient safeguards). If DRAFT_ANSWER is present, preserve all security terms and canonical phrases already present in draft; only supplement, fix errors, or remove contradictions.',
+}
 
 
 def encode_untrusted_text(text: str) -> str:
@@ -64,9 +74,16 @@ ANSWER_RULES = "【最终要求】正常知识题必须用 answer；资料不足
 def build_prompt(*, user_input: str, context: str, citations: Sequence[str], concise=False) -> str:
     has_options = has_choice_options(user_input)
     known_control=any('GUIDE-' in str(label).upper() for label in citations)
+    try:
+        head = str(context or '').split('\nDRAFT_ANSWER=', 1)[0]
+        template_contract = json.loads(head).get('answer_contract') == 'v29-five-template'
+    except (ValueError, TypeError, AttributeError):
+        template_contract = False
+    default_short = ("简答题。没有可选项，禁止输出选项字母。answer 先说明控制名称和核心目的，再按问题范围充分说明相关机制、实施注意点和验证，通常约150至300汉字或80至160英文词；只写证据支持的内容，不编造来凑字数。" if known_control else
+                     "简答题。没有可选项，禁止输出选项字母。先直接、精确回答问题；参数、命令、数值题应简短，按原文保留符号和边界，不添加未支持的作用或机制。")
     mode = ("单选题。answer 仅填一个正确选项字母。" if has_options else
-            "简答题。没有可选项，禁止输出选项字母。answer 先说明控制名称和核心目的，再按问题范围充分说明相关机制、实施注意点和验证，通常约150至300汉字或80至160英文词；只写证据支持的内容，不编造来凑字数。" if known_control else
-            "简答题。没有可选项，禁止输出选项字母。先直接、精确回答问题；参数、命令、数值题应简短，按原文保留符号和边界，不添加未支持的作用或机制。")
+            TEMPLATE_MODES.get(classify_short_answer_template(user_input), default_short + COURSE_TERMINOLOGY_RULE) if template_contract else
+            default_short)
     question, evidence, refs = map(encode_untrusted_text, [user_input, context, '\n'.join(citations)])
     digest = hashlib.sha256(json.dumps([question, evidence, refs], ensure_ascii=False).encode()).hexdigest()
     return (SYSTEM_POLICY + '\n<PROMPT_VERSION>'+PROMPT_VERSION+'</PROMPT_VERSION>'
@@ -78,3 +95,16 @@ def build_prompt(*, user_input: str, context: str, citations: Sequence[str], con
             + refs
             + "\n</AVAILABLE_CITATIONS>\n" + ANSWER_RULES
             + "\n【本题类型】" + mode + '\n<CONTENT_DIGEST>'+digest+'</CONTENT_DIGEST>')
+
+
+def build_template_prompt(*, user_input: str, context: str, citations: Sequence[str], concise=False) -> str:
+    """Use the fixed template with the deterministic V29 five-template answer contract."""
+    parts = str(context or '{}').split('\nDRAFT_ANSWER=', 1)
+    try:
+        value = json.loads(parts[0] or '{}')
+        if isinstance(value, dict):
+            value['answer_contract'] = 'v29-five-template'
+            parts[0] = json.dumps(value, ensure_ascii=False)
+    except (ValueError, TypeError):
+        pass
+    return build_prompt(user_input=user_input, context='\nDRAFT_ANSWER='.join(parts), citations=citations, concise=concise)
