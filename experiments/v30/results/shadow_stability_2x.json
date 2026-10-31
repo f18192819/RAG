@@ -1,0 +1,33 @@
+{
+  "shadow_total": 150,
+  "run_a_normal_correct": 150,
+  "run_a_normal_accuracy": 1.0,
+  "run_a_mc_correct": 101,
+  "run_a_mc_accuracy": 1.0,
+  "run_a_sa_correct": 49,
+  "run_a_sa_accuracy": 1.0,
+  "run_b_normal_correct": 149,
+  "run_b_normal_accuracy": 0.9933,
+  "run_b_mc_correct": 100,
+  "run_b_mc_accuracy": 0.9901,
+  "run_b_sa_correct": 49,
+  "run_b_sa_accuracy": 1.0,
+  "mean_normal_accuracy": 0.9967,
+  "min_normal_accuracy": 0.9933,
+  "max_normal_accuracy": 1.0,
+  "question_flip_count": 1,
+  "exact_answer_text_diff_count": 48,
+  "flips": [
+    {
+      "id": "public-normal-train-syn-0657",
+      "q_type": "MC",
+      "template": "multiple_choice",
+      "expected_answer": "B",
+      "run_a_answer": "B",
+      "run_b_answer": "A",
+      "run_a_correct": true,
+      "run_b_correct": false,
+      "flip_reason": "mc_choice_flip"
+    }
+  ]
+}

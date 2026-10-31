@@ -13,6 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from api_client import ApiError
 from answer_compiler import (
     NEGLECT_CONSEQUENCE_ZH,
+    append_committed_guide_support,
     append_verified_course_support,
     build_deterministic_evidence_fallback,
     canonical_terms,
@@ -21,6 +22,10 @@ from answer_compiler import (
     compile_response_json,
     ensure_neglect_consequence,
     extract_question_anchors,
+    knn_predict_control,
+    knn_predict_mc,
+    resolve_control_id,
+    resolve_explicit_control_id,
 )
 import baseline_v17.main as baseline_main
 from baseline_v17.guard import validate_prompt as validate_baseline_prompt
@@ -295,6 +300,74 @@ class V29OfficialScorerTests(unittest.TestCase):
                     # Layer 2: official-style lexical concept groups at threshold 1.0 must pass
                     matched, method, score = contains_expected_concepts(normalize_text(compiled), concepts, 1.0)
                     self.assertTrue(matched, (primary_id, variant_name, method, score, compiled))
+
+    def test_v30_resolve_explicit_control_fast_path(self):
+        self.assertEqual(resolve_explicit_control_id("【问题】如果组织忽视特权访问管理，最直接的安全缺口是什么？"), "guide-pam")
+        self.assertEqual(resolve_explicit_control_id("【问题】某电商平台应如何开始实施CSRF防护令牌？"), "guide-csrf")
+        self.assertEqual(resolve_explicit_control_id("【问题】网络分段的核心安全目标是什么？"), "guide-segmentation")
+        self.assertEqual(resolve_explicit_control_id("【问题】What is the primary security purpose of full-disk encryption?"), "guide-fde")
+        self.assertEqual(resolve_explicit_control_id("【问题】某高校遇到以下情况：数据库端口向所有互联网地址开放。应优先采取什么安全措施，为什么？"), "")
+
+    def test_v30_knn_predict_control_and_exclude_ids(self):
+        q = "【问题】某高校遇到以下情况：数据库端口向所有互联网地址开放。应优先采取什么安全措施，为什么？"
+        res_open = knn_predict_control(q, min_top1_score=0.42, min_margin=0.10)
+        self.assertEqual(res_open["predicted_control"], "guide-security-group")
+        self.assertTrue(res_open["high_confidence"])
+
+        # When the scenario family is excluded, high_confidence must be False so it falls back to LLM router
+        res_blocked = knn_predict_control(
+            q,
+            min_top1_score=0.42,
+            min_margin=0.10,
+            exclude_scenario_key="control-31::scenario_failure::数据库端口向所有互联网地址开放",
+        )
+        self.assertFalse(res_blocked["high_confidence"])
+
+    def test_v30_committed_guide_support_append(self):
+        fde_doc = self.guides["guide-fde"]
+        ans = "全盘加密（Full-Disk Encryption, FDE）用于保护静态存储。"
+        supported = append_committed_guide_support(ans, "全盘加密的核心安全目标是什么？", "guide-fde")
+        self.assertIn("课程参考：", supported)
+        self.assertIn(fde_doc["text_zh"], supported)
+        self.assertEqual(append_committed_guide_support(supported, "全盘加密的核心安全目标是什么？", "guide-fde"), supported)
+
+    def test_v30_mc_api_failure_knn_fallback(self):
+        mc_q = (
+            "【问题】某高校发现：数据库端口向所有互联网地址开放。哪项措施最直接针对这一问题？\n"
+            "【选项】\n"
+            "A. 全盘加密\n"
+            "B. 主机防火墙与安全组最小开放\n"
+            "C. 口令哈希\n"
+            "D. 安全意识训练"
+        )
+        doc = self.guides["guide-security-group"]
+        files = [guide_file(doc)]
+        quote = doc["text_zh"]
+        context = json.dumps({"validated_evidence": [{"source": 1, "fact": quote, "quote": quote}]}, ensure_ascii=False)
+        client = Mock()
+        client.search.return_value = files
+        client.dialogue.side_effect = ApiError(502, "Simulated MC LLM outage")
+        with patch.object(baseline_main, "RagApiClient", return_value=client), \
+             patch.object(baseline_main, "reference_search", return_value=[]), \
+             patch.object(baseline_main, "local_search", return_value=files), \
+             patch.object(baseline_main, "isolate_evidence", return_value=(context, files)):
+            raw, citations = baseline_main.answer_question(
+                mc_q, replace(self.settings, mc_knn_fallback=True, fast_path_named_controls=True)
+            )
+        parsed = json.loads(validate_response(raw, len(citations), self.settings.api_token))
+        self.assertEqual(parsed["decision"], "answer")
+        self.assertEqual(parsed["answer"], "B")
+
+    def test_v30_disable_handwritten_scenario_patches(self):
+        q = "【问题】某制造企业遇到以下情况：系统升级时下载的更新包缺乏签名和哈希校验。应优先采取什么安全措施，为什么？"
+        self.assertEqual(
+            resolve_control_id(q, "", [], "guide-firmware", allow_scenario_patches=False),
+            "guide-firmware",
+        )
+        self.assertEqual(
+            resolve_control_id(q, "", [], "guide-firmware", allow_scenario_patches=True),
+            "guide-integrity",
+        )
 
 
 if __name__ == "__main__":

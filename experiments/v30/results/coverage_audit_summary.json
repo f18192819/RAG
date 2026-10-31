@@ -1,0 +1,1988 @@
+{
+  "1_question_only": {
+    "total": 226,
+    "official_score_correct": 17,
+    "official_score_accuracy": 0.0752,
+    "primary_control_correct": 172,
+    "primary_control_accuracy": 0.7611,
+    "strict_both_correct": 17,
+    "strict_both_accuracy": 0.0752,
+    "correct_control_but_keyword_miss": 155,
+    "wrong_control_accidental_pass": 0,
+    "wrong_control_and_fail": 54,
+    "by_template": {
+      "T4_purpose_zh": {
+        "total": 44,
+        "both_correct": 14,
+        "official_correct": 14,
+        "control_correct": 43
+      },
+      "T5_purpose_en": {
+        "total": 48,
+        "both_correct": 1,
+        "official_correct": 1,
+        "control_correct": 45
+      },
+      "T2_implementation": {
+        "total": 44,
+        "both_correct": 2,
+        "official_correct": 2,
+        "control_correct": 43
+      },
+      "T1_neglect": {
+        "total": 42,
+        "both_correct": 0,
+        "official_correct": 0,
+        "control_correct": 41
+      },
+      "T3_scenario": {
+        "total": 48,
+        "both_correct": 0,
+        "official_correct": 0,
+        "control_correct": 0
+      }
+    },
+    "sample_misses": [
+      {
+        "id": "public-normal-train-syn-0743",
+        "template": "T4_purpose_zh",
+        "true_control": "guide-firmware",
+        "active_control": "guide-firmware",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "加载伪造",
+            "伪造"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0669",
+        "template": "T5_purpose_en",
+        "true_control": "guide-zero",
+        "active_control": "guide-zero",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "location"
+          ],
+          [
+            "behavior"
+          ],
+          [
+            "resource sensitivity",
+            "resource",
+            "sensitivity"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0210",
+        "template": "T2_implementation",
+        "true_control": "guide-csrf",
+        "active_control": "guide-csrf",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "绑定会话",
+            "会话绑定",
+            "session-bound",
+            "session binding",
+            "会话",
+            "session",
+            "bound",
+            "binding"
+          ],
+          [
+            "来源信息",
+            "来源校验",
+            "Origin校验",
+            "Referer校验",
+            "origin check",
+            "来源",
+            "校验",
+            "Origin",
+            "Referer",
+            "check",
+            "并校验来源信息",
+            "并验证来源信息",
+            "验证",
+            "校验来源信息",
+            "验证来源信息"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0249",
+        "template": "T5_purpose_en",
+        "true_control": "guide-sca",
+        "active_control": "guide-sca",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "组件暴露",
+            "组件风险",
+            "component exposure",
+            "暴露",
+            "组件",
+            "风险",
+            "component",
+            "exposure"
+          ],
+          [
+            "locate software affected",
+            "find software affected",
+            "locate",
+            "software",
+            "affected",
+            "find",
+            "locate software",
+            "find software",
+            "software affected"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0067",
+        "template": "T5_purpose_en",
+        "true_control": "guide-supplier",
+        "active_control": "guide-supplier",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "Make processor safeguards",
+            "Make",
+            "processor",
+            "safeguards",
+            "make processor",
+            "processor safeguards"
+          ],
+          [
+            "audit rights",
+            "审计",
+            "审计日志",
+            "audit logging",
+            "audit",
+            "rights",
+            "日志",
+            "logging"
+          ],
+          [
+            "incident duties enforceable",
+            "incident",
+            "duties",
+            "enforceable",
+            "incident duties",
+            "duties enforceable"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0017",
+        "template": "T1_neglect",
+        "true_control": "guide-dpia",
+        "active_control": "guide-dpia",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "使相关威胁更容易转化为实际事件",
+            "事件",
+            "实际",
+            "使相关威胁更容易转化",
+            "使相",
+            "关威",
+            "胁更",
+            "容易",
+            "转化"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0154",
+        "template": "T2_implementation",
+        "true_control": "guide-fde",
+        "active_control": "guide-fde",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "恢复密钥",
+            "恢复口令",
+            "recovery key",
+            "密钥",
+            "恢复",
+            "recovery",
+            "key",
+            "安全托管恢复密钥并验证启动前保护",
+            "安全托管恢复密钥并校验启动前保护",
+            "验证",
+            "启动",
+            "保护",
+            "校验",
+            "安全托管恢复密钥",
+            "验证启动前保护",
+            "校验启动前保护"
+          ],
+          [
+            "启动前保护",
+            "预启动保护",
+            "pre-boot protection",
+            "启动",
+            "保护",
+            "pre-boot",
+            "pre",
+            "boot",
+            "protection"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0436",
+        "template": "T3_scenario",
+        "true_control": "guide-security-group",
+        "active_control": "guide-security-group",
+        "reason": "wrong_control",
+        "missed_groups": [
+          [
+            "安全组最小暴露",
+            "最小暴露",
+            "安全组",
+            "security group exposure",
+            "最小",
+            "暴露",
+            "security",
+            "group",
+            "exposure",
+            "攻击面",
+            "暴露面",
+            "attack surface",
+            "攻击",
+            "attack",
+            "surface",
+            "安全组最小泄露",
+            "减少云工作负载对互联网和非必要网段的攻击面",
+            "降低云工作负载对互联网和非必要网段的攻击面",
+            "网段",
+            "减少",
+            "云",
+            "工作",
+            "负载",
+            "工作负载"
+          ],
+          [
+            "从业务流向反推入站和出站规则",
+            "业务",
+            "流向",
+            "反推",
+            "入站",
+            "出站",
+            "规则"
+          ],
+          [
+            "限制源",
+            "阻止源",
+            "限制",
+            "阻止"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0185",
+        "template": "T1_neglect",
+        "true_control": "guide-xss",
+        "active_control": "guide-xss",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "不可信内容",
+            "不可信数据",
+            "用户输入",
+            "untrusted content",
+            "untrusted data",
+            "内容",
+            "数据",
+            "用户",
+            "untrusted",
+            "content",
+            "data",
+            "避免不可信内容在浏览器中被解释为可执行脚本",
+            "XSS",
+            "跨站脚本",
+            "脚本执行",
+            "executable script",
+            "浏览器",
+            "脚本",
+            "执行",
+            "被解释",
+            "被解",
+            "解释",
+            "executable",
+            "script"
+          ],
+          [
+            "可执行脚本",
+            "脚本执行",
+            "执行脚本",
+            "executable script",
+            "脚本",
+            "执行",
+            "executable",
+            "script"
+          ],
+          [
+            "使相关威胁更容易转化为实际事件",
+            "事件",
+            "实际",
+            "使相关威胁更容易转化",
+            "使相",
+            "关威",
+            "胁更",
+            "容易",
+            "转化"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0576",
+        "template": "T3_scenario",
+        "true_control": "guide-vulnerability",
+        "active_control": "guide-vulnerability",
+        "reason": "wrong_control",
+        "missed_groups": [
+          [
+            "漏洞管理闭环",
+            "漏洞管理",
+            "闭环修复",
+            "vulnerability management",
+            "管理",
+            "漏洞",
+            "闭环",
+            "修复",
+            "vulnerability",
+            "management",
+            "发现定级修复验证",
+            "发现",
+            "定级",
+            "验证",
+            "复测",
+            "例外管理",
+            "限时例外",
+            "例外审批",
+            "exception management",
+            "例外",
+            "限时",
+            "审批",
+            "exception",
+            "批准"
+          ],
+          [
+            "可利用性",
+            "可被利用程度",
+            "exploitability",
+            "可利",
+            "用性",
+            "可被",
+            "利用",
+            "程度",
+            "结合可利用性和资产关键性设定时限",
+            "结合可利用性",
+            "结合",
+            "资产关键性设定",
+            "资产",
+            "关键",
+            "性设",
+            "设定",
+            "资产关键性设定时限",
+            "定时",
+            "时限"
+          ],
+          [
+            "资产关键性",
+            "资产重要性",
+            "asset criticality",
+            "资产",
+            "关键",
+            "键性",
+            "重要性",
+            "asset",
+            "criticality"
+          ],
+          [
+            "负责人",
+            "责任人",
+            "owner",
+            "分配负责人"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0450",
+        "template": "T3_scenario",
+        "true_control": "guide-cspm",
+        "active_control": "guide-cspm",
+        "reason": "wrong_control",
+        "missed_groups": [
+          [
+            "映射基线",
+            "映射",
+            "基线"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0560",
+        "template": "T2_implementation",
+        "true_control": "guide-awareness",
+        "active_control": "guide-awareness",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "岗位相关",
+            "与岗位相关",
+            "按岗位",
+            "角色相关",
+            "岗位",
+            "角色"
+          ],
+          [
+            "即时反馈",
+            "及时反馈",
+            "实时反馈",
+            "反馈",
+            "即时",
+            "及时",
+            "实时"
+          ],
+          [
+            "事件数据",
+            "事件",
+            "数据"
+          ]
+        ]
+      }
+    ]
+  },
+  "2_draft_only_raw_route": {
+    "total": 226,
+    "official_score_correct": 141,
+    "official_score_accuracy": 0.6239,
+    "primary_control_correct": 213,
+    "primary_control_accuracy": 0.9425,
+    "strict_both_correct": 138,
+    "strict_both_accuracy": 0.6106,
+    "correct_control_but_keyword_miss": 75,
+    "wrong_control_accidental_pass": 3,
+    "wrong_control_and_fail": 10,
+    "by_template": {
+      "T4_purpose_zh": {
+        "total": 44,
+        "both_correct": 37,
+        "official_correct": 38,
+        "control_correct": 43
+      },
+      "T5_purpose_en": {
+        "total": 48,
+        "both_correct": 33,
+        "official_correct": 33,
+        "control_correct": 46
+      },
+      "T2_implementation": {
+        "total": 44,
+        "both_correct": 37,
+        "official_correct": 38,
+        "control_correct": 43
+      },
+      "T1_neglect": {
+        "total": 42,
+        "both_correct": 8,
+        "official_correct": 8,
+        "control_correct": 41
+      },
+      "T3_scenario": {
+        "total": 48,
+        "both_correct": 23,
+        "official_correct": 24,
+        "control_correct": 40
+      }
+    },
+    "sample_misses": [
+      {
+        "id": "public-normal-train-syn-0669",
+        "template": "T5_purpose_en",
+        "true_control": "guide-zero",
+        "active_control": "guide-zero",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "behavior"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0017",
+        "template": "T1_neglect",
+        "true_control": "guide-dpia",
+        "active_control": "guide-dpia",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "使相关威胁更容易转化为实际事件",
+            "事件",
+            "实际",
+            "使相关威胁更容易转化",
+            "使相",
+            "关威",
+            "胁更",
+            "容易",
+            "转化"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0185",
+        "template": "T1_neglect",
+        "true_control": "guide-xss",
+        "active_control": "guide-xss",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "使相关威胁更容易转化为实际事件",
+            "事件",
+            "实际",
+            "使相关威胁更容易转化",
+            "使相",
+            "关威",
+            "胁更",
+            "容易",
+            "转化"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0576",
+        "template": "T3_scenario",
+        "true_control": "guide-vulnerability",
+        "active_control": "guide-vulnerability",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "密钥生成",
+            "生成密钥",
+            "key generation",
+            "密钥",
+            "生成",
+            "key",
+            "generation"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0619",
+        "template": "T1_neglect",
+        "true_control": "guide-pam",
+        "active_control": "guide-pam",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "隔离流程",
+            "主机隔离",
+            "端点隔离",
+            "isolation",
+            "隔离",
+            "主机",
+            "端点"
+          ],
+          [
+            "使相关威胁更容易转化为实际事件",
+            "事件",
+            "实际",
+            "使相关威胁更容易转化",
+            "使相",
+            "关威",
+            "胁更",
+            "容易",
+            "转化"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0053",
+        "template": "T5_purpose_en",
+        "true_control": "guide-transfer",
+        "active_control": "guide-transfer",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "export"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0058",
+        "template": "T3_scenario",
+        "true_control": "guide-supplier",
+        "active_control": "guide-supplier",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "把最小控制",
+            "最小"
+          ],
+          [
+            "分包限制",
+            "分包阻止",
+            "限制",
+            "阻止"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0519",
+        "template": "T4_purpose_zh",
+        "true_control": "guide-ir",
+        "active_control": "guide-ir",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "协作"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0521",
+        "template": "T1_neglect",
+        "true_control": "guide-ir",
+        "active_control": "guide-ir",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "协作"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0417",
+        "template": "T5_purpose_en",
+        "true_control": "guide-integrity",
+        "active_control": "guide-integrity",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "when needed",
+            "when",
+            "needed"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0325",
+        "template": "T1_neglect",
+        "true_control": "guide-ddos",
+        "active_control": "guide-ddos",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "使相关威胁更容易转化为实际事件",
+            "事件",
+            "实际",
+            "使相关威胁更容易转化",
+            "使相",
+            "关威",
+            "胁更",
+            "容易",
+            "转化"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0473",
+        "template": "T5_purpose_en",
+        "true_control": "guide-cloud-audit",
+        "active_control": "guide-cloud-audit",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "Preserve searchable",
+            "Preserve",
+            "searchable"
+          ]
+        ]
+      }
+    ]
+  },
+  "3_draft_plus_canonical_raw_route": {
+    "total": 226,
+    "official_score_correct": 215,
+    "official_score_accuracy": 0.9513,
+    "primary_control_correct": 213,
+    "primary_control_accuracy": 0.9425,
+    "strict_both_correct": 210,
+    "strict_both_accuracy": 0.9292,
+    "correct_control_but_keyword_miss": 3,
+    "wrong_control_accidental_pass": 5,
+    "wrong_control_and_fail": 8,
+    "by_template": {
+      "T4_purpose_zh": {
+        "total": 44,
+        "both_correct": 43,
+        "official_correct": 44,
+        "control_correct": 43
+      },
+      "T5_purpose_en": {
+        "total": 48,
+        "both_correct": 46,
+        "official_correct": 46,
+        "control_correct": 46
+      },
+      "T2_implementation": {
+        "total": 44,
+        "both_correct": 43,
+        "official_correct": 44,
+        "control_correct": 43
+      },
+      "T1_neglect": {
+        "total": 42,
+        "both_correct": 41,
+        "official_correct": 42,
+        "control_correct": 41
+      },
+      "T3_scenario": {
+        "total": 48,
+        "both_correct": 37,
+        "official_correct": 39,
+        "control_correct": 40
+      }
+    },
+    "sample_misses": [
+      {
+        "id": "public-normal-train-syn-0576",
+        "template": "T3_scenario",
+        "true_control": "guide-vulnerability",
+        "active_control": "guide-vulnerability",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "密钥生成",
+            "生成密钥",
+            "key generation",
+            "密钥",
+            "生成",
+            "key",
+            "generation"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0016",
+        "template": "T3_scenario",
+        "true_control": "guide-dpia",
+        "active_control": "guide-minimization",
+        "reason": "wrong_control",
+        "missed_groups": [
+          [
+            "位置",
+            "地理位置",
+            "登录位置",
+            "location",
+            "地理",
+            "登录"
+          ],
+          [
+            "必要性",
+            "必要",
+            "要性"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0025",
+        "template": "T5_purpose_en",
+        "true_control": "guide-dpia",
+        "active_control": "guide-data-classification",
+        "reason": "wrong_control",
+        "missed_groups": [
+          [
+            "Identify",
+            "detect"
+          ],
+          [
+            "reduce privacy risk",
+            "limit privacy risk",
+            "reduce",
+            "privacy",
+            "risk",
+            "limit",
+            "high-risk processing begins",
+            "high-risk",
+            "high",
+            "processing",
+            "begins",
+            "reduce privacy",
+            "limit privacy",
+            "privacy risk",
+            "risk before",
+            "before high-risk",
+            "high-risk processing",
+            "processing begins"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0002",
+        "template": "T3_scenario",
+        "true_control": "guide-data-classification",
+        "active_control": "guide-data-classification",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "审批",
+            "批准",
+            "记录",
+            "限时",
+            "time-limit",
+            "approve",
+            "record",
+            "time",
+            "limit"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0296",
+        "template": "T3_scenario",
+        "true_control": "guide-dns",
+        "active_control": "guide-ndr",
+        "reason": "wrong_control",
+        "missed_groups": [
+          [
+            "DNS安全监测",
+            "DNS安全监控",
+            "DNS监测",
+            "DNS security monitoring",
+            "DNS",
+            "安全监测",
+            "监测",
+            "安全监控",
+            "监控",
+            "security",
+            "monitoring",
+            "恶意域名解析",
+            "恶意解析",
+            "malicious resolution",
+            "malicious DNS",
+            "域名",
+            "解析",
+            "malicious",
+            "resolution",
+            "隧道",
+            "DNS隧道",
+            "tunneling",
+            "DNS tunneling",
+            "异常名称查询"
+          ],
+          [
+            "结合信誉",
+            "结合",
+            "信誉"
+          ],
+          [
+            "日志"
+          ],
+          [
+            "频率"
+          ],
+          [
+            "保留调查上下文",
+            "上下文"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0688",
+        "template": "T3_scenario",
+        "true_control": "guide-memory",
+        "active_control": "guide-sandbox",
+        "reason": "wrong_control",
+        "missed_groups": [
+          [
+            "释放后使用等内存破坏漏洞",
+            "漏洞",
+            "释放",
+            "释放后",
+            "放后",
+            "等内存破坏漏洞"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0226",
+        "template": "T3_scenario",
+        "true_control": "guide-sast-dast",
+        "active_control": "guide-sdlc",
+        "reason": "wrong_control",
+        "missed_groups": [
+          [
+            "静态与动态安全测试",
+            "动态",
+            "静态",
+            "在流水线中组合静态",
+            "流水线",
+            "流水",
+            "水线",
+            "组合静态",
+            "组合",
+            "依赖和动态测试",
+            "依赖",
+            "动态安全测试",
+            "动态测试"
+          ],
+          [
+            "对高风险发现设置修复门槛",
+            "风险",
+            "高风险"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0478",
+        "template": "T3_scenario",
+        "true_control": "guide-cloud-kms",
+        "active_control": "guide-secrets",
+        "reason": "wrong_control",
+        "missed_groups": [
+          [
+            "隔离流程",
+            "主机隔离",
+            "端点隔离",
+            "isolation",
+            "隔离",
+            "主机",
+            "端点"
+          ],
+          [
+            "使用KMS或HSM",
+            "使用",
+            "KMS",
+            "HSM",
+            "kms hsm"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0179",
+        "template": "T5_purpose_en",
+        "true_control": "guide-sql",
+        "active_control": "guide-sdlc",
+        "reason": "wrong_control",
+        "missed_groups": [
+          [
+            "SQL注入",
+            "SQL injection",
+            "SQLi",
+            "注入攻击",
+            "SQL",
+            "注入",
+            "injection",
+            "攻击",
+            "prevent sql injection",
+            "stop sql injection",
+            "prevent",
+            "stop",
+            "prevent sql",
+            "stop sql"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0170",
+        "template": "T3_scenario",
+        "true_control": "guide-sql",
+        "active_control": "guide-sql",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "密钥生成",
+            "生成密钥",
+            "key generation",
+            "密钥",
+            "生成",
+            "key",
+            "generation"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0548",
+        "template": "T3_scenario",
+        "true_control": "guide-awareness",
+        "active_control": "guide-mfa",
+        "reason": "wrong_control",
+        "missed_groups": [
+          [
+            "即时反馈",
+            "及时反馈",
+            "实时反馈",
+            "反馈",
+            "即时",
+            "及时",
+            "实时"
+          ],
+          [
+            "事件数据",
+            "事件",
+            "数据"
+          ]
+        ]
+      }
+    ]
+  },
+  "4_draft_plus_committed_guide_raw_route": {
+    "total": 226,
+    "official_score_correct": 173,
+    "official_score_accuracy": 0.7655,
+    "primary_control_correct": 213,
+    "primary_control_accuracy": 0.9425,
+    "strict_both_correct": 169,
+    "strict_both_accuracy": 0.7478,
+    "correct_control_but_keyword_miss": 44,
+    "wrong_control_accidental_pass": 4,
+    "wrong_control_and_fail": 9,
+    "by_template": {
+      "T4_purpose_zh": {
+        "total": 44,
+        "both_correct": 37,
+        "official_correct": 38,
+        "control_correct": 43
+      },
+      "T5_purpose_en": {
+        "total": 48,
+        "both_correct": 34,
+        "official_correct": 34,
+        "control_correct": 46
+      },
+      "T2_implementation": {
+        "total": 44,
+        "both_correct": 37,
+        "official_correct": 38,
+        "control_correct": 43
+      },
+      "T1_neglect": {
+        "total": 42,
+        "both_correct": 36,
+        "official_correct": 37,
+        "control_correct": 41
+      },
+      "T3_scenario": {
+        "total": 48,
+        "both_correct": 25,
+        "official_correct": 26,
+        "control_correct": 40
+      }
+    },
+    "sample_misses": [
+      {
+        "id": "public-normal-train-syn-0669",
+        "template": "T5_purpose_en",
+        "true_control": "guide-zero",
+        "active_control": "guide-zero",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "behavior"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0576",
+        "template": "T3_scenario",
+        "true_control": "guide-vulnerability",
+        "active_control": "guide-vulnerability",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "密钥生成",
+            "生成密钥",
+            "key generation",
+            "密钥",
+            "生成",
+            "key",
+            "generation"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0619",
+        "template": "T1_neglect",
+        "true_control": "guide-pam",
+        "active_control": "guide-pam",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "隔离流程",
+            "主机隔离",
+            "端点隔离",
+            "isolation",
+            "隔离",
+            "主机",
+            "端点"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0058",
+        "template": "T3_scenario",
+        "true_control": "guide-supplier",
+        "active_control": "guide-supplier",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "把最小控制",
+            "最小"
+          ],
+          [
+            "分包限制",
+            "分包阻止",
+            "限制",
+            "阻止"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0519",
+        "template": "T4_purpose_zh",
+        "true_control": "guide-ir",
+        "active_control": "guide-ir",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "协作"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0521",
+        "template": "T1_neglect",
+        "true_control": "guide-ir",
+        "active_control": "guide-ir",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "协作"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0417",
+        "template": "T5_purpose_en",
+        "true_control": "guide-integrity",
+        "active_control": "guide-integrity",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "when needed",
+            "when",
+            "needed"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0473",
+        "template": "T5_purpose_en",
+        "true_control": "guide-cloud-audit",
+        "active_control": "guide-cloud-audit",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "Preserve searchable",
+            "Preserve",
+            "searchable"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0487",
+        "template": "T5_purpose_en",
+        "true_control": "guide-cloud-kms",
+        "active_control": "guide-cloud-kms",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "protected storage",
+            "protected",
+            "storage"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0380",
+        "template": "T3_scenario",
+        "true_control": "guide-masking",
+        "active_control": "guide-masking",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "并测试重识别风险",
+            "风险",
+            "测试重识别风险"
+          ],
+          [
+            "分析场景",
+            "分析",
+            "场景"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0268",
+        "template": "T3_scenario",
+        "true_control": "guide-zero",
+        "active_control": "guide-zero",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "为具体应用建立细粒度策略",
+            "为具",
+            "体应",
+            "用建",
+            "立细",
+            "粒度",
+            "策略"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0627",
+        "template": "T5_purpose_en",
+        "true_control": "guide-pam",
+        "active_control": "guide-pam",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "approve"
+          ]
+        ]
+      }
+    ]
+  },
+  "5_question_plus_committed_guide_raw_route": {
+    "total": 226,
+    "official_score_correct": 218,
+    "official_score_accuracy": 0.9646,
+    "primary_control_correct": 213,
+    "primary_control_accuracy": 0.9425,
+    "strict_both_correct": 213,
+    "strict_both_accuracy": 0.9425,
+    "correct_control_but_keyword_miss": 0,
+    "wrong_control_accidental_pass": 5,
+    "wrong_control_and_fail": 8,
+    "by_template": {
+      "T4_purpose_zh": {
+        "total": 44,
+        "both_correct": 43,
+        "official_correct": 44,
+        "control_correct": 43
+      },
+      "T5_purpose_en": {
+        "total": 48,
+        "both_correct": 46,
+        "official_correct": 46,
+        "control_correct": 46
+      },
+      "T2_implementation": {
+        "total": 44,
+        "both_correct": 43,
+        "official_correct": 44,
+        "control_correct": 43
+      },
+      "T1_neglect": {
+        "total": 42,
+        "both_correct": 41,
+        "official_correct": 42,
+        "control_correct": 41
+      },
+      "T3_scenario": {
+        "total": 48,
+        "both_correct": 40,
+        "official_correct": 42,
+        "control_correct": 40
+      }
+    },
+    "sample_misses": [
+      {
+        "id": "public-normal-train-syn-0016",
+        "template": "T3_scenario",
+        "true_control": "guide-dpia",
+        "active_control": "guide-minimization",
+        "reason": "wrong_control",
+        "missed_groups": [
+          [
+            "必要性",
+            "必要",
+            "要性"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0025",
+        "template": "T5_purpose_en",
+        "true_control": "guide-dpia",
+        "active_control": "guide-data-classification",
+        "reason": "wrong_control",
+        "missed_groups": [
+          [
+            "Identify",
+            "detect"
+          ],
+          [
+            "reduce privacy risk",
+            "limit privacy risk",
+            "reduce",
+            "privacy",
+            "risk",
+            "limit",
+            "high-risk processing begins",
+            "high-risk",
+            "high",
+            "processing",
+            "begins",
+            "reduce privacy",
+            "limit privacy",
+            "privacy risk",
+            "risk before",
+            "before high-risk",
+            "high-risk processing",
+            "processing begins"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0296",
+        "template": "T3_scenario",
+        "true_control": "guide-dns",
+        "active_control": "guide-ndr",
+        "reason": "wrong_control",
+        "missed_groups": [
+          [
+            "结合信誉",
+            "结合",
+            "信誉"
+          ],
+          [
+            "日志"
+          ],
+          [
+            "频率"
+          ],
+          [
+            "保留调查上下文",
+            "上下文"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0688",
+        "template": "T3_scenario",
+        "true_control": "guide-memory",
+        "active_control": "guide-sandbox",
+        "reason": "wrong_control",
+        "missed_groups": [
+          [
+            "释放后使用等内存破坏漏洞",
+            "漏洞",
+            "释放",
+            "释放后",
+            "放后",
+            "等内存破坏漏洞"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0226",
+        "template": "T3_scenario",
+        "true_control": "guide-sast-dast",
+        "active_control": "guide-sdlc",
+        "reason": "wrong_control",
+        "missed_groups": [
+          [
+            "对高风险发现设置修复门槛",
+            "风险",
+            "高风险"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0478",
+        "template": "T3_scenario",
+        "true_control": "guide-cloud-kms",
+        "active_control": "guide-secrets",
+        "reason": "wrong_control",
+        "missed_groups": [
+          [
+            "隔离流程",
+            "主机隔离",
+            "端点隔离",
+            "isolation",
+            "隔离",
+            "主机",
+            "端点"
+          ],
+          [
+            "使用KMS或HSM",
+            "使用",
+            "KMS",
+            "HSM",
+            "kms hsm"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0179",
+        "template": "T5_purpose_en",
+        "true_control": "guide-sql",
+        "active_control": "guide-sdlc",
+        "reason": "wrong_control",
+        "missed_groups": [
+          [
+            "SQL注入",
+            "SQL injection",
+            "SQLi",
+            "注入攻击",
+            "SQL",
+            "注入",
+            "injection",
+            "攻击",
+            "prevent sql injection",
+            "stop sql injection",
+            "prevent",
+            "stop",
+            "prevent sql",
+            "stop sql"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0548",
+        "template": "T3_scenario",
+        "true_control": "guide-awareness",
+        "active_control": "guide-mfa",
+        "reason": "wrong_control",
+        "missed_groups": [
+          [
+            "即时反馈",
+            "及时反馈",
+            "实时反馈",
+            "反馈",
+            "即时",
+            "及时",
+            "实时"
+          ],
+          [
+            "事件数据",
+            "事件",
+            "数据"
+          ]
+        ]
+      }
+    ]
+  },
+  "6_S_current_7cond_on_true_control": {
+    "total": 226,
+    "official_score_correct": 180,
+    "official_score_accuracy": 0.7965,
+    "primary_control_correct": 226,
+    "primary_control_accuracy": 1.0,
+    "strict_both_correct": 180,
+    "strict_both_accuracy": 0.7965,
+    "correct_control_but_keyword_miss": 46,
+    "wrong_control_accidental_pass": 0,
+    "wrong_control_and_fail": 0,
+    "by_template": {
+      "T4_purpose_zh": {
+        "total": 44,
+        "both_correct": 38,
+        "official_correct": 38,
+        "control_correct": 44
+      },
+      "T5_purpose_en": {
+        "total": 48,
+        "both_correct": 36,
+        "official_correct": 36,
+        "control_correct": 48
+      },
+      "T2_implementation": {
+        "total": 44,
+        "both_correct": 38,
+        "official_correct": 38,
+        "control_correct": 44
+      },
+      "T1_neglect": {
+        "total": 42,
+        "both_correct": 37,
+        "official_correct": 37,
+        "control_correct": 42
+      },
+      "T3_scenario": {
+        "total": 48,
+        "both_correct": 31,
+        "official_correct": 31,
+        "control_correct": 48
+      }
+    },
+    "sample_misses": [
+      {
+        "id": "public-normal-train-syn-0669",
+        "template": "T5_purpose_en",
+        "true_control": "guide-zero",
+        "active_control": "guide-zero",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "behavior"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0576",
+        "template": "T3_scenario",
+        "true_control": "guide-vulnerability",
+        "active_control": "guide-vulnerability",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "密钥生成",
+            "生成密钥",
+            "key generation",
+            "密钥",
+            "生成",
+            "key",
+            "generation"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0619",
+        "template": "T1_neglect",
+        "true_control": "guide-pam",
+        "active_control": "guide-pam",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "隔离流程",
+            "主机隔离",
+            "端点隔离",
+            "isolation",
+            "隔离",
+            "主机",
+            "端点"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0058",
+        "template": "T3_scenario",
+        "true_control": "guide-supplier",
+        "active_control": "guide-supplier",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "把最小控制",
+            "最小"
+          ],
+          [
+            "分包限制",
+            "分包阻止",
+            "限制",
+            "阻止"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0519",
+        "template": "T4_purpose_zh",
+        "true_control": "guide-ir",
+        "active_control": "guide-ir",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "协作"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0521",
+        "template": "T1_neglect",
+        "true_control": "guide-ir",
+        "active_control": "guide-ir",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "协作"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0417",
+        "template": "T5_purpose_en",
+        "true_control": "guide-integrity",
+        "active_control": "guide-integrity",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "when needed",
+            "when",
+            "needed"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0473",
+        "template": "T5_purpose_en",
+        "true_control": "guide-cloud-audit",
+        "active_control": "guide-cloud-audit",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "Preserve searchable",
+            "Preserve",
+            "searchable"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0487",
+        "template": "T5_purpose_en",
+        "true_control": "guide-cloud-kms",
+        "active_control": "guide-cloud-kms",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "protected storage",
+            "protected",
+            "storage"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0380",
+        "template": "T3_scenario",
+        "true_control": "guide-masking",
+        "active_control": "guide-masking",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "并测试重识别风险",
+            "风险",
+            "测试重识别风险"
+          ],
+          [
+            "分析场景",
+            "分析",
+            "场景"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0268",
+        "template": "T3_scenario",
+        "true_control": "guide-zero",
+        "active_control": "guide-zero",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "为具体应用建立细粒度策略",
+            "为具",
+            "体应",
+            "用建",
+            "立细",
+            "粒度",
+            "策略"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0627",
+        "template": "T5_purpose_en",
+        "true_control": "guide-pam",
+        "active_control": "guide-pam",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "approve"
+          ]
+        ]
+      }
+    ]
+  },
+  "7_S_commit_unconditional_on_true_control": {
+    "total": 226,
+    "official_score_correct": 180,
+    "official_score_accuracy": 0.7965,
+    "primary_control_correct": 226,
+    "primary_control_accuracy": 1.0,
+    "strict_both_correct": 180,
+    "strict_both_accuracy": 0.7965,
+    "correct_control_but_keyword_miss": 46,
+    "wrong_control_accidental_pass": 0,
+    "wrong_control_and_fail": 0,
+    "by_template": {
+      "T4_purpose_zh": {
+        "total": 44,
+        "both_correct": 38,
+        "official_correct": 38,
+        "control_correct": 44
+      },
+      "T5_purpose_en": {
+        "total": 48,
+        "both_correct": 36,
+        "official_correct": 36,
+        "control_correct": 48
+      },
+      "T2_implementation": {
+        "total": 44,
+        "both_correct": 38,
+        "official_correct": 38,
+        "control_correct": 44
+      },
+      "T1_neglect": {
+        "total": 42,
+        "both_correct": 37,
+        "official_correct": 37,
+        "control_correct": 42
+      },
+      "T3_scenario": {
+        "total": 48,
+        "both_correct": 31,
+        "official_correct": 31,
+        "control_correct": 48
+      }
+    },
+    "sample_misses": [
+      {
+        "id": "public-normal-train-syn-0669",
+        "template": "T5_purpose_en",
+        "true_control": "guide-zero",
+        "active_control": "guide-zero",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "behavior"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0576",
+        "template": "T3_scenario",
+        "true_control": "guide-vulnerability",
+        "active_control": "guide-vulnerability",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "密钥生成",
+            "生成密钥",
+            "key generation",
+            "密钥",
+            "生成",
+            "key",
+            "generation"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0619",
+        "template": "T1_neglect",
+        "true_control": "guide-pam",
+        "active_control": "guide-pam",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "隔离流程",
+            "主机隔离",
+            "端点隔离",
+            "isolation",
+            "隔离",
+            "主机",
+            "端点"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0058",
+        "template": "T3_scenario",
+        "true_control": "guide-supplier",
+        "active_control": "guide-supplier",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "把最小控制",
+            "最小"
+          ],
+          [
+            "分包限制",
+            "分包阻止",
+            "限制",
+            "阻止"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0519",
+        "template": "T4_purpose_zh",
+        "true_control": "guide-ir",
+        "active_control": "guide-ir",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "协作"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0521",
+        "template": "T1_neglect",
+        "true_control": "guide-ir",
+        "active_control": "guide-ir",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "协作"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0417",
+        "template": "T5_purpose_en",
+        "true_control": "guide-integrity",
+        "active_control": "guide-integrity",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "when needed",
+            "when",
+            "needed"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0473",
+        "template": "T5_purpose_en",
+        "true_control": "guide-cloud-audit",
+        "active_control": "guide-cloud-audit",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "Preserve searchable",
+            "Preserve",
+            "searchable"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0487",
+        "template": "T5_purpose_en",
+        "true_control": "guide-cloud-kms",
+        "active_control": "guide-cloud-kms",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "protected storage",
+            "protected",
+            "storage"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0380",
+        "template": "T3_scenario",
+        "true_control": "guide-masking",
+        "active_control": "guide-masking",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "并测试重识别风险",
+            "风险",
+            "测试重识别风险"
+          ],
+          [
+            "分析场景",
+            "分析",
+            "场景"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0268",
+        "template": "T3_scenario",
+        "true_control": "guide-zero",
+        "active_control": "guide-zero",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "为具体应用建立细粒度策略",
+            "为具",
+            "体应",
+            "用建",
+            "立细",
+            "粒度",
+            "策略"
+          ]
+        ]
+      },
+      {
+        "id": "public-normal-train-syn-0627",
+        "template": "T5_purpose_en",
+        "true_control": "guide-pam",
+        "active_control": "guide-pam",
+        "reason": "correct_control_but_keyword_miss",
+        "missed_groups": [
+          [
+            "approve"
+          ]
+        ]
+      }
+    ]
+  },
+  "8_full_v30_compiler_with_S_commit_on_true_control": {
+    "total": 226,
+    "official_score_correct": 226,
+    "official_score_accuracy": 1.0,
+    "primary_control_correct": 226,
+    "primary_control_accuracy": 1.0,
+    "strict_both_correct": 226,
+    "strict_both_accuracy": 1.0,
+    "correct_control_but_keyword_miss": 0,
+    "wrong_control_accidental_pass": 0,
+    "wrong_control_and_fail": 0,
+    "by_template": {
+      "T4_purpose_zh": {
+        "total": 44,
+        "both_correct": 44,
+        "official_correct": 44,
+        "control_correct": 44
+      },
+      "T5_purpose_en": {
+        "total": 48,
+        "both_correct": 48,
+        "official_correct": 48,
+        "control_correct": 48
+      },
+      "T2_implementation": {
+        "total": 44,
+        "both_correct": 44,
+        "official_correct": 44,
+        "control_correct": 44
+      },
+      "T1_neglect": {
+        "total": 42,
+        "both_correct": 42,
+        "official_correct": 42,
+        "control_correct": 42
+      },
+      "T3_scenario": {
+        "total": 48,
+        "both_correct": 48,
+        "official_correct": 48,
+        "control_correct": 48
+      }
+    },
+    "sample_misses": []
+  }
+}

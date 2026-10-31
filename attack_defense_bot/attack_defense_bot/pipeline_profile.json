@@ -1,5 +1,5 @@
 {
-  "selected_variant": "P8",
+  "selected_variant": "B6",
   "production_profile": "A",
   "query_representation": false,
   "contrastive_rerank": false,
@@ -11,5 +11,13 @@
   "verified_support_append": true,
   "fail_soft_handling": true,
   "skip_unconditional_review": true,
-  "selection_status": "v29_official_scorer_selected"
+  "fast_path_named_controls": true,
+  "hybrid_knn_router": true,
+  "knn_only_router": false,
+  "disable_handwritten_scenario_patches": true,
+  "committed_guide_append": true,
+  "mc_knn_fallback": true,
+  "knn_min_top1_score": 0.42,
+  "knn_min_margin": 0.10,
+  "selection_status": "v30_official_scorer_selected"
 }

@@ -75,6 +75,15 @@ class Settings:
     verified_support_append: bool = False
     fail_soft_handling: bool = False
     skip_unconditional_review: bool = False
+    fast_path_named_controls: bool = False
+    hybrid_knn_router: bool = False
+    knn_only_router: bool = False
+    disable_handwritten_scenario_patches: bool = False
+    committed_guide_append: bool = False
+    mc_knn_fallback: bool = False
+    knn_exclude_ids: tuple[str, ...] = ()
+    knn_min_top1_score: float = 0.42
+    knn_min_margin: float = 0.10
 
 
 def load_settings() -> Settings:
@@ -122,6 +131,15 @@ def load_settings() -> Settings:
         verified_support_append=os.getenv('RAG_VERIFIED_SUPPORT_APPEND',str(profile.get('verified_support_append',False))).lower()=='true',
         fail_soft_handling=os.getenv('RAG_FAIL_SOFT_HANDLING',str(profile.get('fail_soft_handling',False))).lower()=='true',
         skip_unconditional_review=os.getenv('RAG_SKIP_UNCONDITIONAL_REVIEW',str(profile.get('skip_unconditional_review',False))).lower()=='true',
+        fast_path_named_controls=os.getenv('RAG_FAST_PATH_NAMED_CONTROLS',str(profile.get('fast_path_named_controls',False))).lower()=='true',
+        hybrid_knn_router=os.getenv('RAG_HYBRID_KNN_ROUTER',str(profile.get('hybrid_knn_router',False))).lower()=='true',
+        knn_only_router=os.getenv('RAG_KNN_ONLY_ROUTER',str(profile.get('knn_only_router',False))).lower()=='true',
+        disable_handwritten_scenario_patches=os.getenv('RAG_DISABLE_HANDWRITTEN_SCENARIO_PATCHES',str(profile.get('disable_handwritten_scenario_patches',False))).lower()=='true',
+        committed_guide_append=os.getenv('RAG_COMMITTED_GUIDE_APPEND',str(profile.get('committed_guide_append',False))).lower()=='true',
+        mc_knn_fallback=os.getenv('RAG_MC_KNN_FALLBACK',str(profile.get('mc_knn_fallback',False))).lower()=='true',
+        knn_exclude_ids=tuple(profile.get('knn_exclude_ids', ())),
+        knn_min_top1_score=float(profile.get('knn_min_top1_score', 0.42)),
+        knn_min_margin=float(profile.get('knn_min_margin', 0.10)),
     )
     if not 1 <= settings.top_k <= 50 or not 1 <= settings.context_max_files <= settings.top_k:
         raise ValueError("top_k 必须在 1..50，max_files 必须在 1..top_k")

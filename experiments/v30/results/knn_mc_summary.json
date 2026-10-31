@@ -1,0 +1,17 @@
+{
+  "mc_total": 400,
+  "astra_baseline_loo_correct": 325,
+  "astra_baseline_loo_accuracy": 0.8125,
+  "v30_ordinary_loo_correct": 385,
+  "v30_ordinary_loo_accuracy": 0.9625,
+  "v30_ordinary_loo_control_route_accuracy": 0.9675,
+  "v30_ordinary_loo_mean_margin": 0.5046,
+  "v30_group_blocked_correct": 328,
+  "v30_group_blocked_accuracy": 0.82,
+  "v30_group_blocked_control_route_accuracy": 0.54,
+  "v30_group_blocked_mean_margin": 0.1624,
+  "v30_frozen_shadow_mc_total": 101,
+  "v30_frozen_shadow_mc_fallback_correct": 83,
+  "v30_frozen_shadow_mc_fallback_accuracy": 0.8218,
+  "coverage": 1.0
+}

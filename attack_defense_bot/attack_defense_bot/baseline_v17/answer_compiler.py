@@ -4,6 +4,7 @@ try:
         CANONICAL_CONTROL_METADATA,
         CONTROL_NAME_ALIASES,
         NEGLECT_CONSEQUENCE_ZH,
+        append_committed_guide_support,
         append_verified_course_support,
         build_deterministic_evidence_fallback,
         canonical_terms,
@@ -12,13 +13,17 @@ try:
         compile_response_json,
         ensure_neglect_consequence,
         extract_question_anchors,
+        knn_predict_control,
+        knn_predict_mc,
         resolve_control_id,
+        resolve_explicit_control_id,
     )
 except ImportError:
     from answer_compiler import (
         CANONICAL_CONTROL_METADATA,
         CONTROL_NAME_ALIASES,
         NEGLECT_CONSEQUENCE_ZH,
+        append_committed_guide_support,
         append_verified_course_support,
         build_deterministic_evidence_fallback,
         canonical_terms,
@@ -27,5 +32,8 @@ except ImportError:
         compile_response_json,
         ensure_neglect_consequence,
         extract_question_anchors,
+        knn_predict_control,
+        knn_predict_mc,
         resolve_control_id,
+        resolve_explicit_control_id,
     )

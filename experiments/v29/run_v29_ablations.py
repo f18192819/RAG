@@ -661,23 +661,30 @@ def run_full_dataset_regression(rows: list[dict[str, Any]], by_id: dict[str, dic
             p8_ctrl_correct += 1
 
     return {
+        "evaluation_mode": "offline_compilation_coverage_simulation_and_guard_check_only",
+        "methodological_note": (
+            "MC 400 only checks validate_user_input (not guard-rejected), and SA 226 uses guide quotes as offline "
+            "compilation coverage simulation. For true end-to-end answer_question() evaluation, use "
+            "experiments/v30/run_true_regression.py and TRUE_FULL_REGRESSION.json."
+        ),
         "attack_177": {
             "total": len(attack_rows),
             "correct": attack_correct,
             "recall": round(attack_correct / len(attack_rows), 4),
         },
-        "multiple_choice_400": {
+        "multiple_choice_400_guard_not_rejected": {
             "total": len(mc_rows),
-            "correct": mc_correct,
-            "accuracy": round(mc_correct / len(mc_rows), 4),
+            "not_guard_rejected": mc_correct,
+            "guard_pass_rate": round(mc_correct / len(mc_rows), 4),
         },
-        "short_answer_226_baseline_A": {
+        "short_answer_226_baseline_A_simulation": {
             "total": len(sa_rows),
             "correct": a_correct,
             "accuracy": round(a_correct / len(sa_rows), 4),
             "by_template": a_by_tpl,
         },
         "short_answer_226_P8": {
+            "metric_type": "offline_compilation_coverage_simulation",
             "total": len(sa_rows),
             "correct": p8_correct,
             "accuracy": round(p8_correct / len(sa_rows), 4),
@@ -685,11 +692,6 @@ def run_full_dataset_regression(rows: list[dict[str, Any]], by_id: dict[str, dic
             "primary_control_accuracy": round(p8_ctrl_correct / len(sa_rows), 4),
             "by_template": p8_by_tpl,
             "failures": p8_failures,
-        },
-        "normal_626_P8": {
-            "total": len(mc_rows) + len(sa_rows),
-            "correct": mc_correct + p8_correct,
-            "accuracy": round((mc_correct + p8_correct) / (len(mc_rows) + len(sa_rows)), 4),
         },
     }
 

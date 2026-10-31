@@ -1,0 +1,64 @@
+{
+  "ngram_ablation": {
+    "char_2_3": {
+      "t3_total": 48,
+      "K1_ordinary_loo_correct": 48,
+      "K1_ordinary_loo_accuracy": 1.0,
+      "K1_nearest_is_same_scenario_mc_sibling": 48,
+      "K1_same_scenario_mc_sibling_rate": 1.0,
+      "K2_scenario_family_blocked_correct": 9,
+      "K2_scenario_family_blocked_accuracy": 0.1875,
+      "K3_cross_template_only_correct": 17,
+      "K3_cross_template_only_accuracy": 0.3542
+    },
+    "char_2_4": {
+      "t3_total": 48,
+      "K1_ordinary_loo_correct": 48,
+      "K1_ordinary_loo_accuracy": 1.0,
+      "K1_nearest_is_same_scenario_mc_sibling": 48,
+      "K1_same_scenario_mc_sibling_rate": 1.0,
+      "K2_scenario_family_blocked_correct": 10,
+      "K2_scenario_family_blocked_accuracy": 0.2083,
+      "K3_cross_template_only_correct": 20,
+      "K3_cross_template_only_accuracy": 0.4167
+    },
+    "char_2_5": {
+      "t3_total": 48,
+      "K1_ordinary_loo_correct": 48,
+      "K1_ordinary_loo_accuracy": 1.0,
+      "K1_nearest_is_same_scenario_mc_sibling": 48,
+      "K1_same_scenario_mc_sibling_rate": 1.0,
+      "K2_scenario_family_blocked_correct": 11,
+      "K2_scenario_family_blocked_accuracy": 0.2292,
+      "K3_cross_template_only_correct": 20,
+      "K3_cross_template_only_accuracy": 0.4167
+    },
+    "char_3_5": {
+      "t3_total": 48,
+      "K1_ordinary_loo_correct": 48,
+      "K1_ordinary_loo_accuracy": 1.0,
+      "K1_nearest_is_same_scenario_mc_sibling": 48,
+      "K1_same_scenario_mc_sibling_rate": 1.0,
+      "K2_scenario_family_blocked_correct": 8,
+      "K2_scenario_family_blocked_accuracy": 0.1667,
+      "K3_cross_template_only_correct": 10,
+      "K3_cross_template_only_accuracy": 0.2083
+    }
+  },
+  "threshold_calibration_on_train": {
+    "min_top1_score": 0.3,
+    "min_margin": 0.05,
+    "train_k1_coverage": 1.0,
+    "train_k1_precision": 1.0,
+    "train_k2_coverage": 0.0,
+    "train_k2_precision": 1.0
+  },
+  "t3_count": 48,
+  "raw_v18_llm_router_correct": 40,
+  "current_p8_patched_correct": 48,
+  "knn_k1_loo_correct": 48,
+  "knn_k1_same_scenario_mc_sibling_count": 48,
+  "knn_k2_blocked_correct": 10,
+  "knn_k2_high_conf_count": 0,
+  "knn_k2_high_conf_correct": 0
+}

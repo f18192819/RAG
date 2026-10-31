@@ -26,7 +26,10 @@ try:  # 同时支持包模式和直接运行模式。
         build_deterministic_evidence_fallback,
         classify_short_answer_template,
         compile_response_json,
+        knn_predict_control,
+        knn_predict_mc,
         resolve_control_id,
+        resolve_explicit_control_id,
     )
     from .utils import configure_logging, short_error
 except ImportError:  # pragma: no cover - `python main.py` 时使用
@@ -43,9 +46,21 @@ except ImportError:  # pragma: no cover - `python main.py` 时使用
         build_deterministic_evidence_fallback,
         classify_short_answer_template,
         compile_response_json,
+        knn_predict_control,
+        knn_predict_mc,
         resolve_control_id,
+        resolve_explicit_control_id,
     )
     from utils import configure_logging, short_error
+
+try:
+    from ..diagnostics import record as diag_record
+except ImportError:
+    try:
+        from diagnostics import record as diag_record
+    except ImportError:
+        def diag_record(stage: str, **values) -> None:
+            pass
 
 
 LOG = logging.getLogger(__name__)
@@ -125,9 +140,79 @@ def answer_question(question: str, settings: Settings, show_prompt: bool = False
     safe_question = validate_user_input(question)
     client = RagApiClient(settings)
 
-    queries = plan_queries(safe_question, client)
     has_options = has_choice_options(safe_question)
+    template_kind = classify_short_answer_template(safe_question)
+    guides = {doc['id']: doc for doc in index()[0] if doc['id'].startswith('guide-')}
+
+    fast_path = bool(getattr(settings, 'fast_path_named_controls', False))
+    use_hybrid_knn = bool(getattr(settings, 'hybrid_knn_router', False))
+    use_knn_only = bool(getattr(settings, 'knn_only_router', False))
+    allow_patches = not bool(getattr(settings, 'disable_handwritten_scenario_patches', False))
+    committed_append = bool(getattr(settings, 'committed_guide_append', False))
+    use_mc_knn_fallback = bool(getattr(settings, 'mc_knn_fallback', False))
+    exclude_ids = set(getattr(settings, 'knn_exclude_ids', ()))
+
+    query_rewrite_calls = 0
+    routing_calls = 0
+    evidence_extraction_calls = 0
+    generation_calls = 0
+    review_calls = 0
+    route_method = 'none'
+    knn_info = {}
+
     routed_files = []
+    queries = []
+    mc_primary_ids: list[str] = []
+
+    if not has_options:
+        # B2: Fast path for T1/T2/T4/T5 with explicit canonical control name in stem
+        if fast_path and template_kind in {'T1_neglect', 'T2_implementation', 'T4_purpose_zh', 'T5_purpose_en'}:
+            explicit_id = resolve_explicit_control_id(safe_question)
+            if explicit_id and explicit_id in guides:
+                queries = [question_stem(safe_question)]
+                routed_files = [guide_file(guides[explicit_id])]
+                route_method = 'fast_path_explicit'
+
+        # B3 / R2 / R3: Hybrid kNN + LLM router for T3 / remaining short answers
+        if not routed_files and (use_hybrid_knn or use_knn_only):
+            knn_info = knn_predict_control(
+                safe_question,
+                min_top1_score=getattr(settings, 'knn_min_top1_score', 0.42),
+                min_margin=getattr(settings, 'knn_min_margin', 0.10),
+                exclude_ids=exclude_ids,
+            )
+            pred_id = str(knn_info.get('predicted_control') or '')
+            if (use_knn_only or knn_info.get('high_confidence')) and pred_id in guides:
+                queries = [question_stem(safe_question)]
+                routed_files = [guide_file(guides[pred_id])]
+                route_method = 'knn_only' if use_knn_only else 'knn_high_confidence'
+    else:
+        # Fast path for MC when explicit control or option controls are present
+        if fast_path:
+            stem_line = safe_question.splitlines()[0]
+            sc = resolve_explicit_control_id(stem_line)
+            if sc and sc in guides:
+                mc_primary_ids.append(sc)
+            else:
+                opts = [m.group(2).strip() for m in re.finditer(r'(?m)^\s*([ABCD])[\.、:：\)]\s*(.+)$', safe_question)]
+                if len(opts) == 4 and not any('通用控制描述' in o for o in opts):
+                    for o in opts:
+                        oc = resolve_explicit_control_id(o)
+                        if oc and oc in guides and oc not in mc_primary_ids:
+                            mc_primary_ids.append(oc)
+                for h in local_search(safe_question, 5):
+                    sid = str(h.get('metadata', {}).get('source_id', '')).casefold()
+                    if sid in guides and sid not in mc_primary_ids:
+                        mc_primary_ids.append(sid)
+            if mc_primary_ids:
+                queries = [question_stem(safe_question)]
+                routed_files = [guide_file(guides[c]) for c in mc_primary_ids[:5]]
+                route_method = 'mc_deterministic_guides'
+
+    if not queries:
+        queries = plan_queries(safe_question, client)
+        query_rewrite_calls = 1
+
     files, local_files = [], []
     personal_files = []
     course_files = []
@@ -150,15 +235,27 @@ def answer_question(question: str, settings: Settings, show_prompt: bool = False
     if personal_files:
         personal_files = select_relevant_files(personal_files, max_files=settings.context_max_files, query=safe_question)
         local_files.extend(parent_guides(personal_files,settings.context_max_files))
+
     if not has_options:
-        routed_files = route_guides(safe_question, client, personal_files + local_files)
-        if getattr(settings, 'anchor_canonical', False) or getattr(settings, 'verified_support_append', False):
+        if not routed_files:
+            knn_cands = [knn_info.get('predicted_control', ''), knn_info.get('top2_control', '')] if knn_info else None
+            if not strong_lexical_guide(safe_question):
+                routing_calls = 1
+            try:
+                routed_files = route_guides(safe_question, client, personal_files + local_files, knn_candidates=knn_cands)
+            except TypeError:
+                routed_files = route_guides(safe_question, client, personal_files + local_files)
+            route_method = 'llm_fallback' if knn_info else 'llm_router'
+
+        if getattr(settings, 'anchor_canonical', False) or getattr(settings, 'verified_support_append', False) or committed_append:
             routed_id = str(routed_files[0]['metadata']['source_id']).casefold() if routed_files else ''
-            resolved_id = resolve_control_id(safe_question, '', routed_files, routed_id)
-            if resolved_id and resolved_id != routed_id:
-                guides = {doc['id']: doc for doc in index()[0] if doc['id'].startswith('guide-')}
-                if resolved_id in guides:
-                    routed_files = [guide_file(guides[resolved_id])]
+            resolved_id = resolve_control_id(
+                safe_question, '', routed_files, routed_id, allow_scenario_patches=allow_patches
+            )
+            if resolved_id and resolved_id != routed_id and resolved_id in guides:
+                routed_files = [guide_file(guides[resolved_id])]
+                route_method = f"{route_method}+patch" if allow_patches else route_method
+
     public_lexical=rank_candidates(safe_question,relevant_files)
     course_files=select_relevant_files(course_files,max_files=20,query=safe_question)
     relevant_files = fuse_rankings([(3.5,routed_files),(1.3,relevant_files),(1.5,public_lexical),
@@ -168,7 +265,13 @@ def answer_question(question: str, settings: Settings, show_prompt: bool = False
         max_chars=settings.context_max_chars,
         max_files=settings.context_max_files,
     )
-    primary_source_id=(str(routed_files[0]['metadata']['source_id']).casefold() if routed_files else '')
+    if has_options:
+        primary_source_id = ','.join(mc_primary_ids[:5]) if mc_primary_ids else ''
+    else:
+        primary_source_id = (str(routed_files[0]['metadata']['source_id']).casefold() if routed_files else '')
+
+    if not primary_source_id and candidate_files:
+        evidence_extraction_calls = 1
     context, used_files = isolate_evidence(safe_question, candidate_files, client, primary_source_id)
     citations = files_to_citations(used_files, max_files=settings.context_max_files)
     if settings.api_token:
@@ -183,25 +286,72 @@ def answer_question(question: str, settings: Settings, show_prompt: bool = False
         getattr(settings, 'neglect_completion', False)
         or getattr(settings, 'anchor_canonical', False)
         or getattr(settings, 'verified_support_append', False)
+        or committed_append
     )
     fail_soft = bool(getattr(settings, 'fail_soft_handling', False))
     skip_review = bool(getattr(settings, 'skip_unconditional_review', False))
 
+    diag_record(
+        'router',
+        route_method=route_method,
+        primary_source_id=primary_source_id,
+        knn_top1=knn_info.get('predicted_control', ''),
+        knn_top1_score=knn_info.get('top1_score', 0.0),
+        knn_margin=knn_info.get('margin', 0.0),
+        knn_high_confidence=knn_info.get('high_confidence', False),
+    )
+
     try:
         try:
+            generation_calls += 1
             response = generate_answer(client, safe_prompt, len(citations), settings)
         except GuardError:
             raise
         except (ApiError, ValueError) as first_exc:
             if fail_soft and not has_options:
                 fallback = build_deterministic_evidence_fallback(
-                    safe_question, context, used_files, primary_source_id, len(citations)
+                    safe_question,
+                    context,
+                    used_files,
+                    primary_source_id,
+                    len(citations),
+                    allow_scenario_patches=allow_patches,
+                    committed_guide_append=committed_append,
                 )
                 if fallback is not None:
+                    diag_record(
+                        'llm_calls',
+                        query_rewrite_calls=query_rewrite_calls,
+                        routing_calls=routing_calls,
+                        evidence_extraction_calls=evidence_extraction_calls,
+                        generation_calls=generation_calls,
+                        review_calls=review_calls,
+                        total_dialogue_calls=query_rewrite_calls + routing_calls + evidence_extraction_calls + generation_calls + review_calls,
+                        fallback_used='sa_evidence_fallback',
+                    )
                     return validate_response(fallback, len(citations), settings.api_token), citations
+            elif use_mc_knn_fallback and has_options:
+                mc_fb_json = knn_predict_mc(
+                    safe_question,
+                    context=context,
+                    citation_count=len(citations),
+                    exclude_ids=tuple(exclude_ids),
+                )
+                diag_record(
+                    'llm_calls',
+                    query_rewrite_calls=query_rewrite_calls,
+                    routing_calls=routing_calls,
+                    evidence_extraction_calls=evidence_extraction_calls,
+                    generation_calls=generation_calls,
+                    review_calls=review_calls,
+                    total_dialogue_calls=query_rewrite_calls + routing_calls + evidence_extraction_calls + generation_calls + review_calls,
+                    fallback_used='mc_knn_fallback',
+                )
+                return validate_response(mc_fb_json, len(citations), settings.api_token), citations
             raise first_exc
 
         result = json.loads(response)
+        diag_record('generation', raw_draft_answer=str(result.get('answer') or ''))
         has_options = has_choice_options(safe_question)
         if has_options:
             response = verify_choice(safe_question, response, context, citations, client, settings, used_files, settings.choice_strategy)
@@ -219,7 +369,9 @@ def answer_question(question: str, settings: Settings, show_prompt: bool = False
                             enable_anchors=getattr(settings, 'anchor_canonical', False),
                             enable_canonical=getattr(settings, 'anchor_canonical', False),
                             enable_neglect=getattr(settings, 'neglect_completion', False),
-                            enable_support=getattr(settings, 'verified_support_append', False),
+                            enable_support=getattr(settings, 'verified_support_append', False) or committed_append,
+                            allow_scenario_patches=allow_patches,
+                            committed_guide_append=committed_append,
                         ),
                         len(citations),
                         settings.api_token,
@@ -227,12 +379,12 @@ def answer_question(question: str, settings: Settings, show_prompt: bool = False
                 except ValueError:
                     draft_response = response
 
-            template_kind = classify_short_answer_template(safe_question)
             should_review = not (skip_review and template_kind != 'generic')
             if should_review:
                 review_context = context + '\nDRAFT_ANSWER=' + json.dumps(result['answer'], ensure_ascii=False)
                 review_prompt = validate_prompt(builder(user_input=safe_question, context=review_context, citations=citations))
                 try:
+                    review_calls += 1
                     reviewed = generate_answer(client, review_prompt, len(citations), settings)
                     reviewed = validate_response(
                         complete_from_verified_evidence(reviewed, context, used_files, safe_question),
@@ -258,7 +410,9 @@ def answer_question(question: str, settings: Settings, show_prompt: bool = False
                         enable_anchors=getattr(settings, 'anchor_canonical', False),
                         enable_canonical=getattr(settings, 'anchor_canonical', False),
                         enable_neglect=getattr(settings, 'neglect_completion', False),
-                        enable_support=getattr(settings, 'verified_support_append', False),
+                        enable_support=getattr(settings, 'verified_support_append', False) or committed_append,
+                        allow_scenario_patches=allow_patches,
+                        committed_guide_append=committed_append,
                     )
                     response = validate_response(compiled, len(citations), settings.api_token)
                 except ValueError:
@@ -269,6 +423,17 @@ def answer_question(question: str, settings: Settings, show_prompt: bool = False
         raise
     except ValueError as exc:
         raise ApiError(200, str(exc)) from exc
+
+    diag_record(
+        'llm_calls',
+        query_rewrite_calls=query_rewrite_calls,
+        routing_calls=routing_calls,
+        evidence_extraction_calls=evidence_extraction_calls,
+        generation_calls=generation_calls,
+        review_calls=review_calls,
+        total_dialogue_calls=query_rewrite_calls + routing_calls + evidence_extraction_calls + generation_calls + review_calls,
+        fallback_used='none',
+    )
     return response, citations
 
 

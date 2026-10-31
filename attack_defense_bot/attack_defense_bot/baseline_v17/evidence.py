@@ -101,21 +101,37 @@ def isolate_evidence(question: str, files: list[dict], client, primary_source_id
     if not files:
         return '', []
     # These application-owned notes are already structured and reviewed.
-    # Extract the selected parent deterministically, then apply exactly the
+    # Extract the selected parent(s) deterministically, then apply exactly the
     # same quote/source/schema validation. Unknown external materials still
     # require the isolated LLM extractor below.
-    primary=next((doc for doc in index()[0] if doc['id']==primary_source_id),None)
-    if primary:
-        for source in files:
-            if str(source.get('metadata',{}).get('source_id','')).casefold()!=primary_source_id:
+    bundled = {doc['id']: doc for doc in index()[0] if doc['id'].startswith('guide-')}
+    primary_ids = [p.strip().casefold() for p in str(primary_source_id or '').split(',') if p.strip()]
+    if primary_ids:
+        det_items = []
+        det_sources = []
+        chinese = bool(re.search(r'[\u4e00-\u9fff]', question_stem(question)))
+        for pid in primary_ids:
+            primary = bundled.get(pid)
+            if not primary:
                 continue
-            if ' '.join(clean(primary['text']).split()) not in ' '.join(clean(source['text']).split()):
-                continue
-            chinese=bool(re.search(r'[\u4e00-\u9fff]',question_stem(question)))
-            quote=' '.join(clean(primary['text_zh' if chinese else 'text_en']).split())
-            item={'source_id':'source-1','fact':quote[:600],'quote':quote}
-            valid=parse_and_validate_evidence(json.dumps({'evidence':[item]},ensure_ascii=False),[source])
-            return json.dumps({'validated_evidence':[{'source':1,'fact':valid[0]['fact'],'quote':valid[0]['quote']}]},ensure_ascii=False),[source]
+            for source in files:
+                if str(source.get('metadata', {}).get('source_id', '')).casefold() != pid:
+                    continue
+                if ' '.join(clean(primary['text']).split()) not in ' '.join(clean(source['text']).split()):
+                    continue
+                quote = ' '.join(clean(primary['text_zh' if chinese else 'text_en']).split())
+                item = {'source_id': 'source-1', 'fact': quote[:600], 'quote': quote}
+                try:
+                    valid = parse_and_validate_evidence(json.dumps({'evidence': [item]}, ensure_ascii=False), [source])
+                except ValueError:
+                    continue
+                det_sources.append(source)
+                det_items.append({'source': len(det_sources), 'fact': valid[0]['fact'], 'quote': valid[0]['quote']})
+                break
+            if len(det_items) >= MAX_ITEMS:
+                break
+        if det_items:
+            return json.dumps({'validated_evidence': det_items}, ensure_ascii=False), det_sources
     try:
         raw = client.dialogue(user_input='', custom_prompt=build_evidence_extraction_prompt(question, files),
                               temperature=0, max_tokens=1800)
@@ -126,7 +142,6 @@ def isolate_evidence(question: str, files: list[dict], client, primary_source_id
     # model's summary sometimes omits its second sentence. This deterministic
     # extraction is allowed only for a matching bundled source, not arbitrary
     # remote metadata; the exact-substring/schema checks remain mandatory.
-    bundled = {doc['id']: doc for doc in index()[0] if doc['id'].startswith('guide-')}
     relevant_sources = {item['source_id'] for item in items}
     for i, source in enumerate(files, 1):
         source_id = str(source.get('metadata', {}).get('source_id', '')).casefold()

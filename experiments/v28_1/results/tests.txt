@@ -77,6 +77,11 @@ test_extract_question_anchors (test_v29_official_scorer.V29OfficialScorerTests.t
 test_fail_soft_cases_a_b_c_d (test_v29_official_scorer.V29OfficialScorerTests.test_fail_soft_cases_a_b_c_d) ... ok
 test_template_prompt_validates_with_frozen_guard (test_v29_official_scorer.V29OfficialScorerTests.test_template_prompt_validates_with_frozen_guard) ... ok
 test_ten_adjacent_control_boundaries_semantic_and_official_lexical (test_v29_official_scorer.V29OfficialScorerTests.test_ten_adjacent_control_boundaries_semantic_and_official_lexical) ... ok
+test_v30_committed_guide_support_append (test_v29_official_scorer.V29OfficialScorerTests.test_v30_committed_guide_support_append) ... ok
+test_v30_disable_handwritten_scenario_patches (test_v29_official_scorer.V29OfficialScorerTests.test_v30_disable_handwritten_scenario_patches) ... ok
+test_v30_knn_predict_control_and_exclude_ids (test_v29_official_scorer.V29OfficialScorerTests.test_v30_knn_predict_control_and_exclude_ids) ... ok
+test_v30_mc_api_failure_knn_fallback (test_v29_official_scorer.V29OfficialScorerTests.test_v30_mc_api_failure_knn_fallback) ... ok
+test_v30_resolve_explicit_control_fast_path (test_v29_official_scorer.V29OfficialScorerTests.test_v30_resolve_explicit_control_fast_path) ... ok
 test_later_mention_does_not_replace_primary (test_semantic_evaluator.StrictEvaluationTests.test_later_mention_does_not_replace_primary) ... ok
 test_primary_precedes_mechanism_scoring (test_semantic_evaluator.StrictEvaluationTests.test_primary_precedes_mechanism_scoring) ... ok
 test_split_integrity_and_control_disjointness (test_semantic_evaluator.StrictEvaluationTests.test_split_integrity_and_control_disjointness) ... ok
@@ -92,6 +97,6 @@ test_tie_preserves_baseline (test_selection_and_diagnostics.ReleaseTests.test_ti
 test_valid_improvement_is_eligible (test_selection_and_diagnostics.ReleaseTests.test_valid_improvement_is_eligible) ... ok
 
 ----------------------------------------------------------------------
-Ran 92 tests in 11.930s
+Ran 97 tests in 40.731s
 
 OK

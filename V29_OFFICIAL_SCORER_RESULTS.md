@@ -1,5 +1,12 @@
 # V29 Official Scorer Results (`eval_dataset.py` Primary Release Metric)
 
+> [!WARNING]
+> **V30 Methodological Correction Note (`TRUE_FULL_REGRESSION.json` & `V30_RESULTS.md`)**:
+> Do **not** cite the `"626 / 626 (100.00%)"` full-dataset regression numbers in Section 1 / Section 7 of this V29 report as true end-to-end production pipeline accuracy:
+> 1. **Multiple Choice (`400 / 400`)**: `experiments/v29/run_v29_ablations.py::run_full_dataset_regression` only checked `validate_user_input(question)` (`400 / 400` not guard-rejected), rather than calling `answer_question()` and scoring A/B/C/D with `eval_dataset.py`.
+> 2. **Short Answer (`226 / 226`)**: Only the 36 validation+holdout short answers came from saved pipeline runs; the remaining 190 short answers used bundled guide quotes as synthetic drafts and historical `route_audit_v18_full_catalog.jsonl` routing. Therefore, V29's `226 / 226` is strictly an **offline compilation coverage simulation**, not full end-to-end production accuracy.
+> 3. For true end-to-end `answer_question()` evaluation across all 400 MC + 226 SA + 177 Attack questions and the 150-question frozen shadow set, see [`V30_RESULTS.md`](file:///c:/data/software/big_homework/V30_RESULTS.md) and [`TRUE_FULL_REGRESSION.json`](file:///c:/data/software/big_homework/TRUE_FULL_REGRESSION.json).
+
 ## 1. Executive Summary & Release Readiness Gate
 
 - **Primary Release Metric**: Official scorer in [`eval_dataset.py`](file:///c:/data/software/big_homework/attack_defense_bot/attack_defense_bot/eval_dataset.py) (`DEFAULT_SHORT_ANSWER_POLICY = "concepts"`, `DEFAULT_SHORT_ANSWER_CONCEPT_THRESHOLD = 1.0`, exact letter match for multiple choice, `actual_decision == "error"` scored as wrong).

@@ -5,7 +5,7 @@ from contextvars import ContextVar
 import json
 
 _active=ContextVar('rag_diagnostics',default=None)
-_ALLOWED={'retrieval','router','fusion','prepared','evidence','generation','supplemental'}
+_ALLOWED={'retrieval','router','fusion','prepared','evidence','generation','supplemental','llm_calls'}
 
 
 @contextmanager
