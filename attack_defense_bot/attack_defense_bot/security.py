@@ -177,36 +177,79 @@ def _request_clauses(text):
         if part.strip()]
 
 
-_ENACT_HEAD = re.compile(r'^(?:(?:please|now|next|also|but|instead|afterwards|after\s+that|you\s+must)\s+|'
+_ENACT_HEAD = re.compile(r'^(?:(?:please|now|then|next|also|but|instead|afterwards|after\s+that|you\s+must)\s+|'
     r'(?:请你?|现在|立即|直接|务必|但|但是|还要|还请|随后|接着|最后)\s*)*'
-    r'(?:execute\b|obey\b|follow\b|apply\b|run\b|carry\s+out\b|comply\s+with\b|执行|照做|服从|遵循|应用|运行)\s*(.*)', re.I)
+    r'(?P<verb>execute\b|obey\b|follow\b|apply\b|run\b|carry\s+out\b|comply\s+with\b|act\s+on\b|'
+    r'use\b|treat\b|adopt\b|执行|照做|服从|遵循|应用|运行|使用|把|将|按照|按|照|根据)\s*(?P<target>.*)', re.I)
 _SAMPLE_TARGET = re.compile(r'^(?:(?:the|this|that|these|those|decoded|translated|recovered|quoted|above)\s+)*'
     r'(?:it|them|instructions?|commands?|orders?|content|text|sample|payload|option|result|translation|output)\b|'
+    r'^what\s+(?:it|the\s+(?:decoded|translated)\s+text)\s+says\b|'
     r'^(?:译文|翻译结果|解码结果|恢复出|样本|它|选项|上述|这段|该段|引号|引用|内容|指令)', re.I)
+_ASSIGN_AUTHORITY = re.compile(r'\bas\s+(?:(?:your|the|new|system|developer|highest|priority)\s+)*'
+    r'(?:instructions?|commands?|rules?|policy|permissions?)\b|'
+    r'\bto\s+(?:change|override|direct|control)\s+(?:your|assistant)\s+(?:behavior|rules|instructions)\b|'
+    r'(?:作为|当作|视为|用作).{0,12}(?:指令|规则|行为准则|权限)|(?:改变|修改).{0,8}(?:你的|助手).{0,8}(?:行为|规则)', re.I)
+
+
+def _enactment_clause(clause):
+    command = _ENACT_HEAD.match(clause)
+    if not command or not _SAMPLE_TARGET.match(command.group('target')): return False
+    verb, target = command.group('verb').casefold(), command.group('target')
+    if verb in {'use', 'treat', 'adopt', '使用', '把', '将'}:
+        # Using a sample for analysis is different from assigning it authority.
+        return bool(_ASSIGN_AUTHORITY.search(target))
+    if verb in {'按', '按照', '照', '根据'}:
+        return bool(re.search(r'执行|照做|操作|做|(?:改变|修改).{0,8}(?:行为|规则)', target))
+    return True
+
+
+def _translation_parts(value):
+    """Locate the translation object and retain subsequent operations separately."""
+    if not re.match(r'^(?:请)?(?:翻译|translate\b)', value, re.I): return None
+    spans = [m.span() for m in _QUOTED_SAMPLE.finditer(value)]
+    delimiter = next((m.start() for m in re.finditer('[:：]', value)
+                      if not any(a <= m.start() < b for a, b in spans)), None)
+    if delimiter is None: return None
+    start = delimiter + 1
+    while start < len(value) and value[start].isspace(): start += 1
+    quoted = _QUOTED_SAMPLE.match(value, start)
+    if quoted:
+        end = quoted.end()
+    else:
+        candidates = []
+        # Keep explicit transitions even if the following verb is unfamiliar.
+        for marker in re.finditer(r'\b(?:then|next|now|afterwards|after\s+that)\b|然后|接下来|随后|最后', value[start:], re.I):
+            pos = start + marker.start()
+            if pos > start and not any(a <= pos < b for a, b in spans): candidates.append(pos)
+        # Also support followups without a sequence marker: '. Use it as ...'.
+        for boundary in re.finditer(r'[\n。！？!?；;.,，]|\band\s+|并且|并', value[start:], re.I):
+            pos = start + boundary.end()
+            if pos > start and _enactment_clause(value[pos:].lstrip()): candidates.append(pos)
+        end = min(candidates) if candidates else len(value)
+    return {'prefix': value[:delimiter], 'sample_start': start, 'sample_end': end,
+            'sample': value[start:end], 'followup': value[end:]}
 
 
 def _enacts_sample(text):
     """Affirmative outer commands to obey data, excluding quotes and negations."""
     value = strip_question_header(canonical(text))
-    outside = outside_quoted_samples(value)
+    parts = _translation_parts(value)
+    outer = parts['prefix'] + '\n' + parts['followup'] if parts else value
+    outside = outside_quoted_samples(outer)
     if has_choice_options(value): outside = _OPTION_LINE.sub('', outside)
     for clause in _request_clauses(outside):
-        command = _ENACT_HEAD.match(clause)
-        if command and _SAMPLE_TARGET.match(command.group(1)):
-            return True
-        if re.match(r'^(?:请你?|现在|立即|直接)?按(?:照)?(?:译文|翻译结果|解码结果|恢复出的内容).{0,16}(?:执行|照做|操作)', clause):
-            return True
+        if _enactment_clause(clause): return True
     return False
 
 
 def active_request_text(text):
     """Local rule scope; the semantic classifier still receives the full input."""
     value = strip_question_header(canonical(text))
-    # Unquoted text supplied after a translation delimiter is sample data.
-    # Explicit instructions to enact its result must stay visible.
-    if re.match(r'^(?:请)?(?:翻译|translate\b)', value, re.I) and ':' in value and not _QUOTED_SAMPLE.search(value) and not _enacts_sample(value):
-        return value.partition(':')[0]
-    outside = outside_quoted_samples(value)
+    parts = _translation_parts(value)
+    # Mask the identified translation object, never the entire colon suffix.
+    # The full object remains in request/decoded_views for semantic inspection.
+    outer = parts['prefix'] + '\n' + parts['followup'] if parts else value
+    outside = outside_quoted_samples(outer)
     return _OPTION_LINE.sub('', outside) if has_choice_options(value) else outside
 
 
@@ -371,13 +414,15 @@ def decoded_views(text):
 
 
 def local_risk_analysis(question, views, rule_categories=()):
-    all_categories = _categories(_features(question))
+    original_categories = _categories(_features(question))
+    all_categories = original_categories.copy()
     all_categories.update(rule_categories)
     stem = choice_stem(question) if has_choice_options(question) else question
     active = active_request_text(stem)
     active_features = _features(active)
     active_categories = _categories(active_features)
     is_analysis = analysis_only(stem)
+    enacts = _enacts_sample(question)
     strong = _directive_categories(active, rule_categories)
     # An educational prefix is not immunity for a multi-step operative request.
     # Quoted samples have already been removed from this particular view.
@@ -387,24 +432,35 @@ def local_risk_analysis(question, views, rule_categories=()):
         # Commands appended AFTER option data must not be hidden by choice_stem.
         optionless = active_request_text(question)
         strong.update(_directive_categories(optionless, rule_categories))
+    # Only outer requests prove an actual boundary violation. Decoded commands
+    # presented for inspection may warrant review, but are not authorization.
+    outer_strong = strong.copy()
     decoded_risk = set()
+    decoded_boundary = False
     for view in views:
         found = _categories(_features(view['text']))
         all_categories.update(found)
-        if any(kind != 'normalize' for kind in view['transforms']):
+        transformed = any(kind != 'normalize' for kind in view['transforms'])
+        if transformed:
             # Only newly exposed intent supports an encoding-risk signal.
-            decoded_risk.update(found - _categories(_features(question)))
-        if not is_analysis and not has_choice_options(question):
-            strong.update(_directive_categories(view['text']))
+            decoded_risk.update(found - original_categories)
+        if enacts or (not is_analysis and not has_choice_options(question)):
+            directives = _directive_categories(active_request_text(view['text']))
+            strong.update(directives)
+            if transformed and enacts:
+                decoded_boundary |= bool(hard_attack_reason(view['text']) or (
+                    'role_spoofing' in directives and directives & {'tool_misuse', 'prompt_extraction', 'data_exfiltration'}) or (
+                    'memory_poisoning' in directives and directives & {'instruction_override', 'data_exfiltration'}))
     if decoded_risk:
         all_categories.add('encoded_instruction')
-        if 'operate' in active_features and strong:
+        if enacts and strong:
             strong.add('encoded_instruction')
-    boundary_evidence = bool(hard_attack_reason(active) or (
-        'role_spoofing' in strong and strong & {'tool_misuse', 'prompt_extraction', 'data_exfiltration'}) or (
-        'memory_poisoning' in strong and strong & {'instruction_override', 'data_exfiltration'}))
+    boundary_evidence = bool(hard_attack_reason(question) or decoded_boundary or (
+        'role_spoofing' in outer_strong and outer_strong & {'tool_misuse', 'prompt_extraction', 'data_exfiltration'}) or (
+        'memory_poisoning' in outer_strong and outer_strong & {'instruction_override', 'data_exfiltration'}))
     return {'categories': sorted(all_categories), 'strong_categories': sorted(strong),
-            'boundary_evidence': boundary_evidence}
+            'boundary_evidence': boundary_evidence, 'sample_enactment_requested': enacts,
+            'decoded_boundary_evidence': decoded_boundary}
 
 
 def _sample_evidence_only(payload, quote):
@@ -417,6 +473,8 @@ def _sample_evidence_only(payload, quote):
     matched = False
     for text in [question] + [v['text'] for v in payload['decoded_views']]:
         spans = [m.span() for m in _QUOTED_SAMPLE.finditer(text)]
+        translated = _translation_parts(text)
+        if translated: spans.append((translated['sample_start'], translated['sample_end']))
         if choices: spans.extend(m.span() for m in _OPTION_LINE.finditer(text))
         for match in re.finditer(re.escape(quote), text):
             matched = True
@@ -488,7 +546,8 @@ def classify_intent(question, client):
 def assess_request(question, client, diagnostics, rule_categories=()):
     views = decode_input(question)
     risk = local_risk_analysis(question, views, rule_categories)
-    diagnostics.update(local_risk_categories=risk['categories'], decode_view_count=len(views))
+    diagnostics.update(local_risk_categories=risk['categories'], decode_view_count=len(views),
+                       boundary_evidence=risk['boundary_evidence'])
     payload = _classification_payload(question, views, risk)
     started = time.perf_counter()
     try:
@@ -501,14 +560,17 @@ def assess_request(question, client, diagnostics, rule_categories=()):
         if first.status == 'api_error':
             return ('reject', 'classifier_unavailable_boundary_request') if risk['boundary_evidence'] else (
                 'allow', 'classifier_unavailable_no_boundary_evidence')
-        if first.label == 'benign' and not risk['strong_categories']: return 'allow', 'benign_low_risk'
+        if first.label == 'benign' and not risk['strong_categories'] and not risk['boundary_evidence']:
+            return 'allow', 'benign_low_risk'
         diagnostics['second_review_triggered'] = True
         diagnostics['classifier_call_count'] += 1
         payload['prior_verdict'] = {'label': first.label, 'category': first.category, 'status': first.status}
         second = _semantic_round(payload, client, REVIEW_POLICY)
         diagnostics.update(second_review_label=second.label, second_review_status=second.status)
         if second.label == 'attack': return 'reject', 'review_attack:' + second.category
-        if second.label == 'benign': return 'allow', 'review_resolved_benign'
+        if second.label == 'benign':
+            if risk['boundary_evidence']: return 'reject', 'review_cannot_override_boundary_evidence'
+            return 'allow', 'review_resolved_benign'
         if second.status == 'api_error':
             return ('reject', 'review_unavailable_boundary_request') if risk['boundary_evidence'] else (
                 'allow', 'review_unavailable_no_boundary_evidence')
