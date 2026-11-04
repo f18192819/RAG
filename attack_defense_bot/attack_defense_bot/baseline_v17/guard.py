@@ -5,15 +5,15 @@ import re
 import unicodedata
 from html import unescape
 try:
+    from ..security import GuardError,outside_quoted_samples,output_violation
+except ImportError:
+    from security import GuardError,outside_quoted_samples,output_violation
+try:
     from .prompt_builder import SYSTEM_POLICY, ANSWER_RULES, PROMPT_VERSION, build_prompt
     from .question_format import has_choice_options, choice_stem, strip_question_header
 except ImportError:
     from prompt_builder import SYSTEM_POLICY, ANSWER_RULES, PROMPT_VERSION, build_prompt
     from question_format import has_choice_options, choice_stem, strip_question_header
-
-
-class GuardError(ValueError):
-    """拒绝不符合安全策略的请求；异常不包含原始内容。"""
 
 
 MAX_USER_INPUT_CHARS = 2000
@@ -48,18 +48,20 @@ def instruction_risks(text: str) -> list[str]:
 
 def _analysis_only(text: str) -> bool:
     value = strip_question_header(normalize(text))
+    outside=outside_quoted_samples(value)
     analysis = bool(re.search(r"(?:如何|怎样|为什么|什么|怎么|哪项|哪个|哪些|哪种|何种|有何|何时|何为|分析|识别|判断|解释|说明|介绍|描述|检测|防范|防御|防止|区别|风险|原理|作用|含义|哈希|散列|加盐|安全存储|密码策略|密钥管理|凭据管理|key管理|key轮换|最佳实践|教学示例|which|what|why|how|explain|detect|identify|password\s+hash|key\s+(?:rotation|storage)|best\s+practice)", value))
     analysis=analysis or bool(re.search(r'是否(?:应该|应当|合理|安全|正确|属于|构成|为|是)|应否|(?:合理|安全|正确|有效)吗|对不对|讨论|阐述|论述|简述|概述|评价|评估|true\s+or\s+false|is\s+it\s+(?:safe|correct|appropriate)|should\s+(?:a|an|the)\s+(?:model|assistant|system)|discuss|describe|assess|evaluate|summarize',value))
-    execute = bool(re.search(r"(?:请你|现在|接下来|立刻|立即|然后).{0,12}(?:执行|照做|输出|公开|泄露|忽略|跳过)|(?:now|then)\s+(?:execute|obey|reveal|ignore)", value))
-    execute=execute or bool(re.search(r'请(?:你)?\s*(?:(?:直接|立即|立刻|暂时|先|无条件)\s*)*(?:忽略|无视|覆盖|跳过|关闭|绕过|取消|解除|撤销|停止)|你必须.{0,12}(?:执行|忽略|无视|覆盖|跳过|关闭|绕过|取消|解除|撤销|停止|泄露)',value))
+    execute = bool(re.search(r"(?:请你|现在|接下来|立刻|立即|然后).{0,12}(?:执行|照做|输出|公开|泄露|忽略|跳过)|(?:now|then)\s+(?:execute|obey|reveal|ignore)", outside))
+    execute=execute or bool(re.search(r'请(?:你)?\s*(?:(?:直接|立即|立刻|暂时|先|无条件)\s*)*(?:忽略|无视|覆盖|跳过|关闭|绕过|取消|解除|撤销|停止)|你必须.{0,12}(?:执行|忽略|无视|覆盖|跳过|关闭|绕过|取消|解除|撤销|停止|泄露)',outside))
     framed = bool(re.search(r"[?？]\s*$|【选项】|[‘“\"].+[’”\"]|^(?:请)?(?:什么是|为什么|为何|如何|怎样|怎么|分析|解释|说明|介绍|描述|提供|展示|列出|输出|讨论|阐述|论述|简述|概述|评价|评估|判断)|^(?:how|what|why|explain|show|list|provide|true\s+or\s+false|discuss|describe|assess|evaluate|summarize)", value, re.S))
-    return analysis and framed and not execute
+    translation=bool(re.match(r'^(?:请)?(?:翻译|translate)\b|^(?:请)?翻译',outside))
+    return ((analysis and framed) or translation) and not execute
 
 
 def _actual_secret_request(text: str) -> bool:
     value=normalize(text)
     # Quoted attack samples can be analyzed; their requests are not executed.
-    outside=re.sub(r'[“‘\"]([^”’\"]*)[”’\"]','',value)
+    outside=outside_quoted_samples(value)
     actual=bool(re.search(r'(?:你的|你当前|当前环境|运行环境|隐藏|私有|真实|your|actual|hidden).{0,40}(?:系统提示|开发者消息|私钥|密码|凭据|访问令牌|system\s*prompt|developer\s*message|private\s*key|password|api\s*key|credential)',outside))
     internal=bool(re.search(r'(?:内部|internal).{0,40}(?:密码|凭据|api\s*key|password|credential)',outside))
     education=bool(re.search(r'(?:安全存储|凭据管理|密码策略|key\s*轮换|key\s*管理|key\s+(?:rotation|management)|best\s+practice)',outside))
@@ -126,6 +128,8 @@ def validate_response(response: str, citation_count: int, token: str = "") -> st
         raise ValueError("模型响应不是合法 JSON") from exc
     if not isinstance(obj, dict) or obj.get("decision") not in {"answer", "reject"}:
         raise ValueError("模型响应缺少合法 decision")
+    violation=output_violation(obj,token,SYSTEM_POLICY)
+    if violation:raise GuardError(violation)
     if obj["decision"] == "reject":
         obj = {"decision": "reject", "answer": None, "evidence": [], "explanation": "拒绝执行越权请求。"}
     else:

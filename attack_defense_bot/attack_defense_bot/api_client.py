@@ -48,9 +48,9 @@ class RagApiClient:
             }
         )
 
-    def _post(self, path: str, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def _post(self, path: str, payload: Dict[str, Any], *, retry: bool = True) -> Dict[str, Any]:
         # Retry read-only inference/search operations, never database mutations.
-        attempts = 3 if path == '/dialogue' or path.endswith('/search') else 1
+        attempts = 3 if retry and (path == '/dialogue' or path.endswith('/search')) else 1
         for attempt in range(attempts):
             try:
                 response = self._session.post(self._base_url + path, json=payload, timeout=self._timeout)
@@ -167,6 +167,7 @@ class RagApiClient:
         custom_prompt: str = "",
         temperature: float = 0.2,
         max_tokens: int = 300,
+        *, retry: bool = True,
     ) -> str:
         """调用 PPT 中的“大模型对话”接口。"""
 
@@ -178,6 +179,7 @@ class RagApiClient:
                 "temperature": temperature,
                 "max_tokens": max_tokens,
             },
+            retry=retry,
         )
         response = body.get("response")
         if not isinstance(response, str):

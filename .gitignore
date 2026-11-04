@@ -1,4 +1,5 @@
 *.token.json
+*.token*.json
 .env
 .env.*
 !.env.example

@@ -84,6 +84,7 @@ class Settings:
     knn_exclude_ids: tuple[str, ...] = ()
     knn_min_top1_score: float = 0.42
     knn_min_margin: float = 0.10
+    semantic_guard_enabled: bool = True
 
 
 def load_settings() -> Settings:
@@ -115,6 +116,7 @@ def load_settings() -> Settings:
         timeout_seconds=_get_int("RAG_TIMEOUT_SECONDS", values, 90),
         temperature=_get_float("RAG_TEMPERATURE", values, 0),
         max_tokens=_get_int("RAG_MAX_TOKENS", values, 1000),
+        semantic_guard_enabled=os.getenv('RAG_SEMANTIC_GUARD',values.get('RAG_SEMANTIC_GUARD','true')).lower()=='true',
         personal_database_name=os.getenv('RAG_PERSONAL_DATABASE', values.get('RAG_PERSONAL_DATABASE', '')).strip(),
         choice_strategy=os.getenv('RAG_CHOICE_STRATEGY',values.get('RAG_CHOICE_STRATEGY','rag')).strip(),
         rerank_margin=_get_float('RAG_RERANK_MARGIN',values,0.15),

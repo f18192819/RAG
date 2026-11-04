@@ -64,6 +64,10 @@ except ImportError:
 
 
 LOG = logging.getLogger(__name__)
+try:
+    from ..security import guarded_request,checked_input,request_client,rejection_response
+except ImportError:
+    from security import guarded_request,checked_input,request_client,rejection_response
 
 
 def generate_answer(client, prompt: str, citation_count: int, settings: Settings) -> str:
@@ -135,10 +139,11 @@ def verify_choice(question: str, response: str, context: str, citations: Sequenc
         return response
 
 
+@guarded_request
 def answer_question(question: str, settings: Settings, show_prompt: bool = False) -> tuple[str, Sequence[str]]:
     """执行完整链路；返回模型回答和脱敏引用列表。"""
-    safe_question = validate_user_input(question)
-    client = RagApiClient(settings)
+    safe_question = checked_input(question)
+    client = request_client(settings,RagApiClient)
 
     has_options = has_choice_options(safe_question)
     template_kind = classify_short_answer_template(safe_question)
@@ -464,7 +469,10 @@ def interactive_loop(settings: Settings, show_prompt: bool) -> int:
             return 0
         try:
             response, citations = answer_question(question, settings, show_prompt)
-        except (GuardError, ApiError, ValueError) as exc:
+        except GuardError:
+            print(rejection_response())
+            continue
+        except (ApiError, ValueError) as exc:
             print("请求未完成：" + short_error(exc))
             continue
         print("\n回答：\n" + response)
@@ -500,7 +508,10 @@ def main() -> int:
                 print("\n参考资料：\n" + "\n".join(citations))
             return 0
         return interactive_loop(settings, args.show_prompt)
-    except (GuardError, ApiError, ValueError) as exc:
+    except GuardError:
+        print(rejection_response())
+        return 0
+    except (ApiError, ValueError) as exc:
         print("请求未完成：" + short_error(exc), file=sys.stderr)
         return 2
 

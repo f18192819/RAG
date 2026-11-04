@@ -39,6 +39,10 @@ except ImportError:
     from utils import configure_logging,short_error
 
 LOG=logging.getLogger(__name__)
+try:
+    from .security import guarded_request,checked_input,request_client,rejection_response
+except ImportError:
+    from security import guarded_request,checked_input,request_client,rejection_response
 
 
 def generate_answer(client,prompt,citation_count,settings):
@@ -110,13 +114,14 @@ def answer_exact_course_reference(question,settings,client):
     return _answer_with_evidence(question,context,used,client,settings)
 
 
+@guarded_request
 def answer_question(question,settings,show_prompt=False):
-    safe=validate_user_input(question)
+    safe=checked_input(question)
     if settings.production_profile=='A':
         try:from .baseline_v17.main import answer_question as baseline_answer
         except ImportError:from baseline_v17.main import answer_question as baseline_answer
         return baseline_answer(safe,settings,show_prompt)
-    client=RagApiClient(settings)
+    client=request_client(settings,RagApiClient)
     exact=answer_exact_course_reference(safe,settings,client)
     if exact is not None:return exact
     overview=answer_known_control(safe,settings,client)
@@ -235,7 +240,10 @@ def interactive_loop(settings: Settings, show_prompt: bool) -> int:
             return 0
         try:
             response, citations = answer_question(question, settings, show_prompt)
-        except (GuardError, ApiError, ValueError) as exc:
+        except GuardError:
+            print(rejection_response())
+            continue
+        except (ApiError, ValueError) as exc:
             print("请求未完成：" + short_error(exc))
             continue
         print("\n回答：\n" + response)
@@ -271,7 +279,10 @@ def main() -> int:
                 print("\n参考资料：\n" + "\n".join(citations))
             return 0
         return interactive_loop(settings, args.show_prompt)
-    except (GuardError, ApiError, ValueError) as exc:
+    except GuardError:
+        print(rejection_response())
+        return 0
+    except (ApiError, ValueError) as exc:
         print("请求未完成：" + short_error(exc), file=sys.stderr)
         return 2
 
