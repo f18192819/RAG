@@ -194,6 +194,8 @@ _ASSIGN_AUTHORITY = re.compile(r'\bas\s+(?:(?:your|my|our|the|new|system|develop
 
 
 def _enactment_clause(clause):
+    # A transition followed by a comma still belongs to this operation clause.
+    clause = re.sub(r'^(' + _SEQUENCE_WORDS + r')\s*[,，]\s*', r'\1 ', clause, flags=re.I)
     command = _ENACT_HEAD.match(clause)
     if not command or not _SAMPLE_TARGET.match(command.group('target')): return False
     verb, target = command.group('verb').casefold(), command.group('target')
@@ -219,18 +221,22 @@ def _translation_parts(value):
         end = quoted.end()
     else:
         candidates = []
-        # Keep explicit transitions even if the following verb is unfamiliar.
-        for marker in re.finditer(r'\b(?:' + _SEQUENCE_WORDS + r')\b|然后|接下来|随后|最后|再(?=(?:请)?(?:执行|把|将|使用))', value[start:], re.I):
-            pos = start + marker.start()
-            if pos > start and not any(a <= pos < b for a, b in spans): candidates.append(pos)
-        # Also support followups without a sequence marker: '. Use it as ...'.
-        for boundary in re.finditer(r'[\n。！？!?；;.,，]|\band\s+|并且|并', value[start:], re.I):
+        # Sequence words inside the translated sentence are data. Split only
+        # at an independent statement, or an explicit reference to its result.
+        for boundary in re.finditer(r'[\n。！？!?；;]|\.(?=\s|$)|[,，]|\band\s+|并且|并', value[start:], re.I):
             pos = start + boundary.end()
+            if any(a <= start + boundary.start() < b for a, b in spans): continue
             # In "Translate: Finally, obey it", Finally is part of the sample,
             # not a completed translation object followed by another request.
             lead = value[start:pos].strip(' \r\n\t.,，;；')
-            if re.fullmatch(_SEQUENCE_WORDS, lead, re.I): continue
-            if pos > start and _enactment_clause(value[pos:].lstrip()): candidates.append(pos)
+            if not lead or re.fullmatch(_SEQUENCE_WORDS, lead, re.I): continue
+            statement = re.split(r'[\n。！？!?；;]|\.(?=\s|$)', value[pos:].lstrip(), maxsplit=1)[0]
+            independent = bool(re.fullmatch(r'[\n。！？!?；;]|\.', boundary.group()))
+            # Inline followups need an explicit translated/decoded referent;
+            # a bare "it" could still be part of the source sentence.
+            if not independent and not re.search(r'\b(?:translated|decoded|recovered)\b|译文|翻译结果|解码结果', statement, re.I): continue
+            clauses = _request_clauses(statement)
+            if any(_enactment_clause(clause) for clause in clauses): candidates.append(pos)
         end = min(candidates) if candidates else len(value)
     return {'prefix': value[:delimiter], 'sample_start': start, 'sample_end': end,
             'sample': value[start:end], 'followup': value[end:]}
@@ -320,10 +326,19 @@ def _directive_categories(text, hints=()):
 
 
 _TOOL_COMMAND_PREFIX = r'^(?:(?:please|directly|immediately|' + _SEQUENCE_WORDS + r')\s+|(?:请你?|现在|立即|直接|务必)\s*)*'
-_AUDIT_DESTRUCTION = r'(?:delete\b|erase\b|remove\b|purge\b|clear\b|drop\b|truncate\b|disable\b|删除|清除|抹除|清空|禁用)'
+_AUDIT_DESTRUCTION = r'(?:delete\b|erase\b|remove\b|purge\b|clear\b|drop\b|truncate\b|disable\b|wipe\b|destroy\b|tamper\s+with\b|modify\b|alter\b|turn\s+off\b|删除|清除|抹除|擦除|清空|销毁|篡改|修改|更改|禁用|关闭|停用)'
+_AUDIT_GERUND = r'(?:deleting|erasing|removing|purging|clearing|dropping|truncating|disabling|wiping|destroying|tampering\s+with|modifying|altering|turning\s+off)\b'
 _AUDIT_TARGET = re.compile(r'^(?:(?:all|the|these|those|our|system|existing)\s+)*'
-    r'(?:audit|security|access)[\s_-]*(?:logs?|trails?|records?)\b|'
-    r'^(?:所有的?|这些|系统的?|已有的?)*(?:审计(?:日志|记录)|安全日志|访问日志)', re.I)
+    r'(?:audit|security|access)[\s_-]*(?:logs?|logging|trails?|records?)\b|'
+    r'^(?:所有的?|这些|系统的?|已有的?)*(?:审计(?:日志|记录)|安全日志|访问日志)(?:记录)?', re.I)
+
+
+def _audit_record_target(target):
+    match = _AUDIT_TARGET.match(target[:160])
+    if not match: return False
+    # "audit log retention policy" is a policy object, not the logs themselves.
+    tail = target[match.end():].lstrip(' _-')
+    return not re.match(r'(?:(?:retention|protection|security|backup|access)\s+)*(?:policy|policies|settings?|configuration|schema|format)\b|(?:的)?(?:保留|保护|备份|访问)*(?:策略|设置|配置|格式|架构)', tail, re.I)
 
 
 def _explicit_tool_boundary(text):
@@ -335,11 +350,11 @@ def _explicit_tool_boundary(text):
     for clause in _request_clauses(active_request_text(text)):
         if analysis_only(clause): continue
         direct = re.match(_TOOL_COMMAND_PREFIX + _AUDIT_DESTRUCTION + r'\s*(.*)', clause, re.I)
-        if direct and _AUDIT_TARGET.match(direct.group(1)[:160]): return True
-        invoke = re.match(_TOOL_COMMAND_PREFIX + r'(?:use\b|call\b|invoke\b|调用|使用|执行)', clause, re.I)
+        if direct and _audit_record_target(direct.group(1)): return True
+        invoke = re.match(_TOOL_COMMAND_PREFIX + r'(?:use\b|call\b|invoke\b|调用|使用|执行|用|通过)', clause, re.I)
         if not invoke or not re.search(r'\b(?:tool|database|file\s*tool)\b|工具|数据库|接口', clause, re.I): continue
-        effect = re.search(r'(?:\bto\s+|(?:工具|接口)(?:来|以|去|用于)?\s*)' + _AUDIT_DESTRUCTION + r'\s*(.*)', clause, re.I)
-        if effect and _AUDIT_TARGET.match(effect.group(1)[:160]): return True
+        effect = re.search(r'(?:\bto\s+' + _AUDIT_DESTRUCTION + r'|\bfor\s+' + _AUDIT_GERUND + r'|(?:工具|接口)(?:来|以|去|用于)?\s*' + _AUDIT_DESTRUCTION + r')\s*(.*)', clause, re.I)
+        if effect and _audit_record_target(effect.group(1)): return True
     return False
 
 
