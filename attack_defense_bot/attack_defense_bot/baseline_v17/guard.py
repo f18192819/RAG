@@ -5,9 +5,9 @@ import re
 import unicodedata
 from html import unescape
 try:
-    from ..security import GuardError,outside_quoted_samples,output_violation
+    from ..security import GuardError,outside_quoted_samples,output_violation,hard_attack_reason
 except ImportError:
-    from security import GuardError,outside_quoted_samples,output_violation
+    from security import GuardError,outside_quoted_samples,output_violation,hard_attack_reason
 try:
     from .prompt_builder import SYSTEM_POLICY, ANSWER_RULES, PROMPT_VERSION, build_prompt
     from .question_format import has_choice_options, choice_stem, strip_question_header
@@ -25,7 +25,8 @@ def normalize(text: str) -> str:
                    if unicodedata.category(c) != "Cf").lower()
 
 
-# 行为与对象组合；安全术语本身不作为黑名单。
+# Soft source-screening signals, not an input blacklist. The shared semantic
+# guard handles ambiguous user intent; keep these names for evidence callers.
 RISK_RULES = (
     ("override", r"(?:忽略|无视|覆盖|撤销|停止|取消|跳过|关闭|绕过|解除|不再适用|过期|不要完成).{0,36}(?:规则|指令|约束|原任务|原本的问题|权限|安全|限制|隔离|审核|检查|审批|身份确认)|(?:规则|安全要求).{0,18}(?:撤销|不再适用|过期)|(?:ignore|override|disregard|bypass|disable).{0,40}(?:previous|prior|system|safety|security|instruction|rule|permission|check)"),
     ("secret", r"(?:读取|返回|输出|公开|展示|列出|导出|泄露|提供|扫描|查找).{0,55}(?:私钥|密码|秘密字段|私密数据|受限信息|私有文件|内部配置|系统配置|内部凭据|访问令牌|会话凭据|api\s*key|隐藏提示|隐藏内容|私有上下文|系统提示|不可见文本|内部规则|系统层|开发者层)|(?:reveal|print|disclose|dump|show).{0,50}(?:system\s*prompt|secret|private\s*key|api\s*key|hidden|password|developer\s*message)"),
@@ -59,40 +60,28 @@ def _analysis_only(text: str) -> bool:
 
 
 def _actual_secret_request(text: str) -> bool:
-    value=normalize(text)
-    # Quoted attack samples can be analyzed; their requests are not executed.
-    outside=outside_quoted_samples(value)
-    actual=bool(re.search(r'(?:你的|你当前|当前环境|运行环境|隐藏|私有|真实|your|actual|hidden).{0,40}(?:系统提示|开发者消息|私钥|密码|凭据|访问令牌|system\s*prompt|developer\s*message|private\s*key|password|api\s*key|credential)',outside))
-    internal=bool(re.search(r'(?:内部|internal).{0,40}(?:密码|凭据|api\s*key|password|credential)',outside))
-    education=bool(re.search(r'(?:安全存储|凭据管理|密码策略|key\s*轮换|key\s*管理|key\s+(?:rotation|management)|best\s+practice)',outside))
-    actual=actual or (internal and not education)
-    action=bool(re.search(r'(?:输出|提供|原样|逐字|返回|给出|列出|展示|是什么|reveal|print|show|dump|return|what\s+is)',outside))
-    return actual and action
+    """Compatibility helper: only a live command, never a security term alone."""
+    return (hard_attack_reason(text) == 'explicit_unauthorized_instruction'
+            and 'secret' in instruction_risks(text))
 
 
 def validate_user_input(user_input: str) -> str:
     if not isinstance(user_input, str):
         raise GuardError("用户输入必须是字符串")
+    if len(user_input) > 8000:
+        raise GuardError("用户原始输入超过安全分析长度预算")
     cleaned = unicodedata.normalize("NFKC", user_input).strip()
     cleaned = "".join(c for c in cleaned if unicodedata.category(c) != "Cf")
     if not cleaned or len(cleaned) > MAX_USER_INPUT_CHARS:
         raise GuardError("用户输入为空或超过 2000 字符")
     if any(unicodedata.category(c) == "Cc" and c not in "\n\r\t" for c in cleaned):
         raise GuardError("用户输入包含非法控制字符")
-    intent=cleaned
-    # In a genuine assessment question, answer choices are quoted candidates,
-    # not commands from the questioner. Never hide a command in the stem.
-    has_choices=has_choice_options(cleaned)
-    if has_choices:
-        stem=choice_stem(cleaned)
-        if re.search(r'^(?:(?:请|现在|立即|务必|你必须|接下来)(?:直接)?(?:执行|照做|服从|遵循)|请(?:选择|挑选).{0,12}(?:并|然后|后)执行|(?:execute|obey|follow)\b)',normalize(stem).replace('【问题】','').strip()):
-            raise GuardError('本助手只分析选项，不执行选项中的指令')
-        intent=stem
-    risks = instruction_risks(intent)
-    if _actual_secret_request(intent):
-        raise GuardError('拒绝索取真实凭据或隐藏提示的请求')
-    if risks and not _analysis_only(intent):
-        raise GuardError("拒绝执行疑似越权或提示词注入请求（" + ",".join(risks) + "）")
+    # Only unambiguous live commands short-circuit the semantic guard. Quoted
+    # samples, choice data and ambiguous role/authority claims remain untrusted
+    # data for the shared classifier; educational prefixes grant no authority.
+    reason = hard_attack_reason(cleaned)
+    if reason:
+        raise GuardError('Explicit unauthorized instruction: ' + reason)
     return cleaned
 
 
