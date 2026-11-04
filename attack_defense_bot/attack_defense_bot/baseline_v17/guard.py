@@ -5,9 +5,9 @@ import re
 import unicodedata
 from html import unescape
 try:
-    from ..security import GuardError,outside_quoted_samples,output_violation,hard_attack_reason
+    from ..security import GuardError,outside_quoted_samples,output_violation,hard_attack_reason,active_request_text,actual_secret_request
 except ImportError:
-    from security import GuardError,outside_quoted_samples,output_violation,hard_attack_reason
+    from security import GuardError,outside_quoted_samples,output_violation,hard_attack_reason,active_request_text,actual_secret_request
 try:
     from .prompt_builder import SYSTEM_POLICY, ANSWER_RULES, PROMPT_VERSION, build_prompt
     from .question_format import has_choice_options, choice_stem, strip_question_header
@@ -61,8 +61,7 @@ def _analysis_only(text: str) -> bool:
 
 def _actual_secret_request(text: str) -> bool:
     """Compatibility helper: only a live command, never a security term alone."""
-    return (hard_attack_reason(text) == 'explicit_unauthorized_instruction'
-            and 'secret' in instruction_risks(text))
+    return actual_secret_request(text)
 
 
 def validate_user_input(user_input: str) -> str:
@@ -79,7 +78,7 @@ def validate_user_input(user_input: str) -> str:
     # Only unambiguous live commands short-circuit the semantic guard. Quoted
     # samples, choice data and ambiguous role/authority claims remain untrusted
     # data for the shared classifier; educational prefixes grant no authority.
-    reason = hard_attack_reason(cleaned)
+    reason = hard_attack_reason(cleaned, instruction_risks(active_request_text(cleaned)))
     if reason:
         raise GuardError('Explicit unauthorized instruction: ' + reason)
     return cleaned

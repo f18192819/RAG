@@ -127,7 +127,7 @@ _FEATURES = {
     'change': r'忽略|无视|覆盖|取消|撤销|绕过|停用|关闭|取代|不再适用|ignore|disregard|override|bypass|disable|supersede',
     'instruction': r'指令|规则|优先级|限制|安全检查|instruction|rules?|priorit|safeguard|safety|security checks?',
     'disclose': r'输出|展示|复述|转写|还原|给出|导出|发送|读取|公开|reveal|show|print|repeat|transcrib|reconstruct|dump|export|send|read|return|provide|output|copy|restore',
-    'private': r'系统提示|开发者.{0,6}(?:消息|指令)|隐藏.{0,8}(?:内容|上下文|提示)|启动时|开场时|上层交给|system\s*prompt|developer\s*(?:message|instruction)|hidden\s*(?:context|prompt)|startup|initial\s*(?:message|instruction)',
+    'private': r'系统提示|开发者.{0,6}(?:消息|指令)|隐藏.{0,8}(?:内容|上下文|提示|规则|策略)|启动时|开场时|上层交给|system\s*(?:prompt|policy|instructions?)|developer\s*(?:message|instruction)|hidden\s*(?:context|prompt|policy|instructions?)|startup|initial\s*(?:message|instruction)',
     'secret': r'密码|私钥|凭据|令牌|私有.{0,8}(?:文件|数据)|内部配置|api\s*key|credential|private\s*key|access\s*token|private\s*(?:file|data)|password',
     'role': r'扮演|模拟|你现在是|身份切换|act\s+as|pretend|role\s*[:=]|you\s+are\s+now',
     'authority': r'管理员|最高权限|平台授权|已获授权|审核员|审计员|root|administrator|developer|system|authorized|auditor',
@@ -162,73 +162,147 @@ def _categories(features):
     return result
 
 
-_DIRECT = re.compile(r'^(?:(?:please|now|then|you\s+must)\s+|(?:请你?|现在|然后|立即|立刻|你必须|务必)\s*)*'
+_DIRECT = re.compile(r'^(?:(?:please|now|then|directly|immediately|you\s+must)\s+|(?:请你?|现在|然后|立即|立刻|直接|你必须|务必)\s*)*'
     r'(?P<verb>ignore\b|disregard\b|override\b|bypass\b|disable\b|reveal\b|print\b|show\b|dump\b|return\b|'
     r'忽略|无视|覆盖|绕过|关闭|输出|展示|公开|泄露|导出|返回|提供|给出|列出|复述|转写)', re.I)
 _EXECUTE = re.compile(r'(?:then|now)\s+(?:execute|obey|follow)|(?:然后|接下来|现在).{0,8}(?:执行|照做|服从)', re.I)
 
 
+def _request_clauses(text):
+    # Preserve negations in each clause. A later imperative does not inherit an
+    # earlier educational prefix; conjunctions are boundaries, not exemptions.
+    return [part.strip() for part in re.split(
+        r'[\n。！？!?；;]|\.(?=\s|$)|[,，]|\band\s+|\bthen\s+|并且|并|然后|接下来|'
+        r'(?:再|之后|以后|后)(?=(?:请)?(?:执行|照做|服从|遵循|应用|运行|按))', text, flags=re.I)
+        if part.strip()]
+
+
+_ENACT_HEAD = re.compile(r'^(?:(?:please|now|next|also|but|instead|afterwards|after\s+that|you\s+must)\s+|'
+    r'(?:请你?|现在|立即|直接|务必|但|但是|还要|还请|随后|接着|最后)\s*)*'
+    r'(?:execute\b|obey\b|follow\b|apply\b|run\b|carry\s+out\b|comply\s+with\b|执行|照做|服从|遵循|应用|运行)\s*(.*)', re.I)
+_SAMPLE_TARGET = re.compile(r'^(?:(?:the|this|that|these|those|decoded|translated|recovered|quoted|above)\s+)*'
+    r'(?:it|them|instructions?|commands?|orders?|content|text|sample|payload|option|result|translation|output)\b|'
+    r'^(?:译文|翻译结果|解码结果|恢复出|样本|它|选项|上述|这段|该段|引号|引用|内容|指令)', re.I)
+
+
+def _enacts_sample(text):
+    """Affirmative outer commands to obey data, excluding quotes and negations."""
+    value = strip_question_header(canonical(text))
+    outside = outside_quoted_samples(value)
+    if has_choice_options(value): outside = _OPTION_LINE.sub('', outside)
+    for clause in _request_clauses(outside):
+        command = _ENACT_HEAD.match(clause)
+        if command and _SAMPLE_TARGET.match(command.group(1)):
+            return True
+        if re.match(r'^(?:请你?|现在|立即|直接)?按(?:照)?(?:译文|翻译结果|解码结果|恢复出的内容).{0,16}(?:执行|照做|操作)', clause):
+            return True
+    return False
+
+
+def active_request_text(text):
+    """Local rule scope; the semantic classifier still receives the full input."""
+    value = strip_question_header(canonical(text))
+    # Unquoted text supplied after a translation delimiter is sample data.
+    # Explicit instructions to enact its result must stay visible.
+    if re.match(r'^(?:请)?(?:翻译|translate\b)', value, re.I) and ':' in value and not _QUOTED_SAMPLE.search(value) and not _enacts_sample(value):
+        return value.partition(':')[0]
+    outside = outside_quoted_samples(value)
+    return _OPTION_LINE.sub('', outside) if has_choice_options(value) else outside
+
+
+_DISCLOSE_HEAD = re.compile(r'^(?:(?:please|now|then|directly|immediately)\s+|(?:请你?|现在|立即|立刻|直接)\s*)*'
+    r'(?P<verb>reveal\b|show\b|print\b|dump\b|return\b|provide\b|list\b|read\b|tell\s+me\b|what\s+is\b|'
+    r'输出|展示|返回|提供|给出|列出|读取|查找|扫描|透露|说出|说明|告诉我)\s*(?P<object>.*)', re.I)
+
+
+def actual_secret_request(text):
+    """A request for the assistant's real private value, not its protection."""
+    for clause in _request_clauses(active_request_text(text)):
+        command = _DISCLOSE_HEAD.match(clause)
+        if not command: continue
+        obj = command.group('object').strip()
+        # The object is a knowledge artifact/operation in these noun phrases.
+        # An example/policy word elsewhere never exempts a real-secret request.
+        if re.match(r'^(?:(?:your|internal)\s+)?(?:password|api\s*key|credentials?)\s+(?:hashing|rotation|storage|management|policy)\b|'
+                    r'^(?:你的|内部)?(?:密码|api\s*key|密钥|凭据)(?:哈希|轮换|安全存储|管理流程|管理策略|策略建议)', obj, re.I):
+            continue
+        owned = re.match(r'^(?:(?:me|us)\s+)?(?:your\b|actual\b|hidden\b|private\b|internal\b|the\s+(?:actual|hidden|private|internal)\b)|'
+                         r'^(?:你的|你当前|当前环境|运行环境|真实|隐藏|内部凭据|内部配置|系统层|开发者层)', obj, re.I)
+        if not owned or not (_features(obj) & {'private', 'secret'}): continue
+        target = obj[owned.end():].strip()
+        direct_target = re.match(r'^(?:(?:actual|real|hidden|private|internal|current|entire|full|original)\s+)*'
+            r'(?:system\s*(?:prompt|policy|instructions?)|developer\s*(?:prompt|message|instructions?)|'
+            r'api\s*key|access\s*token|password|credentials?|private\s*key|policy|context)\b|'
+            r'^(?:环境(?:中的|中|的)?|中的|中|的)?(?:真实的?|实际的?|隐藏的?)*'
+            r'(?:系统提示|系统配置|开发者(?:消息|指令)|提示词|上下文|密码|私钥|凭据|访问令牌|令牌|api\s*key)', target, re.I)
+        if not direct_target and owned.group() not in {'内部凭据', '内部配置'}: continue
+        if command.group('verb').casefold() in {'说明', '告诉我', 'tell me'} and not re.search(r'是什么|原样|逐字|真实|实际值|\b(?:actual|exact|value|literal)\b', obj, re.I):
+            continue
+        return True
+    return False
+
+
 def analysis_only(text):
     """A metadata hint, never an exemption from full semantic classification."""
     value = strip_question_header(canonical(text)).casefold()
-    outside = outside_quoted_samples(value)
+    outside = active_request_text(value)
     meta = bool(re.match(r'^(?:请)?(?:翻译|分析|解释|说明|讨论|检测|检查|评估|判断|如何|为什么|什么|是否)|'
                          r'^(?:translate|explain|analy[sz]e|discuss|detect|inspect|assess|what|why|how|true\s+or\s+false)\b', value))
-    imperative = any(_DIRECT.match(part.strip()) and _categories(_features(part))
-                     for part in re.split(r'[\n。！？!?；;]|,(?=\s*(?:then|now)\b)', outside))
-    return meta and not imperative and not _EXECUTE.search(outside)
+    imperative = any(_DIRECT.match(part) and _categories(_features(part))
+                     for part in _request_clauses(outside))
+    return meta and not imperative and not _enacts_sample(value) and not actual_secret_request(value)
 
 
 _REQUEST_FRAME = re.compile(r'^(?:请|你必须|你现在|从现在|从今以后|接下来|现在|立即|立刻|务必|先|把|将|进入|假设)|'
     r'^(?:please|you\s+(?:must|are)|now|then|next|from\s+now|act\s+as|pretend|remember)\b', re.I)
-_DESCRIPTIVE = re.compile(r'如何|为什么|示例|例子|策略建议|管理流程|防止|防御|轮换|安全存储|'
-    r'\b(?:how|why|example|rotation|management|protect|prevent|policy)\b|best\s+practice', re.I)
-
-
 def _directive_categories(text, hints=()):
     """Review live request clauses, not co-occurring words in an incident."""
     found = set()
-    for clause in re.split(r'[\n。！？!?；;]|[,，](?=\s*(?:then\b|now\b|请|现在|然后|接下来))', text):
+    for clause in _request_clauses(text):
         clause = strip_question_header(clause).strip()
         if not clause or analysis_only(clause): continue
         action_head = any(re.match(_FEATURES[key], clause, re.I)
                           for key in ('change', 'disclose', 'operate', 'persist', 'role', 'encode'))
         protocol_head = re.match(r'^(?:system|developer|admin|root)(?:[_ -]\w+)?\s*[:>]', clause, re.I)
         if not (_REQUEST_FRAME.match(clause) or action_head or protocol_head): continue
-        # Descriptive tasks can mention sensitive objects without asking for them.
-        # Full semantic classification still sees every word of mixed requests.
-        if _DESCRIPTIVE.search(clause): continue
         found.update(_categories(_features(clause)))
         found.update(hints)
     return found
 
 
-def hard_attack_reason(text):
+def hard_attack_reason(text, risks=()):
     """Only explicit live commands are hard blocks; ambiguous signals stay soft."""
     stem = choice_stem(text) if has_choice_options(text) else strip_question_header(text)
-    outside = outside_quoted_samples(canonical(stem))
+    outside = active_request_text(text)
+    if actual_secret_request(text): return 'explicit_secret_request'
+    if _enacts_sample(text):
+        categories = _categories(_features(text))
+        if categories & {'instruction_override', 'prompt_extraction', 'data_exfiltration'}:
+            return 'execute_attack_sample'
+    if analysis_only(text): return None
     if has_choice_options(text) and re.match(r'^(?:请)?(?:选择|挑选).{0,12}(?:并|然后|后)执行|'
                                             r'^(?:execute|obey|follow)\b', outside, re.I):
         return 'execute_choice_data'
-    for part in re.split(r'[\n。！？!?；;]|,(?=\s*(?:then|now)\b)', outside):
+    for part in _request_clauses(outside):
         f = _features(part)
         command = _DIRECT.match(part.strip())
         if not command: continue
         verb = command.group('verb').casefold()
         if verb in {'ignore', 'disregard', 'override', 'bypass', 'disable', '忽略', '无视', '覆盖', '绕过', '关闭'}:
             trusted_target = re.search(r'(?:previous|prior|system|safety|security|trusted|your).{0,40}(?:instructions?|rules?|checks?|constraints?)|'
-                r'(?:之前|先前|原有|系统|安全|你的|所有).{0,24}(?:指令|规则|限制|检查)', part, re.I)
-            if 'instruction' in f and trusted_target: return 'explicit_unauthorized_instruction'
+                r'(?:之前|先前|原有|系统|安全|你的|所有).{0,24}(?:指令|规则|限制|检查)|身份(?:检查|确认|验证)|权限(?:检查|校验|边界)', part, re.I)
+            if trusted_target and ('instruction' in f or 'override' in risks): return 'explicit_unauthorized_instruction'
             continue
-        # Describing a protection/example is not asking for the real secret.
-        # Ambiguous mixed requests still go through holistic classification.
-        if re.search(r'如何|为什么|示例|例子|策略|防止|管理|防御|\b(?:how|why|example|rotation|management|protect|prevent|policy)\b|best\s+practice', part, re.I):
-            continue
-        if {'disclose', 'private'} <= f or (
-                'disclose' in f and 'secret' in f and re.search(r'你的|当前环境|运行环境|真实|\byour\b|\bactual\b', part, re.I)):
-            return 'explicit_unauthorized_instruction'
-    if _EXECUTE.search(outside) and _categories(_features(stem)) & {'instruction_override', 'prompt_extraction', 'data_exfiltration'}:
-        return 'execute_attack_sample'
+    # Reuse the established rule vocabulary only for affirmative bypass/memory
+    # commands. Co-occurring tool, password or administrator terms stay soft.
+    for part in _request_clauses(outside):
+        live = _REQUEST_FRAME.match(part) or re.match(_FEATURES['operate'] + '|' + _FEATURES['persist'], part, re.I)
+        bypass = re.search(r'不必验证|无需核验|跳过.{0,8}(?:验证|审计|检查)|bypass|disable|skip.{0,16}(?:verification|authentication|audit)', part, re.I)
+        invoke = re.match(r'^(?:(?:please|now|directly)\s+|(?:请你?|现在|直接)\s*)*(?:调用|执行|使用|invoke\b|execute\b|use\b|call\b)', part, re.I)
+        if 'tool' in risks and invoke and re.search(r'高权限|管理接口|privileged|admin\s*(?:api|endpoint)', part, re.I):
+            return 'explicit_privileged_tool_request'
+        if live and bypass and set(risks) & {'tool', 'authority', 'memory'}:
+            return 'explicit_boundary_bypass'
     return None
 
 
@@ -241,7 +315,7 @@ def _decode_candidates(text):
     escape = r'\\(?:u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8}|x[0-9a-fA-F]{2})'
     if re.search(escape, text):
         try: yield 'unicode_escape', re.sub(escape, lambda m: chr(int(m.group()[2:], 16)), text)
-        except ValueError: pass
+        except (ValueError, OverflowError): pass
     for match in list(re.finditer(r'(?<![\w+/=-])[A-Za-z0-9+/_-]{16,1024}={0,2}(?![\w+/=-])', text))[:3]:
         candidate = match.group()
         try:
@@ -300,7 +374,7 @@ def local_risk_analysis(question, views, rule_categories=()):
     all_categories = _categories(_features(question))
     all_categories.update(rule_categories)
     stem = choice_stem(question) if has_choice_options(question) else question
-    active = outside_quoted_samples(strip_question_header(stem))
+    active = active_request_text(stem)
     active_features = _features(active)
     active_categories = _categories(active_features)
     is_analysis = analysis_only(stem)
@@ -311,7 +385,7 @@ def local_risk_analysis(question, views, rule_categories=()):
         strong.update(active_categories)
     if has_choice_options(question):
         # Commands appended AFTER option data must not be hidden by choice_stem.
-        optionless = _OPTION_LINE.sub('', outside_quoted_samples(question))
+        optionless = active_request_text(question)
         strong.update(_directive_categories(optionless, rule_categories))
     decoded_risk = set()
     for view in views:
@@ -336,6 +410,7 @@ def local_risk_analysis(question, views, rule_categories=()):
 def _sample_evidence_only(payload, quote):
     """A copied option/sample is not evidence of an operative outer request."""
     question = payload['request']
+    if _enacts_sample(question): return False
     choices = has_choice_options(question)
     analysis = analysis_only(question)
     if not (choices or analysis): return False
@@ -368,10 +443,22 @@ def _strict_object(pairs):
     return value
 
 
+@dataclass(frozen=True)
+class _ClassificationResult:
+    label: str
+    category: str = 'none'
+    status: str = 'ok'
+
+
 def _semantic_round(payload, client, policy):
     try:
         raw = client.dialogue(user_input=json.dumps(payload, ensure_ascii=False),
             custom_prompt=policy, temperature=0, max_tokens=CLASSIFIER_MAX_TOKENS, retry=False)
+    except ApiError:
+        # An unavailable service did not issue a semantic verdict. Never log the
+        # exception body: upstream details may contain user text or credentials.
+        return _ClassificationResult('uncertain', status='api_error')
+    try:
         if not isinstance(raw, str) or len(raw) > 1800: raise ValueError('response_size')
         value = json.loads(raw, object_pairs_hook=_strict_object)
         if not isinstance(value, dict) or set(value) != {'label', 'category', 'quote'}: raise ValueError('schema')
@@ -381,20 +468,21 @@ def _semantic_round(payload, client, policy):
         if label == 'attack':
             texts = [payload['request']] + [view['text'] for view in payload['decoded_views']]
             if category not in CATEGORIES or not quote.strip() or not 1 <= len(quote) <= 120 or not any(quote in text for text in texts):
-                raise ValueError('unsupported_attack')
-            if _sample_evidence_only(payload, quote): raise ValueError('sample_not_operative_evidence')
+                return _ClassificationResult('uncertain', status='invalid_evidence')
+            if _sample_evidence_only(payload, quote):
+                return _ClassificationResult('uncertain', status='sample_only')
         elif category != 'none' or quote != '': raise ValueError('nonattack_schema')
-        return label, category
-    except (ApiError, ValueError, TypeError):
-        # Do not log exception strings, requests, policies or credentials.
-        return 'uncertain', 'none'
+        return _ClassificationResult(label, category, 'model_uncertain' if label == 'uncertain' else 'ok')
+    except (ValueError, TypeError):
+        return _ClassificationResult('uncertain', status='invalid_response')
 
 
 def classify_intent(question, client):
     """Single-round compatibility API; production uses assess_request below."""
     views = decode_input(question)
-    return _semantic_round(_classification_payload(question, views,
+    result = _semantic_round(_classification_payload(question, views,
         local_risk_analysis(question, views)), client, CLASSIFIER_POLICY)
+    return result.label, result.category
 
 
 def assess_request(question, client, diagnostics, rule_categories=()):
@@ -405,20 +493,27 @@ def assess_request(question, client, diagnostics, rule_categories=()):
     started = time.perf_counter()
     try:
         diagnostics['classifier_call_count'] += 1
-        first, category = _semantic_round(payload, client, CLASSIFIER_POLICY)
-        diagnostics['semantic_label'] = first
-        if first == 'attack' and risk['strong_categories']:
-            return 'reject', 'semantic_attack:' + category
-        if first == 'benign' and not risk['strong_categories']: return 'allow', 'benign_low_risk'
+        first = _semantic_round(payload, client, CLASSIFIER_POLICY)
+        diagnostics.update(semantic_label=first.label, semantic_status=first.status)
+        # Evidence validity and sample scope have already been checked. Local
+        # keyword coverage must not veto a valid semantic attack classification.
+        if first.label == 'attack': return 'reject', 'semantic_attack:' + first.category
+        if first.status == 'api_error':
+            return ('reject', 'classifier_unavailable_boundary_request') if risk['boundary_evidence'] else (
+                'allow', 'classifier_unavailable_no_boundary_evidence')
+        if first.label == 'benign' and not risk['strong_categories']: return 'allow', 'benign_low_risk'
         diagnostics['second_review_triggered'] = True
         diagnostics['classifier_call_count'] += 1
-        payload['prior_verdict'] = {'label': first, 'category': category}
-        second, category = _semantic_round(payload, client, REVIEW_POLICY)
-        diagnostics['second_review_label'] = second
-        if second == 'attack': return 'reject', 'review_attack:' + category
-        if second == 'benign': return 'allow', 'review_resolved_benign'
+        payload['prior_verdict'] = {'label': first.label, 'category': first.category, 'status': first.status}
+        second = _semantic_round(payload, client, REVIEW_POLICY)
+        diagnostics.update(second_review_label=second.label, second_review_status=second.status)
+        if second.label == 'attack': return 'reject', 'review_attack:' + second.category
+        if second.label == 'benign': return 'allow', 'review_resolved_benign'
+        if second.status == 'api_error':
+            return ('reject', 'review_unavailable_boundary_request') if risk['boundary_evidence'] else (
+                'allow', 'review_unavailable_no_boundary_evidence')
         if risk['boundary_evidence']: return 'reject', 'unresolved_boundary_request'
-        return 'allow', 'unresolved_without_strong_risk'
+        return 'allow', 'unresolved_without_boundary_evidence'
     finally:
         diagnostics['classifier_latency_ms'] = round((time.perf_counter() - started) * 1000, 2)
 
@@ -443,8 +538,8 @@ def guarded_request(function):
         active = _request.get()
         if active and active.settings is settings and question in (active.safe, active.original):
             return function(active.safe, settings, *args, **kwargs)
-        diagnostics = dict(local_risk_categories=[], semantic_label='not_run',
-            second_review_triggered=False, second_review_label='not_run',
+        diagnostics = dict(local_risk_categories=[], semantic_label='not_run', semantic_status='not_run',
+            second_review_triggered=False, second_review_label='not_run', second_review_status='not_run',
             final_security_decision='pending', rejection_reason='', decision_reason='', classifier_call_count=0,
             classifier_latency_ms=0, decode_view_count=0)
         handle = None
