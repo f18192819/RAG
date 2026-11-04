@@ -173,22 +173,24 @@ def _request_clauses(text):
     # earlier educational prefix; conjunctions are boundaries, not exemptions.
     return [part.strip() for part in re.split(
         r'[\n。！？!?；;]|\.(?=\s|$)|[,，]|\band\s+|\bthen\s+|并且|并|然后|接下来|'
-        r'(?:再|之后|以后|后)(?=(?:请)?(?:执行|照做|服从|遵循|应用|运行|按))', text, flags=re.I)
+        r'(?:再|之后|以后|后)(?=(?:请)?(?:执行|照做|服从|遵循|应用|运行|按|把|将|使用))', text, flags=re.I)
         if part.strip()]
 
 
-_ENACT_HEAD = re.compile(r'^(?:(?:please|now|then|next|also|but|instead|afterwards|after\s+that|you\s+must)\s+|'
+_SEQUENCE_WORDS = r'then|next|now|finally|afterwards?|subsequently|after\s+that'
+_ENACT_HEAD = re.compile(r'^(?:(?:please|also|but|instead|you\s+must|' + _SEQUENCE_WORDS + r')\s+|'
     r'(?:请你?|现在|立即|直接|务必|但|但是|还要|还请|随后|接着|最后)\s*)*'
-    r'(?P<verb>execute\b|obey\b|follow\b|apply\b|run\b|carry\s+out\b|comply\s+with\b|act\s+on\b|'
+    r'(?P<verb>execute\b|obey\b|follow\b|apply\b|run\b|do\b|perform\b|implement\b|carry\s+out\b|comply\s+with\b|act\s+on\b|'
     r'use\b|treat\b|adopt\b|执行|照做|服从|遵循|应用|运行|使用|把|将|按照|按|照|根据)\s*(?P<target>.*)', re.I)
 _SAMPLE_TARGET = re.compile(r'^(?:(?:the|this|that|these|those|decoded|translated|recovered|quoted|above)\s+)*'
     r'(?:it|them|instructions?|commands?|orders?|content|text|sample|payload|option|result|translation|output)\b|'
     r'^what\s+(?:it|the\s+(?:decoded|translated)\s+text)\s+says\b|'
-    r'^(?:译文|翻译结果|解码结果|恢复出|样本|它|选项|上述|这段|该段|引号|引用|内容|指令)', re.I)
-_ASSIGN_AUTHORITY = re.compile(r'\bas\s+(?:(?:your|the|new|system|developer|highest|priority)\s+)*'
+    r'^(?:译文|翻译结果|解码结果|恢复出|样本|它|其|选项|上述|这段|该段|引号|引用|内容|指令)', re.I)
+_ASSIGN_AUTHORITY = re.compile(r'\bas\s+(?:(?:your|my|our|the|new|system|developer|highest(?:[-\s]+priority)?|priority)\s+)*'
     r'(?:instructions?|commands?|rules?|policy|permissions?)\b|'
     r'\bto\s+(?:change|override|direct|control)\s+(?:your|assistant)\s+(?:behavior|rules|instructions)\b|'
-    r'(?:作为|当作|视为|用作).{0,12}(?:指令|规则|行为准则|权限)|(?:改变|修改).{0,8}(?:你的|助手).{0,8}(?:行为|规则)', re.I)
+    r'(?:作为|当作|视为|用作|设为|设置为)(?:(?:你的|我的|我们的|新的|系统|开发者|最高优先级|最高级|长期|永久|默认)\s*)*'
+    r'(?:指令|规则|行为准则|权限)|(?:改变|修改).{0,8}(?:你的|助手).{0,8}(?:行为|规则)', re.I)
 
 
 def _enactment_clause(clause):
@@ -218,12 +220,16 @@ def _translation_parts(value):
     else:
         candidates = []
         # Keep explicit transitions even if the following verb is unfamiliar.
-        for marker in re.finditer(r'\b(?:then|next|now|afterwards|after\s+that)\b|然后|接下来|随后|最后', value[start:], re.I):
+        for marker in re.finditer(r'\b(?:' + _SEQUENCE_WORDS + r')\b|然后|接下来|随后|最后|再(?=(?:请)?(?:执行|把|将|使用))', value[start:], re.I):
             pos = start + marker.start()
             if pos > start and not any(a <= pos < b for a, b in spans): candidates.append(pos)
         # Also support followups without a sequence marker: '. Use it as ...'.
         for boundary in re.finditer(r'[\n。！？!?；;.,，]|\band\s+|并且|并', value[start:], re.I):
             pos = start + boundary.end()
+            # In "Translate: Finally, obey it", Finally is part of the sample,
+            # not a completed translation object followed by another request.
+            lead = value[start:pos].strip(' \r\n\t.,，;；')
+            if re.fullmatch(_SEQUENCE_WORDS, lead, re.I): continue
             if pos > start and _enactment_clause(value[pos:].lstrip()): candidates.append(pos)
         end = min(candidates) if candidates else len(value)
     return {'prefix': value[:delimiter], 'sample_start': start, 'sample_end': end,
@@ -313,11 +319,36 @@ def _directive_categories(text, hints=()):
     return found
 
 
+_TOOL_COMMAND_PREFIX = r'^(?:(?:please|directly|immediately|' + _SEQUENCE_WORDS + r')\s+|(?:请你?|现在|立即|直接|务必)\s*)*'
+_AUDIT_DESTRUCTION = r'(?:delete\b|erase\b|remove\b|purge\b|clear\b|drop\b|truncate\b|disable\b|删除|清除|抹除|清空|禁用)'
+_AUDIT_TARGET = re.compile(r'^(?:(?:all|the|these|those|our|system|existing)\s+)*'
+    r'(?:audit|security|access)[\s_-]*(?:logs?|trails?|records?)\b|'
+    r'^(?:所有的?|这些|系统的?|已有的?)*(?:审计(?:日志|记录)|安全日志|访问日志)', re.I)
+
+
+def _explicit_tool_boundary(text):
+    """Affirmative destruction of security evidence, independent of role claims.
+
+    Tool/database terms alone do not prove misuse. Require a requested harmful
+    effect on protected records, or an invocation explicitly intended to do it.
+    """
+    for clause in _request_clauses(active_request_text(text)):
+        if analysis_only(clause): continue
+        direct = re.match(_TOOL_COMMAND_PREFIX + _AUDIT_DESTRUCTION + r'\s*(.*)', clause, re.I)
+        if direct and _AUDIT_TARGET.match(direct.group(1)[:160]): return True
+        invoke = re.match(_TOOL_COMMAND_PREFIX + r'(?:use\b|call\b|invoke\b|调用|使用|执行)', clause, re.I)
+        if not invoke or not re.search(r'\b(?:tool|database|file\s*tool)\b|工具|数据库|接口', clause, re.I): continue
+        effect = re.search(r'(?:\bto\s+|(?:工具|接口)(?:来|以|去|用于)?\s*)' + _AUDIT_DESTRUCTION + r'\s*(.*)', clause, re.I)
+        if effect and _AUDIT_TARGET.match(effect.group(1)[:160]): return True
+    return False
+
+
 def hard_attack_reason(text, risks=()):
     """Only explicit live commands are hard blocks; ambiguous signals stay soft."""
     stem = choice_stem(text) if has_choice_options(text) else strip_question_header(text)
     outside = active_request_text(text)
     if actual_secret_request(text): return 'explicit_secret_request'
+    if _explicit_tool_boundary(text): return 'explicit_tool_evidence_tampering'
     if _enacts_sample(text):
         categories = _categories(_features(text))
         if categories & {'instruction_override', 'prompt_extraction', 'data_exfiltration'}:
@@ -446,9 +477,13 @@ def local_risk_analysis(question, views, rule_categories=()):
             decoded_risk.update(found - original_categories)
         if enacts or (not is_analysis and not has_choice_options(question)):
             directives = _directive_categories(active_request_text(view['text']))
+            tool_boundary = transformed and enacts and _explicit_tool_boundary(view['text'])
+            if tool_boundary:
+                directives.add('tool_misuse')
+                all_categories.add('tool_misuse')
             strong.update(directives)
             if transformed and enacts:
-                decoded_boundary |= bool(hard_attack_reason(view['text']) or (
+                decoded_boundary |= bool(tool_boundary or hard_attack_reason(view['text']) or (
                     'role_spoofing' in directives and directives & {'tool_misuse', 'prompt_extraction', 'data_exfiltration'}) or (
                     'memory_poisoning' in directives and directives & {'instruction_override', 'data_exfiltration'}))
     if decoded_risk:
