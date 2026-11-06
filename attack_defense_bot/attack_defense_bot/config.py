@@ -118,7 +118,7 @@ def load_settings() -> Settings:
         max_tokens=_get_int("RAG_MAX_TOKENS", values, 1000),
         semantic_guard_enabled=os.getenv('RAG_SEMANTIC_GUARD',values.get('RAG_SEMANTIC_GUARD','true')).lower()=='true',
         personal_database_name=os.getenv('RAG_PERSONAL_DATABASE', values.get('RAG_PERSONAL_DATABASE', '')).strip(),
-        choice_strategy=os.getenv('RAG_CHOICE_STRATEGY',values.get('RAG_CHOICE_STRATEGY','rag')).strip(),
+        choice_strategy=os.getenv('RAG_CHOICE_STRATEGY',values.get('RAG_CHOICE_STRATEGY',profile.get('choice_strategy','rag'))).strip(),
         rerank_margin=_get_float('RAG_RERANK_MARGIN',values,0.15),
         rerank_min_score=_get_float('RAG_RERANK_MIN_SCORE',values,0.65),
         supplemental_retrieval=os.getenv('RAG_SUPPLEMENTAL_RETRIEVAL',values.get('RAG_SUPPLEMENTAL_RETRIEVAL','true')).lower()=='true',

@@ -20,11 +20,11 @@
     {
       "id": "guide-identity",
       "title": "Identity lifecycle / 身份生命周期与权限复核",
-      "aliases": "入职 转岗 离职 JML identity lifecycle account review",
-      "text": "身份生命周期管理覆盖入职授权、转岗调整及离职撤权；账户应有唯一身份、业务负责人和可追溯的审批记录。定期复核实际权限，清理孤儿、闲置和过量权限，撤销会话与密钥。 身份生命周期管理把账户开通、岗位变更、访问复核和及时撤权与明确负责人关联。证据包括审批请求、权限复核记录和撤销记录。\nIdentity lifecycle management makes joiner, mover and leaver (JML) access changes timely and auditable. Manage account creation, job changes and termination so access remains aligned with current responsibilities and accountable business owners. Identity lifecycle management ties provisioning, transfers, reviews and timely deprovisioning to accountable owners. Evidence includes approved requests, access certifications and revocation records.",
+      "aliases": "入职 转岗 离职 JML identity lifecycle account review 权威人事事件 孤儿账户 闲置账户",
+      "text": "身份生命周期管理覆盖入职授权、转岗调整及离职撤权；实施时以权威人事事件触发配置和撤销，设定时限并对异常与孤儿账户告警。账户应有唯一身份、业务负责人和可追溯的审批记录。定期复核实际权限，清理孤儿、闲置和过量权限，撤销会话与密钥。 身份生命周期管理把账户开通、岗位变更、访问复核和及时撤权与明确负责人关联。证据包括审批请求、权限复核记录和撤销记录。\nIdentity lifecycle management makes joiner, mover and leaver (JML) access changes timely and auditable, triggering provisioning and revocation from authoritative HR events with defined SLAs and alerts for anomalous or orphaned accounts. Manage account creation, job changes and termination so access remains aligned with current responsibilities and accountable business owners. Identity lifecycle management ties provisioning, transfers, reviews and timely deprovisioning to accountable owners. Evidence includes approved requests, access certifications and revocation records.",
       "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#AC-2",
-      "text_zh": "身份生命周期管理覆盖入职授权、转岗调整及离职撤权；账户应有唯一身份、业务负责人和可追溯的审批记录。定期复核实际权限，清理孤儿、闲置和过量权限，撤销会话与密钥。 身份生命周期管理把账户开通、岗位变更、访问复核和及时撤权与明确负责人关联。证据包括审批请求、权限复核记录和撤销记录。",
-      "text_en": "Identity lifecycle management makes joiner, mover and leaver (JML) access changes timely and auditable. Manage account creation, job changes and termination so access remains aligned with current responsibilities and accountable business owners. Identity lifecycle management ties provisioning, transfers, reviews and timely deprovisioning to accountable owners. Evidence includes approved requests, access certifications and revocation records.",
+      "text_zh": "身份生命周期管理覆盖入职授权、转岗调整及离职撤权；实施时以权威人事事件触发配置和撤销，设定时限并对异常与孤儿账户告警。账户应有唯一身份、业务负责人和可追溯的审批记录。定期复核实际权限，清理孤儿、闲置和过量权限，撤销会话与密钥。 身份生命周期管理把账户开通、岗位变更、访问复核和及时撤权与明确负责人关联。证据包括审批请求、权限复核记录和撤销记录。",
+      "text_en": "Identity lifecycle management makes joiner, mover and leaver (JML) access changes timely and auditable, triggering provisioning and revocation from authoritative HR events with defined SLAs and alerts for anomalous or orphaned accounts. Manage account creation, job changes and termination so access remains aligned with current responsibilities and accountable business owners. Identity lifecycle management ties provisioning, transfers, reviews and timely deprovisioning to accountable owners. Evidence includes approved requests, access certifications and revocation records.",
       "topic_names": [
         "身份全生命周期管理",
         "身份生命周期管理",
@@ -63,14 +63,15 @@
     {
       "id": "guide-mfa",
       "title": "Phishing-resistant multi-factor authentication / 抗钓鱼多因素认证",
-      "aliases": "MFA FIDO2 WebAuthn 多因素认证 抗钓鱼",
-      "text": "多因素认证组合不同类型的认证因素；抗钓鱼认证进一步将验证绑定到真实服务来源，降低凭据被代理或重放的风险。 FIDO2/WebAuthn 使用与来源绑定的公钥认证。注册、丢失设备恢复和管理例外需要强验证。对敏感账户进行审计覆盖，并测试弱回退是否不能绕过所需的认证。\nMulti-factor authentication combines different factor types; phishing-resistant authentication prevents captured credentials or proxy phishing from authenticating to a different origin. FIDO2/WebAuthn uses origin-bound public-key authentication. Enrollment, lost-device recovery and administrative exceptions need strong verification. Audit coverage of sensitive accounts and test that weak fallback cannot bypass required authentication.",
+      "aliases": "MFA FIDO2 WebAuthn 多因素认证 抗钓鱼 公钥挑战响应 绑定网站来源 RP 私钥保留 认证器 可重用验证码 实时钓鱼",
+      "text": "多因素认证组合不同类型的认证因素；抗钓鱼认证进一步将验证绑定到真实服务来源，降低密码泄露和实时钓鱼导致的账户接管以及凭据被代理或重放的风险。 FIDO2/WebAuthn 使用绑定网站来源或RP的公钥挑战响应，私钥保留在认证器中，不交出可重用验证码。注册、丢失设备恢复和管理例外需要强验证。对敏感账户进行审计覆盖，并测试弱回退是否不能绕过所需的认证。\nMulti-factor authentication combines different factor types; phishing-resistant authentication prevents captured credentials or real-time proxy phishing from authenticating to a different origin. FIDO2/WebAuthn uses origin-bound (RP-bound) public-key challenge-response where the private key remains inside the authenticator without exposing reusable OTP codes. Enrollment, lost-device recovery and administrative exceptions need strong verification. Audit coverage of sensitive accounts and test that weak fallback cannot bypass required authentication.",
       "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#IA-2",
-      "text_zh": "多因素认证组合不同类型的认证因素；抗钓鱼认证进一步将验证绑定到真实服务来源，降低凭据被代理或重放的风险。 FIDO2/WebAuthn 使用与来源绑定的公钥认证。注册、丢失设备恢复和管理例外需要强验证。对敏感账户进行审计覆盖，并测试弱回退是否不能绕过所需的认证。",
-      "text_en": "Multi-factor authentication combines different factor types; phishing-resistant authentication prevents captured credentials or proxy phishing from authenticating to a different origin. FIDO2/WebAuthn uses origin-bound public-key authentication. Enrollment, lost-device recovery and administrative exceptions need strong verification. Audit coverage of sensitive accounts and test that weak fallback cannot bypass required authentication.",
+      "text_zh": "多因素认证组合不同类型的认证因素；抗钓鱼认证进一步将验证绑定到真实服务来源，降低密码泄露和实时钓鱼导致的账户接管以及凭据被代理或重放的风险。 FIDO2/WebAuthn 使用绑定网站来源或RP的公钥挑战响应，私钥保留在认证器中，不交出可重用验证码。注册、丢失设备恢复和管理例外需要强验证。对敏感账户进行审计覆盖，并测试弱回退是否不能绕过所需的认证。",
+      "text_en": "Multi-factor authentication combines different factor types; phishing-resistant authentication prevents captured credentials or real-time proxy phishing from authenticating to a different origin. FIDO2/WebAuthn uses origin-bound (RP-bound) public-key challenge-response where the private key remains inside the authenticator without exposing reusable OTP codes. Enrollment, lost-device recovery and administrative exceptions need strong verification. Audit coverage of sensitive accounts and test that weak fallback cannot bypass required authentication.",
       "topic_names": [
         "抗钓鱼多因素认证",
         "多因素认证",
+        "FIDO2与WebAuthn抗钓鱼认证",
         "phishing-resistant MFA",
         "phishing-resistant multi-factor authentication"
       ]
@@ -440,15 +441,17 @@
     {
       "id": "guide-key",
       "title": "Cryptographic key lifecycle / 密钥生命周期管理",
-      "aliases": "密钥生命周期 KMS HSM 密钥生成 轮换 吊销",
-      "text": "密钥生命周期管理覆盖安全生成、分发、存储、使用、轮换、备份恢复、吊销和销毁，区分密钥用途与使用权限。 密钥需要强随机性、适当的KMS或HSM保护、职责分离及审计能力。测试密钥轮换、恢复和吊销，并覆盖依赖系统及加密数据的访问。\nManage cryptographic keys across secure generation, distribution, storage, authorized use, rotation, backup, recovery, revocation and destruction. Cryptographic keys need strong randomness, protected custody such as suitable KMS/HSM controls, separation of duties and auditability. Verify rotation, recovery and revocation, including dependent systems and encrypted-data access.",
+      "aliases": "密钥生命周期 KMS HSM 密钥生成 轮换 吊销 专用密钥服务 分离职责 按风险轮换和撤销",
+      "text": "密钥生命周期管理覆盖安全生成、分发、存储、使用、轮换、备份恢复、吊销和销毁，区分密钥用途与使用权限；实施时使用专用密钥服务，分离职责，记录使用并按风险轮换和撤销。 密钥需要强随机性、适当的KMS或HSM保护、职责分离及审计能力。测试密钥轮换、恢复和吊销，并覆盖依赖系统及加密数据的访问。\nManage cryptographic keys across secure generation, distribution, storage, authorized use, rotation, backup, recovery, revocation and destruction. Use dedicated key services, separate duties, log key usage, and rotate or revoke keys based on risk. Cryptographic keys need strong randomness, protected custody such as suitable KMS/HSM controls, separation of duties and auditability. Verify rotation, recovery and revocation, including dependent systems and encrypted-data access.",
       "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SC-12",
-      "text_zh": "密钥生命周期管理覆盖安全生成、分发、存储、使用、轮换、备份恢复、吊销和销毁，区分密钥用途与使用权限。 密钥需要强随机性、适当的KMS或HSM保护、职责分离及审计能力。测试密钥轮换、恢复和吊销，并覆盖依赖系统及加密数据的访问。",
-      "text_en": "Manage cryptographic keys across secure generation, distribution, storage, authorized use, rotation, backup, recovery, revocation and destruction. Cryptographic keys need strong randomness, protected custody such as suitable KMS/HSM controls, separation of duties and auditability. Verify rotation, recovery and revocation, including dependent systems and encrypted-data access.",
+      "text_zh": "密钥生命周期管理覆盖安全生成、分发、存储、使用、轮换、备份恢复、吊销和销毁，区分密钥用途与使用权限；实施时使用专用密钥服务，分离职责，记录使用并按风险轮换和撤销。 密钥需要强随机性、适当的KMS或HSM保护、职责分离及审计能力。测试密钥轮换、恢复和吊销，并覆盖依赖系统及加密数据的访问。",
+      "text_en": "Manage cryptographic keys across secure generation, distribution, storage, authorized use, rotation, backup, recovery, revocation and destruction. Use dedicated key services, separate duties, log key usage, and rotate or revoke keys based on risk. Cryptographic keys need strong randomness, protected custody such as suitable KMS/HSM controls, separation of duties and auditability. Verify rotation, recovery and revocation, including dependent systems and encrypted-data access.",
       "topic_names": [
         "密钥生命周期管理",
         "密钥全生命周期管理",
-        "cryptographic key lifecycle"
+        "加密密钥生命周期管理",
+        "cryptographic key lifecycle",
+        "cryptographic key lifecycle management"
       ]
     },
     {
@@ -496,11 +499,11 @@
     {
       "id": "guide-retention",
       "title": "Retention and secure disposal / 数据保留与安全销毁",
-      "aliases": "数据保留与安全销毁 保留期限 删除 介质销毁",
-      "text": "数据保留按业务、合同和适用法规规定期限及责任人，到期后经审批安全删除或销毁并保留证据。 保留时间表应包括备份、副本和法律保留。安全处置选择与介质类型和敏感度相适应的净化方法，验证完成情况并记录授权的销毁。\nDefine retention periods and accountable owners based on business, contractual and applicable legal needs, then securely delete or destroy expired data with evidence. Retention schedules should address backups, replicas and legal holds. Secure disposal selects sanitization methods appropriate to the media and sensitivity, verifies completion and records authorized destruction.",
+      "aliases": "数据保留与安全销毁 保留期限 删除 介质销毁 不可逆匿名化 副本和备份",
+      "text": "数据保留按业务、合同和适用法规规定期限及责任人，到期后经审批安全删除或销毁并保留证据。超过保留期限且无继续保存依据的数据，应进行安全删除或不可逆匿名化，并同步处理相关副本和备份。 保留时间表应包括备份、副本和法律保留。安全处置选择与介质类型和敏感度相适应的净化方法，验证完成情况并记录授权的销毁。\nDefine retention periods and accountable owners based on business, contractual and applicable legal needs, then securely delete or irreversibly anonymize expired data with no continuing legal basis and synchronously address related replicas and backups. Retention schedules should address backups, replicas and legal holds. Secure disposal selects sanitization methods appropriate to the media and sensitivity, verifies completion and records authorized destruction.",
       "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SI-12",
-      "text_zh": "数据保留按业务、合同和适用法规规定期限及责任人，到期后经审批安全删除或销毁并保留证据。 保留时间表应包括备份、副本和法律保留。安全处置选择与介质类型和敏感度相适应的净化方法，验证完成情况并记录授权的销毁。",
-      "text_en": "Define retention periods and accountable owners based on business, contractual and applicable legal needs, then securely delete or destroy expired data with evidence. Retention schedules should address backups, replicas and legal holds. Secure disposal selects sanitization methods appropriate to the media and sensitivity, verifies completion and records authorized destruction.",
+      "text_zh": "数据保留按业务、合同和适用法规规定期限及责任人，到期后经审批安全删除或销毁并保留证据。超过保留期限且无继续保存依据的数据，应进行安全删除或不可逆匿名化，并同步处理相关副本和备份。 保留时间表应包括备份、副本和法律保留。安全处置选择与介质类型和敏感度相适应的净化方法，验证完成情况并记录授权的销毁。",
+      "text_en": "Define retention periods and accountable owners based on business, contractual and applicable legal needs, then securely delete or irreversibly anonymize expired data with no continuing legal basis and synchronously address related replicas and backups. Retention schedules should address backups, replicas and legal holds. Secure disposal selects sanitization methods appropriate to the media and sensitivity, verifies completion and records authorized destruction.",
       "topic_names": [
         "数据保留与安全销毁",
         "retention and secure disposal"

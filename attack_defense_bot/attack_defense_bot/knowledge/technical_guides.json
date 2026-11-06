@@ -4,14 +4,15 @@
     {
       "id": "guide-ddos",
       "title": "DDoS mitigation and rate limiting / DDoS缓解与速率限制",
-      "aliases": "DDoS缓解 速率限制 流量清洗 拒绝服务 可用性",
-      "text": "DDoS防护结合上游流量清洗、容量与冗余、分层速率限制及异常流量检测，保护网络和应用服务可用性。 DDoS防护在关键资源耗尽前过滤或吸收恶意流量，结合上游协作、资源配额、速率限制与经过测试的故障切换。建立正常流量基线，调优阈值并演练响应，避免阻断正常业务。\nDDoS defenses maintain network and application availability under abusive traffic while preserving legitimate business access. DDoS mitigation filters or absorbs abusive traffic before critical resources saturate, with upstream coordination, resource quotas, rate limiting and tested failover. Establish normal traffic baselines, tune thresholds and exercise response plans without blocking legitimate demand.",
+      "aliases": "DDoS缓解 速率限制 连接限制 限流 流量清洗 CDN Anycast 拒绝服务 可用性 源站隐藏 边缘限流 缓存分担 过载降级 熔断",
+      "text": "DDoS防护结合CDN、Anycast或上游流量清洗服务分散和吸收攻击流量，并在边缘防护与网关进行速率限制或连接限制（限流、频率限制、SYN保护），保护网络和应用服务可用性。 DDoS防护在关键资源耗尽前过滤或吸收恶意流量，结合上游协作、资源配额、速率限制与经过测试的故障切换。实施源站隐藏与边缘速率限制，限制源站仅接受清洗节点流量，在网关对高成本接口实施多维速率限制，结合缓存分担和过载降级/熔断保护关键链路。建立正常流量基线，调优阈值并演练响应，避免阻断正常业务。\nDDoS defenses maintain network and application availability under abusive traffic while preserving legitimate business access. DDoS mitigation uses CDN, Anycast, or upstream traffic scrubbing to disperse and absorb attack traffic before critical resources saturate, combined with upstream coordination, origin hiding (restricting origin access to scrubbing or edge nodes), edge rate limiting or connection limiting on expensive endpoints, caching, circuit breaking/graceful degradation, resource quotas and tested failover. Establish normal traffic baselines, tune thresholds and exercise response plans without blocking legitimate demand.",
       "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#SC-5",
-      "text_zh": "DDoS防护结合上游流量清洗、容量与冗余、分层速率限制及异常流量检测，保护网络和应用服务可用性。 DDoS防护在关键资源耗尽前过滤或吸收恶意流量，结合上游协作、资源配额、速率限制与经过测试的故障切换。建立正常流量基线，调优阈值并演练响应，避免阻断正常业务。",
-      "text_en": "DDoS defenses maintain network and application availability under abusive traffic while preserving legitimate business access. DDoS mitigation filters or absorbs abusive traffic before critical resources saturate, with upstream coordination, resource quotas, rate limiting and tested failover. Establish normal traffic baselines, tune thresholds and exercise response plans without blocking legitimate demand.",
+      "text_zh": "DDoS防护结合CDN、Anycast或上游流量清洗服务分散和吸收攻击流量，并在边缘防护与网关进行速率限制或连接限制（限流、频率限制、SYN保护），保护网络和应用服务可用性。 DDoS防护在关键资源耗尽前过滤或吸收恶意流量，结合上游协作、资源配额、速率限制与经过测试的故障切换。实施源站隐藏与边缘速率限制，限制源站仅接受清洗节点流量，在网关对高成本接口实施多维速率限制，结合缓存分担和过载降级/熔断保护关键链路。建立正常流量基线，调优阈值并演练响应，避免阻断正常业务。",
+      "text_en": "DDoS defenses maintain network and application availability under abusive traffic while preserving legitimate business access. DDoS mitigation uses CDN, Anycast, or upstream traffic scrubbing to disperse and absorb attack traffic before critical resources saturate, combined with upstream coordination, origin hiding (restricting origin access to scrubbing or edge nodes), edge rate limiting or connection limiting on expensive endpoints, caching, circuit breaking/graceful degradation, resource quotas and tested failover. Establish normal traffic baselines, tune thresholds and exercise response plans without blocking legitimate demand.",
       "topic_names": [
         "DDoS缓解与速率限制",
         "DDoS缓解",
+        "源站隐藏与边缘速率限制",
         "DDoS mitigation",
         "rate limiting"
       ]
@@ -45,11 +46,11 @@
     {
       "id": "guide-cloud-iam",
       "title": "Cloud IAM least privilege / 云身份最小权限",
-      "aliases": "云身份最小权限 IAM 工作负载身份 权限边界",
-      "text": "云IAM最小权限按资源、操作和条件授予必要权限，优先使用工作负载身份和短期凭据，审查信任策略与跨账户授权。 云身份最小权限避免了广泛的通配符操作和资源，分隔职责并持续审查有效权限和未使用的授予。测试允许的业务操作和拒绝升级路径，并及时轮换或撤销暴露的凭证。\nUse resource-, action- and condition-specific grants with workload identities or short-lived credentials, reviewing trust policies and cross-account access. Cloud IAM least privilege avoids broad wildcard actions and resources, separates duties and continuously reviews effective permissions and unused grants. Test allowed business operations and denial of escalation paths, and rotate or revoke exposed credentials promptly.",
+      "aliases": "云身份最小权限 IAM 工作负载身份 权限边界 限制云主体 最小权限",
+      "text": "云IAM最小权限的主要目的是限制云主体只能执行完成任务所需的操作，按资源、操作和条件授予必要权限，优先使用工作负载身份和短期凭据，审查信任策略与跨账户授权。 云身份最小权限避免了广泛的通配符操作和资源，分隔职责并持续审查有效权限和未使用的授予。测试允许的业务操作和拒绝升级路径，并及时轮换或撤销暴露的凭证。\nUse resource-, action- and condition-specific grants with workload identities or short-lived credentials, reviewing trust policies and cross-account access. Cloud IAM least privilege restricts cloud principals to only the actions required to complete their tasks, avoids broad wildcard actions and resources, separates duties and continuously reviews effective permissions and unused grants. Test allowed business operations and denial of escalation paths, and rotate or revoke exposed credentials promptly.",
       "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#AC-6",
-      "text_zh": "云IAM最小权限按资源、操作和条件授予必要权限，优先使用工作负载身份和短期凭据，审查信任策略与跨账户授权。 云身份最小权限避免了广泛的通配符操作和资源，分隔职责并持续审查有效权限和未使用的授予。测试允许的业务操作和拒绝升级路径，并及时轮换或撤销暴露的凭证。",
-      "text_en": "Use resource-, action- and condition-specific grants with workload identities or short-lived credentials, reviewing trust policies and cross-account access. Cloud IAM least privilege avoids broad wildcard actions and resources, separates duties and continuously reviews effective permissions and unused grants. Test allowed business operations and denial of escalation paths, and rotate or revoke exposed credentials promptly.",
+      "text_zh": "云IAM最小权限的主要目的是限制云主体只能执行完成任务所需的操作，按资源、操作和条件授予必要权限，优先使用工作负载身份和短期凭据，审查信任策略与跨账户授权。 云身份最小权限避免了广泛的通配符操作和资源，分隔职责并持续审查有效权限和未使用的授予。测试允许的业务操作和拒绝升级路径，并及时轮换或撤销暴露的凭证。",
+      "text_en": "Use resource-, action- and condition-specific grants with workload identities or short-lived credentials, reviewing trust policies and cross-account access. Cloud IAM least privilege restricts cloud principals to only the actions required to complete their tasks, avoids broad wildcard actions and resources, separates duties and continuously reviews effective permissions and unused grants. Test allowed business operations and denial of escalation paths, and rotate or revoke exposed credentials promptly.",
       "topic_names": [
         "云身份最小权限",
         "云IAM最小权限",
@@ -77,11 +78,11 @@
     {
       "id": "guide-dlp",
       "title": "Data loss prevention / 数据防泄漏",
-      "aliases": "数据防泄漏 DLP 邮件 外发 终端 数据传输",
-      "text": "数据防泄漏结合敏感内容识别、数据分类和传输上下文，监控并限制端点、邮件、网络或云渠道中的未授权数据外发。 数据防泄漏检测和控制敏感数据的移动，通过检查、策略执行、阻止或提醒和批准的例外情况。覆盖相关渠道，调整分类器并测试禁止的数据传输和合法的工作流程；调查事件并审查误报。\nDLP identifies and blocks unauthorized exfiltration of sensitive information through endpoint, email, network and cloud channels. Data loss prevention detects and controls sensitive-data movement with inspection, policy enforcement, blocking or alerting and approved exceptions. Cover relevant channels, tune classifiers and test both prohibited transfers and legitimate workflows; investigate incidents and review false positives.",
+      "aliases": "数据防泄漏 DLP 邮件 外发 终端 数据传输 敏感数据规则 监测调优 分级阻断 申诉机制",
+      "text": "数据防泄漏结合敏感内容识别、数据分类和传输上下文，监控并限制端点、邮件、网络或云渠道中的未授权数据外发。实施时应定义可解释的敏感数据规则，先监测调优，再分级阻断并保留申诉机制。 数据防泄漏检测和控制敏感数据的移动，通过检查、策略执行、阻止或提醒和批准的例外情况。覆盖相关渠道，调整分类器并测试禁止的数据传输和合法的工作流程；调查事件并审查误报。\nDLP identifies and blocks unauthorized exfiltration of sensitive information through endpoint, email, network and cloud channels. Define explainable sensitive-data rules, monitor and tune first, then enforce tiered blocking while retaining an appeals/exception process. Data loss prevention detects and controls sensitive-data movement with inspection, policy enforcement, blocking or alerting and approved exceptions. Cover relevant channels, tune classifiers and test both prohibited transfers and legitimate workflows; investigate incidents and review false positives.",
       "source": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final#AC-4",
-      "text_zh": "数据防泄漏结合敏感内容识别、数据分类和传输上下文，监控并限制端点、邮件、网络或云渠道中的未授权数据外发。 数据防泄漏检测和控制敏感数据的移动，通过检查、策略执行、阻止或提醒和批准的例外情况。覆盖相关渠道，调整分类器并测试禁止的数据传输和合法的工作流程；调查事件并审查误报。",
-      "text_en": "DLP identifies and blocks unauthorized exfiltration of sensitive information through endpoint, email, network and cloud channels. Data loss prevention detects and controls sensitive-data movement with inspection, policy enforcement, blocking or alerting and approved exceptions. Cover relevant channels, tune classifiers and test both prohibited transfers and legitimate workflows; investigate incidents and review false positives.",
+      "text_zh": "数据防泄漏结合敏感内容识别、数据分类和传输上下文，监控并限制端点、邮件、网络或云渠道中的未授权数据外发。实施时应定义可解释的敏感数据规则，先监测调优，再分级阻断并保留申诉机制。 数据防泄漏检测和控制敏感数据的移动，通过检查、策略执行、阻止或提醒和批准的例外情况。覆盖相关渠道，调整分类器并测试禁止的数据传输和合法的工作流程；调查事件并审查误报。",
+      "text_en": "DLP identifies and blocks unauthorized exfiltration of sensitive information through endpoint, email, network and cloud channels. Define explainable sensitive-data rules, monitor and tune first, then enforce tiered blocking while retaining an appeals/exception process. Data loss prevention detects and controls sensitive-data movement with inspection, policy enforcement, blocking or alerting and approved exceptions. Cover relevant channels, tune classifiers and test both prohibited transfers and legitimate workflows; investigate incidents and review false positives.",
       "topic_names": [
         "数据防泄漏",
         "data loss prevention",
@@ -201,11 +202,11 @@
     {
       "id": "guide-firmware",
       "title": "Verified firmware updates / 固件更新与验证",
-      "aliases": "固件更新与验证 签名校验 回滚 固件来源 firmware",
-      "text": "固件安全更新及时修复设备底层漏洞；验证更新签名、授权版本和完整性，阻止伪造固件及回滚到易受攻击版本。安装失败时应保持安全状态并使用经过保护的恢复机制。 固件更新需验证来源、签名及版本适用性，保护更新通道并在测试后受控部署，准备受保护的恢复方式。 验证固件更新/固件更新与验证 验证固件更新验证更新及其完整性，强制执行授权版本并抵抗恶意回滚。维护资产清单和更新记录，验证安装并确保恢复映像和信任密钥不会被无声替换。\nVerified firmware updates patch low-level flaws while rejecting forged updates and unauthorized rollback to vulnerable firmware versions. Verified firmware updates authenticate the update and its integrity, enforce authorized versions and resist malicious rollback. Maintain an inventory and update records, validate installation and ensure the recovery image and trust keys cannot be silently replaced.",
+      "aliases": "固件更新与验证 签名校验 回滚 固件来源 firmware 受签名更新 版本防回滚 安全失败 资产版本盘点",
+      "text": "固件安全更新及时修复设备底层漏洞；建立受签名更新、版本防回滚、安全失败和资产版本盘点机制，验证更新签名、授权版本和完整性，阻止伪造固件及回滚到易受攻击版本。安装失败时应保持安全状态并使用经过保护的恢复机制。 固件更新需验证来源、签名及版本适用性，保护更新通道并在测试后受控部署，准备受保护的恢复方式。 验证固件更新/固件更新与验证 验证固件更新验证更新及其完整性，强制执行授权版本并抵抗恶意回滚。维护资产清单和更新记录，验证安装并确保恢复映像和信任密钥不会被无声替换。\nVerified firmware updates patch low-level flaws while rejecting forged updates and unauthorized rollback to vulnerable firmware versions. Verified firmware updates authenticate the update and its integrity, enforce authorized versions and anti-rollback protection, fail safely on installation errors, and maintain asset version inventories and update records, validating installation and ensuring the recovery image and trust keys cannot be silently replaced.",
       "source": "https://csrc.nist.gov/pubs/sp/800/193/final",
-      "text_zh": "固件安全更新及时修复设备底层漏洞；验证更新签名、授权版本和完整性，阻止伪造固件及回滚到易受攻击版本。安装失败时应保持安全状态并使用经过保护的恢复机制。 固件更新需验证来源、签名及版本适用性，保护更新通道并在测试后受控部署，准备受保护的恢复方式。 验证固件更新/固件更新与验证 验证固件更新验证更新及其完整性，强制执行授权版本并抵抗恶意回滚。维护资产清单和更新记录，验证安装并确保恢复映像和信任密钥不会被无声替换。",
-      "text_en": "Verified firmware updates patch low-level flaws while rejecting forged updates and unauthorized rollback to vulnerable firmware versions. Verified firmware updates authenticate the update and its integrity, enforce authorized versions and resist malicious rollback. Maintain an inventory and update records, validate installation and ensure the recovery image and trust keys cannot be silently replaced.",
+      "text_zh": "固件安全更新及时修复设备底层漏洞；建立受签名更新、版本防回滚、安全失败和资产版本盘点机制，验证更新签名、授权版本和完整性，阻止伪造固件及回滚到易受攻击版本。安装失败时应保持安全状态并使用经过保护的恢复机制。 固件更新需验证来源、签名及版本适用性，保护更新通道并在测试后受控部署，准备受保护的恢复方式。 验证固件更新/固件更新与验证 验证固件更新验证更新及其完整性，强制执行授权版本并抵抗恶意回滚。维护资产清单和更新记录，验证安装并确保恢复映像和信任密钥不会被无声替换。",
+      "text_en": "Verified firmware updates patch low-level flaws while rejecting forged updates and unauthorized rollback to vulnerable firmware versions. Verified firmware updates authenticate the update and its integrity, enforce authorized versions and anti-rollback protection, fail safely on installation errors, and maintain asset version inventories and update records, validating installation and ensuring the recovery image and trust keys cannot be silently replaced.",
       "topic_names": [
         "固件更新与验证",
         "verified firmware updates"
@@ -235,6 +236,38 @@
       "topic_names": [
         "可信时间同步",
         "trusted time synchronization"
+      ]
+    },
+    {
+      "id": "guide-ssrf",
+      "title": "Server-Side Request Forgery Protection / 服务端请求伪造防护",
+      "aliases": "SSRF 服务端请求伪造 协议白名单 域名白名单 限制协议和目标 校验解析后的地址 防止DNS重绑定 绑定已验证IP 环回地址 私网地址 链路本地 元数据地址 169.254.169.254 重定向",
+      "text": "服务端请求伪造（SSRF）防护要求限制允许访问的协议和目标（协议白名单与域名白名单），在DNS解析后校验解析后的地址（防止DNS重绑定）并在建立连接时绑定已验证的IP，阻止访问环回地址（127.0.0.1/::1）、私网地址、链路本地地址与云元数据地址（如169.254.169.254），并禁用自动HTTP重定向或对每一跳目标重新执行校验。\nServer-side request forgery (SSRF) protection restricts allowed protocols and targets via protocol and domain/IP allowlists, validates resolved destination IPs after DNS resolution to prevent DNS rebinding and binds connections to verified IPs, blocks loopback, private, link-local, and cloud metadata addresses, and disables automatic redirects or re-verifies every redirect hop.",
+      "source": "https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html",
+      "text_zh": "服务端请求伪造（SSRF）防护要求限制允许访问的协议和目标（协议白名单与域名白名单），在DNS解析后校验解析后的地址（防止DNS重绑定）并在建立连接时绑定已验证的IP，阻止访问环回地址（127.0.0.1/::1）、私网地址、链路本地地址与云元数据地址（如169.254.169.254），并禁用自动HTTP重定向或对每一跳目标重新执行校验。",
+      "text_en": "Server-side request forgery (SSRF) protection restricts allowed protocols and targets via protocol and domain/IP allowlists, validates resolved destination IPs after DNS resolution to prevent DNS rebinding and binds connections to verified IPs, blocks loopback, private, link-local, and cloud metadata addresses, and disables automatic redirects or re-verifies every redirect hop.",
+      "topic_names": [
+        "服务端请求伪造防护",
+        "SSRF防护",
+        "SSRF",
+        "server-side request forgery protection",
+        "server-side request forgery"
+      ]
+    },
+    {
+      "id": "guide-key-leak",
+      "title": "Exposed Secret and Access Key Remediation / 密钥与凭证泄露应急处置",
+      "aliases": "代码仓库 私钥泄露 访问密钥泄露 硬编码密钥 Git历史 禁用密钥 撤销密钥 轮换密钥 审计日志 异常操作 影响范围 密钥管理系统 提交前扫描",
+      "text": "当发现云访问密钥泄露或私钥、API密钥、凭证被提交进代码仓库时，必须立即禁用、撤销或轮换泄露密钥（仅在新提交中删除文件或重写Git历史无法消除已暴露风险，切勿等确认被滥用后再处理），再检查审计日志、访问日志和异常资源操作，判断是否已被滥用以及影响范围，并将密钥迁移至专用密钥管理系统且在CI/CD与开发端配置提交前密钥扫描。\nWhen a cloud access key, private key, or credential is leaked or committed to a code repository, immediately disable, revoke, or rotate the exposed key because deleting the file or rewriting Git history does not eliminate exposure, do not wait for confirmed abuse, inspect audit logs, access logs, and anomalous resource operations to determine whether it was abused and the blast radius, migrate secrets to a dedicated secret manager, and enforce pre-commit secret scanning.",
+      "source": "https://csrc.nist.gov/pubs/sp/800/57/pt1/r5/final",
+      "text_zh": "当发现云访问密钥泄露或私钥、API密钥、凭证被提交进代码仓库时，必须立即禁用、撤销或轮换泄露密钥（仅在新提交中删除文件或重写Git历史无法消除已暴露风险，切勿等确认被滥用后再处理），再检查审计日志、访问日志和异常资源操作，判断是否已被滥用以及影响范围，并将密钥迁移至专用密钥管理系统且在CI/CD与开发端配置提交前密钥扫描。",
+      "text_en": "When a cloud access key, private key, or credential is leaked or committed to a code repository, immediately disable, revoke, or rotate the exposed key because deleting the file or rewriting Git history does not eliminate exposure, do not wait for confirmed abuse, inspect audit logs, access logs, and anomalous resource operations to determine whether it was abused and the blast radius, migrate secrets to a dedicated secret manager, and enforce pre-commit secret scanning.",
+      "topic_names": [
+        "密钥与凭证泄露应急处置",
+        "硬编码密钥泄露应急处置",
+        "代码仓库密钥泄露处置",
+        "私钥泄露应急处置",
+        "hardcoded secret leak remediation"
       ]
     }
   ]

@@ -53,11 +53,61 @@ TEN_BOUNDARY_PAIRS = [
 
 
 class V29OfficialScorerTests(unittest.TestCase):
+    def test_A_reviews_missing_mechanisms_even_when_unconditional_review_disabled(self):
+        doc = self.guides['guide-vulnerability']; files = [guide_file(doc)]
+        context = json.dumps({'validated_evidence': [{'source': 1, 'fact': doc['text_en'], 'quote': doc['text_en']}]})
+        client = Mock(); client.search.return_value = files
+        client.dialogue.side_effect = [
+            json.dumps({'decision': 'answer', 'answer': 'Track issues.', 'evidence': [1]}),
+            json.dumps({'decision': 'answer', 'answer': doc['text_en'], 'evidence': [1]}),
+        ]
+        settings = replace(self.settings, answer_completeness=True, skip_unconditional_review=True)
+        with patch.object(baseline_main, 'RagApiClient', return_value=client), \
+             patch.object(baseline_main, 'plan_queries', return_value=['query']), \
+             patch.object(baseline_main, 'route_guides', return_value=files), \
+             patch.object(baseline_main, 'reference_search', return_value=[]), \
+             patch.object(baseline_main, 'local_search', return_value=files), \
+             patch.object(baseline_main, 'isolate_evidence', return_value=(context, files)):
+            raw, _ = baseline_main.answer_question('What is the primary security purpose of vulnerability management?', settings)
+        self.assertEqual(client.dialogue.call_count, 2)
+        self.assertIn('remediation owners', json.loads(raw)['answer'])
+
+    def test_choice_consistency_maps_to_original_and_stops_at_majority(self):
+        question = 'Which transport provides reliable ordered delivery?\nA. UDP\nB. TCP\nC. IP\nD. ICMP'
+        original = json.dumps({'decision': 'answer', 'answer': 'A', 'evidence': []})
+        client = Mock()
+        client.dialogue.side_effect = [json.dumps({'decision': 'answer', 'answer': letter, 'evidence': []}) for letter in ['C', 'A']]
+        result = baseline_main.verify_choice(question, original, '', [], client, self.settings, strategy='consistency')
+        self.assertEqual(json.loads(result)['answer'], 'B')
+        self.assertEqual(client.dialogue.call_count, 2)
+        client = Mock()
+        client.dialogue.return_value = json.dumps({'decision': 'answer', 'answer': 'C', 'evidence': []})
+        original = json.dumps({'decision': 'answer', 'answer': 'B', 'evidence': []})
+        result = baseline_main.verify_choice(question, original, '', [], client, self.settings, strategy='consistency')
+        self.assertEqual(json.loads(result)['answer'], 'B')
+        self.assertEqual(client.dialogue.call_count, 1)
+
+    def test_choice_disagreement_is_bounded_and_preserves_grounded_draft(self):
+        question = 'Choose the best description.\nA. First\nB. Second\nC. Third\nD. Fourth'
+        original = json.dumps({'decision': 'answer', 'answer': 'A', 'evidence': []})
+        client = Mock()
+        client.dialogue.side_effect = [json.dumps({'decision': 'answer', 'answer': letter, 'evidence': []}) for letter in ['C', 'B']]
+        result = baseline_main.verify_choice(question, original, '', [], client, self.settings, strategy='consistency')
+        self.assertEqual(result, original)
+        self.assertEqual(client.dialogue.call_count, 2)
+
+    def test_generic_answer_is_not_overwritten_by_unrelated_routed_guide(self):
+        draft = 'TCP port 443 is the default HTTPS port.'
+        result = compile_answer('Which TCP port is normally used for HTTPS?', draft,
+                                primary_source_id='guide-pam', committed_guide_append=True)
+        self.assertEqual(result, draft)
+
     def setUp(self):
         self.guides = {doc["id"]: doc for doc in index()[0] if doc["id"].startswith("guide-")}
         self.settings = replace(
             load_settings(),
             api_token="test-v29-secret-token",
+            semantic_guard_enabled=False,  # This suite mocks generation, not the classifier.
             production_profile="A",
             template_prompt=True,
             neglect_completion=True,

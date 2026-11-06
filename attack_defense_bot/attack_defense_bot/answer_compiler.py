@@ -74,13 +74,13 @@ CANONICAL_CONTROL_METADATA: dict[str, tuple[str, str, str, str, str]] = {
         "Single Sign-On and Identity Federation",
         "SSO",
         "集中认证与联合身份声明验证",
-        "centralized authentication and federated assertion validation",
+        "centralize authentication, validate federated assertions, and reduce application-specific password risk",
     ),
     "guide-identity": (
         "身份全生命周期管理",
         "Identity Lifecycle Management",
         "JML",
-        "入职、转岗和离职权限及时变更与审计复核",
+        "以权威人事事件触发入职、转岗和离职权限配置与撤销，设定时限并对异常与孤儿账户告警及审计复核",
         "timely joiner, mover, and leaver access changes and certification",
     ),
     "guide-pam": (
@@ -101,7 +101,7 @@ CANONICAL_CONTROL_METADATA: dict[str, tuple[str, str, str, str, str]] = {
         "抗钓鱼多因素认证",
         "Phishing-Resistant Multi-Factor Authentication",
         "MFA",
-        "优先部署FIDO2或证书认证并先覆盖高权限和高风险入口及恢复流程",
+        "WebAuthn使用绑定网站来源或RP的公钥挑战响应，私钥保留在认证器中，抵抗钓鱼且不交出可重用验证码，优先覆盖高风险入口",
         "origin-bound FIDO2 or certificate authentication against real-time phishing",
     ),
     "guide-password": (
@@ -116,7 +116,7 @@ CANONICAL_CONTROL_METADATA: dict[str, tuple[str, str, str, str, str]] = {
         "Risk-Based Conditional Access and Zero Trust",
         "ZTNA",
         "逐次依据身份、设备、位置、行为和敏感度为具体应用建立细粒度策略",
-        "adjust access requirements using device, location, behavior, and resource sensitivity",
+        "verify each resource request using identity, device posture, and context, and adjust access requirements using device posture, location, behavior, and resource sensitivity to enforce adaptive least privilege",
     ),
     "guide-vulnerability": (
         "漏洞管理闭环",
@@ -235,7 +235,7 @@ CANONICAL_CONTROL_METADATA: dict[str, tuple[str, str, str, str, str]] = {
         "Container and Image Security",
         "",
         "使用最小化可信签名镜像、非root运行并限制容器能力与网络",
-        "enforce signed minimal images, non-root execution, and runtime isolation",
+        "block vulnerable or untrusted images from reaching runtime and enforce signed minimal images, non-root execution, and runtime isolation",
     ),
     "guide-inventory": (
         "资产盘点与清单管理",
@@ -283,7 +283,7 @@ CANONICAL_CONTROL_METADATA: dict[str, tuple[str, str, str, str, str]] = {
         "加密密钥生命周期管理",
         "Cryptographic Key Lifecycle Management",
         "",
-        "控制密钥生成、存储、审批、记录使用并按风险限时轮换、撤销和销毁",
+        "使用专用密钥服务、分离职责、控制密钥生成与存储、审批、记录使用并按风险限时轮换、撤销和销毁",
         "govern key generation, storage, separation of duties, rotation, revocation, and destruction",
     ),
     "guide-masking": (
@@ -311,7 +311,7 @@ CANONICAL_CONTROL_METADATA: dict[str, tuple[str, str, str, str, str]] = {
         "数据保留与安全销毁",
         "Retention and Secure Disposal",
         "",
-        "只在必要期限内保存数据并在期满后不可恢复地删除或销毁",
+        "超过保留期限且无继续保存依据的数据，应进行安全删除或不可逆匿名化，并同步处理相关副本和备份",
         "retain data only as long as needed and dispose of it irrecoverably",
     ),
     "guide-supplier": (
@@ -339,7 +339,7 @@ CANONICAL_CONTROL_METADATA: dict[str, tuple[str, str, str, str, str]] = {
         "事件通报与泄露通知",
         "Incident and Breach Notification",
         "",
-        "按法规和合同要求在规定时限内完成安全事件评估、升级与合规通报",
+        "在适用时限内完成内部升级、监管报告和受影响方通知，实施时预设分级、法务评估、决策责任、审批限时、证据记录和通知模板并定期演练",
         "assess, escalate, and report security incidents and breaches within required timelines",
     ),
     "guide-siem": (
@@ -361,7 +361,7 @@ CANONICAL_CONTROL_METADATA: dict[str, tuple[str, str, str, str, str]] = {
         "Risk Assessment",
         "",
         "以资产、威胁、脆弱性和业务影响为依据确定安全治理优先级",
-        "prioritize security controls based on assets, threats, vulnerabilities, and business impact",
+        "prioritize security controls and treatment based on assets, threats, weaknesses, vulnerabilities, and business impact",
     ),
     "guide-awareness": (
         "针对性安全意识训练",
@@ -395,7 +395,7 @@ CANONICAL_CONTROL_METADATA: dict[str, tuple[str, str, str, str, str]] = {
         "DDoS缓解与速率限制",
         "DDoS Mitigation and Rate Limiting",
         "DDoS",
-        "结合上游清洗、缓存、配额和自适应限速在流量洪泛或资源耗尽攻击下保持服务可用并演练容量切换",
+        "结合CDN、Anycast或流量清洗服务吸收和分散攻击流量，在边缘进行速率限制或连接限制，并在资源耗尽攻击下保持服务可用",
         "maintain service availability under volumetric or resource-exhaustion attacks via scrubbing, caching, and rate limiting",
     ),
     "guide-dns": (
@@ -473,7 +473,7 @@ CANONICAL_CONTROL_METADATA: dict[str, tuple[str, str, str, str, str]] = {
         "Memory-Safe Languages and Protections",
         "",
         "减少越界访问、释放后使用等内存破坏漏洞并在新组件或高风险解析器中优先采用内存安全语言",
-        "prevent buffer overflows and use-after-free memory corruption in parsers and privileged code",
+        "reduce memory corruption such as out-of-bounds access, buffer overflows, and use-after-free flaws in parsers and privileged code",
     ),
     "guide-sandbox": (
         "沙箱隔离",
@@ -510,6 +510,20 @@ CANONICAL_CONTROL_METADATA: dict[str, tuple[str, str, str, str, str]] = {
         "为认证、证书校验和事件调查提供一致时间基准并监测时钟漂移",
         "maintain accurate, authenticated time synchronization for authentication and log correlation",
     ),
+    "guide-ssrf": (
+        "服务端请求伪造防护",
+        "Server-Side Request Forgery Protection",
+        "SSRF",
+        "限制允许访问的协议和目标（协议白名单与域名白名单），在DNS解析后校验解析后的地址（防止DNS重绑定）并在连接时绑定已验证IP，阻止访问环回地址、私网地址、链路本地与云元数据地址，禁用自动重定向",
+        "enforce protocol and domain/address allowlists, validate resolved IPs after DNS resolution to prevent DNS rebinding, block loopback, private, link-local, and cloud metadata addresses, and disable automatic redirects",
+    ),
+    "guide-key-leak": (
+        "密钥与凭证泄露应急处置",
+        "Exposed Secret and Access Key Remediation",
+        "",
+        "立即禁用、撤销或轮换泄露密钥（仅删除文件或重写Git历史无法消除已暴露风险，切勿等确认滥用后再处理），检查审计日志、访问日志和异常资源操作，判断是否被滥用及影响范围，并迁移至专用密钥管理系统与配置提交前密钥扫描",
+        "immediately disable, revoke, or rotate exposed keys because deleting files or rewriting Git history does not remediate exposure, inspect audit logs and anomalous resource operations to assess abuse and blast radius, and migrate to secret management",
+    ),
 }
 
 # Explicit surface control name aliases to guide IDs for deterministic resolution
@@ -526,6 +540,8 @@ CONTROL_NAME_ALIASES: dict[str, str] = {
     "基于身份的零信任访问": "guide-zero",
     "基于风险的条件访问": "guide-zero",
     "identity-based zero trust access": "guide-zero",
+    "identity-aware zero-trust access": "guide-zero",
+    "identity-aware zero trust access": "guide-zero",
     "risk-based conditional access": "guide-zero",
     "集中式密钥管理": "guide-secrets",
     "应用机密集中管理": "guide-secrets",
@@ -540,6 +556,8 @@ CONTROL_NAME_ALIASES: dict[str, str] = {
     "针对性安全意识训练": "guide-awareness",
     "基于角色的安全意识培训": "guide-awareness",
     "targeted security awareness training": "guide-awareness",
+    "role-based security awareness": "guide-awareness",
+    "role-based security awareness training": "guide-awareness",
     "软件物料清单与依赖治理": "guide-sca",
     "sbom and dependency governance": "guide-sca",
     "软件成分分析": "guide-sca",
@@ -562,6 +580,8 @@ CONTROL_NAME_ALIASES: dict[str, str] = {
     "哈希与数字签名完整性": "guide-integrity",
     "hash and digital-signature integrity checks": "guide-integrity",
     "数据保留与安全销毁": "guide-retention",
+    "超过保留期限的数据处置": "guide-retention",
+    "超期数据安全删除与匿名化": "guide-retention",
     "retention and secure disposal": "guide-retention",
     "跨境传输评估": "guide-transfer",
     "cross-border transfer assessment": "guide-transfer",
@@ -598,10 +618,14 @@ CONTROL_NAME_ALIASES: dict[str, str] = {
     "基于角色的访问控制": "guide-rbac",
     "role-based access control": "guide-rbac",
     "抗钓鱼多因素认证": "guide-mfa",
+    "fido2与webauthn抗钓鱼认证": "guide-mfa",
+    "webauthn抗钓鱼认证": "guide-mfa",
+    "webauthn": "guide-mfa",
     "phishing-resistant multi-factor authentication": "guide-mfa",
     "phishing-resistant mfa": "guide-mfa",
     "单点登录与身份联合": "guide-sso",
     "single sign-on and identity federation": "guide-sso",
+    "single sign-on and federation": "guide-sso",
     "安全会话管理": "guide-session",
     "secure session management": "guide-session",
     "口令安全哈希存储": "guide-password",
@@ -610,8 +634,10 @@ CONTROL_NAME_ALIASES: dict[str, str] = {
     "password storage": "guide-password",
     "静态与动态安全测试": "guide-sast-dast",
     "static and dynamic security testing": "guide-sast-dast",
+    "static and dynamic application security testing": "guide-sast-dast",
     "内存安全语言与防护": "guide-memory",
     "memory-safe languages and protections": "guide-memory",
+    "memory-safe languages and mitigations": "guide-memory",
     "memory safety": "guide-memory",
     "沙箱隔离": "guide-sandbox",
     "sandbox isolation": "guide-sandbox",
@@ -624,6 +650,8 @@ CONTROL_NAME_ALIASES: dict[str, str] = {
     "可信时间同步": "guide-time",
     "trusted time synchronization": "guide-time",
     "ddos缓解与速率限制": "guide-ddos",
+    "ddos防护与速率限制": "guide-ddos",
+    "源站隐藏与边缘速率限制": "guide-ddos",
     "ddos mitigation and rate limiting": "guide-ddos",
     "dns安全监测": "guide-dns",
     "dns security monitoring": "guide-dns",
@@ -637,6 +665,22 @@ CONTROL_NAME_ALIASES: dict[str, str] = {
     "third-party risk management": "guide-third-party",
     "事件响应预案": "guide-ir",
     "incident response playbooks": "guide-ir",
+    "事件通报机制": "guide-notification",
+    "合规事件通报": "guide-notification",
+    "事件通报与泄露通知": "guide-notification",
+    "incident and breach notification": "guide-notification",
+    "incident notification": "guide-notification",
+    "容器镜像扫描与签名验证": "guide-container",
+    "容器与镜像安全加固": "guide-container",
+    "container image scanning and signature verification": "guide-container",
+    "container and image security": "guide-container",
+    "安全软件开发生命周期": "guide-sdlc",
+    "secure software development lifecycle": "guide-sdlc",
+    "云共同责任模型治理": "guide-cloud-responsibility",
+    "云上共同责任模型": "guide-cloud-responsibility",
+    "cloud shared responsibility governance": "guide-cloud-responsibility",
+    "最小权限原则": "guide-least",
+    "least privilege": "guide-least",
     "漏洞管理闭环": "guide-vulnerability",
     "closed-loop vulnerability management": "guide-vulnerability",
     "vulnerability management": "guide-vulnerability",
@@ -646,6 +690,15 @@ CONTROL_NAME_ALIASES: dict[str, str] = {
     "host backup and restore testing": "guide-host-backup",
     "静态数据加密": "guide-rest-encryption",
     "encryption at rest": "guide-rest-encryption",
+    "服务端请求伪造防护": "guide-ssrf",
+    "ssrf防护": "guide-ssrf",
+    "ssrf": "guide-ssrf",
+    "server-side request forgery": "guide-ssrf",
+    "server-side request forgery protection": "guide-ssrf",
+    "硬编码密钥泄露应急处置": "guide-key-leak",
+    "代码仓库密钥泄露处置": "guide-key-leak",
+    "私钥泄露应急处置": "guide-key-leak",
+    "hardcoded secret leak remediation": "guide-key-leak",
 }
 
 
@@ -739,12 +792,27 @@ def resolve_explicit_control_id(question: str) -> str:
     for alias, gid in CONTROL_NAME_ALIASES.items():
         if _norm(alias) == cname_norm:
             return gid
+    for gid, meta in CANONICAL_CONTROL_METADATA.items():
+        if _norm(meta[0]) == cname_norm or _norm(meta[1]) == cname_norm:
+            return gid
     for doc in index()[0]:
         if not doc["id"].startswith("guide-"):
             continue
         names = list(doc.get("topic_names", [])) + [p.strip() for p in doc["title"].split("/")]
         if any(_norm(n) == cname_norm for n in names if _norm(n)):
             return doc["id"]
+    best_sub = ("", 0)
+    for alias, gid in CONTROL_NAME_ALIASES.items():
+        anorm = _norm(alias)
+        if len(anorm) >= 4 and (alias in cname or anorm in cname_norm) and len(anorm) > best_sub[1]:
+            best_sub = (gid, len(anorm))
+    for gid, meta in CANONICAL_CONTROL_METADATA.items():
+        for name in (meta[0], meta[1]):
+            nnorm = _norm(name)
+            if len(nnorm) >= 4 and nnorm in cname_norm and len(nnorm) > best_sub[1]:
+                best_sub = (gid, len(nnorm))
+    if best_sub[0]:
+        return best_sub[0]
     return ""
 
 
@@ -759,6 +827,16 @@ def resolve_control_id(
     explicit = resolve_explicit_control_id(question)
     if explicit:
         return explicit
+
+    q_text = str(question or "")
+    if any(w in q_text for w in ("提交进代码仓库", "提交到代码仓库", "硬编码在代码仓库", "重写 Git 历史", "重写Git历史")) and any(
+        w in q_text for w in ("私钥", "密钥", "凭证", "Token", "Secret")
+    ):
+        return "guide-key-leak"
+    if any(w in q_text for w in ("访问密钥泄露", "密钥泄露", "凭据泄露", "凭证泄露", "私钥泄露")):
+        return "guide-key-leak"
+    if any(w in q_text for w in ("SSRF", "服务端请求伪造", "169.254.169.254", "云元数据地址")):
+        return "guide-ssrf"
 
     # For scenario questions, check if the draft answer or primary_source_id identifies the control
     cand_id = str(primary_source_id or "").strip().casefold()
@@ -1123,13 +1201,16 @@ def compile_answer(
                 ans = f"{header}{ans}"
             if mechanism and _norm(mechanism) not in _norm(ans):
                 ans = f"{header}{mechanism}. {ans}"
+        # Generic definitions/comparisons/parameter questions have no single
+        # control contract. A retrieved guide alone must not rewrite their
+        # answer with that guide's canonical mechanism.
 
     if enable_neglect:
         ans = ensure_neglect_consequence(ans, template)
 
     if enable_support:
         committed_id = resolved_id or primary_source_id
-        if committed_guide_append and str(committed_id).casefold().startswith("guide-"):
+        if committed_guide_append and template != 'generic' and str(committed_id).casefold().startswith("guide-"):
             ans = append_committed_guide_support(ans, question, committed_id)
         else:
             ans = append_verified_course_support(ans, question, context, files, committed_id)
@@ -1418,7 +1499,7 @@ def knn_predict_control(
 
 
 NEGATIVE_MC_STEM_RE = re.compile(
-    r"(?:不合理|不正确|不属于|不符合|不恰当|错误的是|最不|不应|哪项不是|不应优先|least\s+appropriate|not\s+appropriate|incorrect|except)",
+    r"(?:不合理|不正确|不属于|不符合|不恰当|错误的是|最不|不应|哪项不是|不应优先|\b(?:least\s+appropriate|not\s+appropriate|incorrect|except)\b)",
     re.I,
 )
 
@@ -1454,7 +1535,11 @@ def knn_predict_mc(
 
     opt_controls: dict[str, str] = {}
     for letter, opt_text in opts.items():
+        if "通用控制描述" in opt_text or "通用宣传材料" in opt_text or opt_text.strip().startswith("仅有关于"):
+            continue
         cleaned_opt = re.sub(r"^有关(.+?)的通用控制描述[。.]?$", r"\1", opt_text.strip())
+        if len(cleaned_opt) > 55:
+            continue
         cid = resolve_explicit_control_id(cleaned_opt)
         if cid and cid.startswith("guide-"):
             opt_controls[letter] = cid
@@ -1478,7 +1563,7 @@ def knn_predict_mc(
             cid = opt_controls.get(letter, "")
             if cid and cid in guide_vecs:
                 s_prof = _cos_sparse(sv, guide_vecs[cid]) + 0.45 * ctrl_votes.get(cid, 0.0)
-                if "通用控制描述" in opt_text:
+                if "通用控制描述" in opt_text or "通用宣传材料" in opt_text or opt_text.strip().startswith("仅有关于"):
                     s_prof -= 0.5
                 scores[letter] = s_prof
             else:
@@ -1491,7 +1576,7 @@ def knn_predict_mc(
         target_vec = to_vec(f"{ctrl_sup} {g_txt} {g_txt}")
         for letter, opt_text in opts.items():
             s_val = _cos_sparse(to_vec(opt_text), target_vec)
-            if "通用控制描述" in opt_text:
+            if "通用控制描述" in opt_text or "通用宣传材料" in opt_text or opt_text.strip().startswith("仅有关于"):
                 s_val -= 0.5
             scores[letter] = s_val
 

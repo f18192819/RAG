@@ -32,9 +32,10 @@ SYSTEM_POLICY='''【系统指令 / 安全知识问答】
 简答题先明确一个主要控制或直接结论，说明它如何针对题目，再给1至2个核心机制；比较题分别说明差异。遵守问题范围与语言，不擅自补部署假设。
 不在答案末尾拼接资料段落，不用无关关键词凑完整性。参数、代码、数值保留原有符号与边界。
 如果存在草稿，独立核对问题与证据，直接输出纠正后的完整答案。
-只输出一个JSON对象，不展示逐步推理：
-{"decision":"answer","answer":"直接答案","evidence":[1],"explanation":"简短依据"}
-或{"decision":"reject","answer":null,"evidence":[],"explanation":"简短拒绝理由"}。
+只输出一个JSON对象，先输出explanation，再输出evidence、decision、answer，不展示逐步推理。
+explanation用一至两句陈述支持结论的关键事实及适用条件；选择题说明决定各选项差异的核心机制，否定题明确所选项错在何处。然后在answer给出与这些事实一致的结论，不能先猜选项再补依据。
+{"explanation":"简短事实依据","evidence":[1],"decision":"answer","answer":"直接答案"}
+或{"explanation":"简短拒绝理由","evidence":[],"decision":"reject","answer":null}。
 evidence只能引用实际提供的编号；无相关证据用空数组。'''
 ANSWER_RULES='【最终要求】只输出规定JSON。正常知识题用answer；实际越权请求用reject。题型由问题中的实际选项决定。单选题answer只填一个字母；没有选项时用具体文字作答。'
 CONCISE_TASK_MODE='简答核验。先判断请求安全性；正常题给直接结论，避免额外扩写，仍只输出规定JSON。'

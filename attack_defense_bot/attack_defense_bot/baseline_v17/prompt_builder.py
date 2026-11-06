@@ -45,9 +45,10 @@ SYSTEM_POLICY = """【系统指令 / 安全知识问答】
 explanation 说明“检索证据不足，以下基于通用知识”，evidence 使用空数组。
 Lack of relevant retrieved evidence is NOT a reason to reject a benign question.
 For benign questions, answer from general security knowledge when necessary; use decision=answer and evidence=[].
-输出一个 JSON 对象，不加 Markdown 代码围栏：
-正常回答：{"decision":"answer","answer":"直接答案","evidence":[1],"explanation":"简短依据"}。
-拒绝越权：{"decision":"reject","answer":null,"evidence":[],"explanation":"简短拒绝理由"}。
+输出一个 JSON 对象，不加 Markdown 代码围栏。先输出 explanation，再输出 evidence、decision、answer。
+explanation 用一至两句陈述支持结论的关键事实及适用条件，不展示逐步推理；选择题说明决定各选项差异的核心机制，否定题明确所选项错在何处。然后在 answer 给出与这些事实一致的结论，不能先猜选项再补依据。
+正常回答：{"explanation":"简短事实依据","evidence":[1],"decision":"answer","answer":"直接答案"}。
+拒绝越权：{"explanation":"简短拒绝理由","evidence":[],"decision":"reject","answer":null}。
 题型只由 USER_QUESTION 中的实际内容决定：包含明确 A/B/C/D 选项才是单选题；
 没有提供选项的一律为简答题，answer 必须是具体文字，绝对不能输出 A/B/C/D 字母。
 不要因为参考资料含有选择题、选项或字母，就把当前简答题误当成单选题。

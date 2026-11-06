@@ -66,8 +66,10 @@ except ImportError:
 LOG = logging.getLogger(__name__)
 try:
     from ..security import guarded_request,checked_input,request_client,rejection_response
+    from ..answer_review import review_reasons
 except ImportError:
     from security import guarded_request,checked_input,request_client,rejection_response
+    from answer_review import review_reasons
 
 
 def generate_answer(client, prompt: str, citation_count: int, settings: Settings) -> str:
@@ -116,13 +118,19 @@ def verify_choice(question: str, response: str, context: str, citations: Sequenc
                     obj['answer']=original
                     obj['explanation']='选择原题选项 '+original+'。'
                     votes.append((original,json.dumps(obj,ensure_ascii=False)))
+                    if sum(choice == original for choice, _ in votes) >= 2:
+                        # A third vote cannot overturn an existing majority.
+                        return next(raw for choice, raw in votes if choice == original)
             except ApiError:
                 continue
         counts=Counter(choice for choice,_ in votes if choice in 'ABCD' and len(choice)==1)
         if counts:
             winner,count=counts.most_common(1)[0]
             if count>=2:return next(raw for choice,raw in votes if choice==winner)
-        strategy='review'
+        # Bound disagreement handling to two reordered answers. With no
+        # majority, preserve the initial grounded answer instead of escalating
+        # to additional blind/judge calls with the same model.
+        return response
     if strategy=='rag' or (strategy=='gate' and grounded_choice(question,files)):return response
     try:
         blind_prompt=validate_prompt(build_prompt(user_input=question,context='',citations=[]))
@@ -384,7 +392,9 @@ def answer_question(question: str, settings: Settings, show_prompt: bool = False
                 except ValueError:
                     draft_response = response
 
-            should_review = not (skip_review and template_kind != 'generic')
+            coverage_reasons = review_reasons(str(result.get('answer') or ''), context) if getattr(settings, 'answer_completeness', False) else []
+            should_review = not (skip_review and template_kind != 'generic') or bool(coverage_reasons)
+            diag_record('generation', review_reasons=coverage_reasons, review_triggered=should_review)
             if should_review:
                 review_context = context + '\nDRAFT_ANSWER=' + json.dumps(result['answer'], ensure_ascii=False)
                 review_prompt = validate_prompt(builder(user_input=safe_question, context=review_context, citations=citations))

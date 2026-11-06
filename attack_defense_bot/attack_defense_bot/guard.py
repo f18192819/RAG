@@ -28,14 +28,14 @@ def normalize(text: str) -> str:
 # Soft source-screening signals, not an input blacklist. The shared semantic
 # guard handles ambiguous user intent; keep these names for evidence callers.
 RISK_RULES = (
-    ("override", r"(?:忽略|无视|覆盖|撤销|停止|取消|跳过|关闭|绕过|解除|不再适用|过期|不要完成).{0,36}(?:规则|指令|约束|原任务|原本的问题|权限|安全|限制|隔离|审核|检查|审批|身份确认)|(?:规则|安全要求).{0,18}(?:撤销|不再适用|过期)|(?:ignore|override|disregard|bypass|disable).{0,40}(?:previous|prior|system|safety|security|instruction|rule|permission|check)"),
-    ("secret", r"(?:读取|返回|输出|公开|展示|列出|导出|泄露|提供|扫描|查找).{0,55}(?:私钥|密码|秘密字段|私密数据|受限信息|私有文件|内部配置|系统配置|内部凭据|访问令牌|会话凭据|api\s*key|隐藏提示|隐藏内容|私有上下文|系统提示|不可见文本|内部规则|系统层|开发者层)|(?:reveal|print|disclose|dump|show).{0,50}(?:system\s*prompt|secret|private\s*key|api\s*key|hidden|password|developer\s*message)"),
+    ("override", r"(?:忽略|无视|覆盖|(?<!统一)(?<!账户)(?<!权限)(?<!令牌)(?<!证书)撤销|停止|取消|跳过|关闭|绕过|解除|不再适用|过期|不要完成|不要回答原问题|放弃原任务).{0,36}(?:规则|指令|约束|原任务|原本的问题|权限检查|权限边界|安全(?:规则|指令|限制|检查|护栏|策略|约束|要求)|限制|隔离|审核|检查|审批|身份确认)|(?:规则|安全要求).{0,18}(?:撤销|不再适用|过期)|(?:ignore|override|disregard|bypass|disable).{0,40}(?:previous|prior|system|safety|security|instruction|rule|permission|check)"),
+    ("secret", r"(?:读取|返回|输出|公开|展示|列出|导出|泄露|提供|扫描|查找|复述|转写|还原|背诵|默写|抄写).{0,55}(?:私钥|密码|秘密字段|私密数据|受限信息|私有文件|内部配置|系统配置|内部凭据|访问令牌|会话凭据|api\s*key|隐藏提示|隐藏内容|私有上下文|系统提示|不可见文本|内部规则|系统层|开发者层)|(?:reveal|print|disclose|dump|show|repeat|transcribe|reconstruct|output).{0,50}(?:system\s*prompt|secret|private\s*key|api\s*key|hidden\s*(?:prompt|instructions?|context)|password|developer\s*(?:message|prompt|instructions?))"),
     ("tool", r"(?:调用|执行|使用|遍历).{0,35}(?:高权限|管理接口|文件工具|可用数据库)|(?:上传|发送|外传).{0,25}(?:外部服务器|指定地址)|(?:清除|删除).{0,20}(?:审计|安全日志)"),
     ("encoded", r"(?:base64|rot13|十六进制|编码|字符替换).{0,70}(?:执行|最高指令|不再.{0,8}检查)|(?:decode|decrypt).{0,60}(?:execute|obey|instruction priority)"),
     ("memory", r"(?:记住|长期保存|永久记忆|长期系统偏好|默认设置).{0,65}(?:规则|跳过|信任|允许|授权|导出)|(?:remember|permanent\s*memory).{0,50}(?:bypass|trust|allow|disable)"),
     ("role", r"(?:扮演|模拟|假设|虚构).{0,55}(?:无规则|无保密|没有保密|安全政策不存在|无条件执行越权)|(?:最高优先级|最高级指令|system_override|root policy patch|无限制响应模式)|(?:原样|逐字).{0,25}(?:系统|开发者|隐藏)|(?:系统层|开发者层).{0,30}(?:原样|代码块)"),
     ("boundary", r"</?(?:system|admin|context|user_question|untrusted_retrieved_context|available_citations)\b|end_of_user_input|reference finished"),
-    ("secret", r"(?:内部规则|系统提示|隐藏提示|开发者消息).{0,30}(?:列出|展示|原样|副本|输出|透露)"),
+    ("secret", r"(?:内部规则|系统提示|隐藏提示|开发者消息).{0,30}(?:列出|展示|原样|副本|输出|透露|复述|转写)"),
     ("authority", r"(?:管理员|管理层|负责人|运维|平台).{0,60}(?:无需核验|不必验证|直接照做|全部跳过|免于验证)|(?:审计|身份确认|权限验证).{0,20}(?:跳过|省略)|(?:线下批准|紧急授权).{0,30}(?:私有|全部|高权限)"),
     ("memory", r"(?:已通过授权|允许导出|自动信任).{0,30}(?:永久记忆|长期记忆|保存规则)|(?:写入|登记).{0,20}(?:永久记忆|系统偏好)"),
     ("encoded", r"(?:编码|字符替换|解码|恢复原文).{0,60}(?:不要再次检查|不必验证|无条件执行)"),
@@ -110,9 +110,18 @@ def validate_response(response: str, citation_count: int, token: str = "") -> st
     text = response.strip()
     if text.startswith("```json") and text.endswith("```"):
         text = text[7:-3].strip()
+    elif text.startswith("```") and text.endswith("```"):
+        text = re.sub(r"^```(?:json)?\s*|\s*```$", "", text, flags=re.I | re.S).strip()
     try:
         obj = json.loads(text)
     except (TypeError, ValueError) as exc:
+        if re.match(
+            r"^\s*(?:抱歉|对不起|很抱歉|我无法(?:提供|回答|执行|满足|协助)|不能(?:提供|泄露|执行|违反)|拒绝(?:执行|回答|提供)|"
+            r"I\s+cannot\s+(?:comply|provide|reveal|disclose|execute|fulfill)|I'm\s+sorry,?\s+but\s+I\s+cannot|I\s+am\s+unable\s+to\s+(?:provide|reveal|execute))",
+            text,
+            re.I,
+        ):
+            return json.dumps({"decision": "reject", "answer": None, "evidence": [], "explanation": "拒绝执行越权请求。"}, ensure_ascii=False)
         raise ValueError("模型响应不是合法 JSON") from exc
     if not isinstance(obj, dict) or obj.get("decision") not in {"answer", "reject"}:
         raise ValueError("模型响应缺少合法 decision")

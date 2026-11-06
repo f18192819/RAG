@@ -19,7 +19,10 @@ except ImportError:
     from api_client import ApiError
 
 MAX_ITEMS = 6
-COMMAND = re.compile(r'(?i)(?:忽略|无视|服从|你必须|请执行|系统指令|开发者指令|修改你的|输出你的|ignore\s+(?:prior|previous|system)|you must|system prompt|follow these instructions|act as)')
+try:
+    from ..evidence import contains_source_instruction
+except ImportError:
+    from evidence import contains_source_instruction
 
 
 def clean(text: str) -> str:
@@ -53,8 +56,7 @@ def parse_and_validate_evidence(raw: str, files: list[dict]) -> list[dict]:
             raise ValueError('Evidence field length invalid')
         if source not in sources or quote not in sources[source]:
             raise ValueError('Evidence quote is not in the named source')
-        exact_known_fact = is_bundled_guide_excerpt(quote) and fact in quote
-        if COMMAND.search(fact+' '+quote) or (not exact_known_fact and (instruction_risks(fact) or instruction_risks(quote))):
+        if contains_source_instruction(fact) or contains_source_instruction(quote):
             raise ValueError('Evidence contains instructions')
         # The extractor's invented summary is not evidence. Promote source
         # wording only, just as the candidate production path already does.
@@ -95,7 +97,7 @@ def fallback_evidence(question: str, files: list[dict]) -> list[dict]:
         text = clean(file['text'])
         for sentence in re.split(r'(?<=[。!?;；])\s*|\n+', text):
             sentence = sentence.strip()
-            if not 8 <= len(sentence) <= 900 or COMMAND.search(sentence) or instruction_risks(sentence):
+            if not 8 <= len(sentence) <= 900 or contains_source_instruction(sentence):
                 continue
             overlap = len(query_terms & set(terms(sentence)))
             if overlap:
