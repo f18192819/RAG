@@ -373,12 +373,15 @@ class V29OfficialScorerTests(unittest.TestCase):
         )
         self.assertFalse(res_blocked["high_confidence"])
 
-    def test_v30_committed_guide_support_append(self):
+    def test_committed_guide_support_requires_retained_evidence(self):
         fde_doc = self.guides["guide-fde"]
         ans = "全盘加密（Full-Disk Encryption, FDE）用于保护静态存储。"
         supported = append_committed_guide_support(ans, "全盘加密的核心安全目标是什么？", "guide-fde")
+        self.assertEqual(supported, ans)
+        context = json.dumps({'validated_evidence': [{'source': 1, 'quote': fde_doc['text_zh']}]})
+        supported = append_committed_guide_support(ans, "全盘加密的核心安全目标是什么？", "guide-fde", context, [guide_file(fde_doc)])
         self.assertIn("课程参考：", supported)
-        self.assertIn(fde_doc["text_zh"], supported)
+        self.assertIn(''.join(supported.split("课程参考：", 1)[1].split()), ''.join(fde_doc['text_zh'].split()))
         self.assertEqual(append_committed_guide_support(supported, "全盘加密的核心安全目标是什么？", "guide-fde"), supported)
 
     def test_v30_mc_api_failure_knn_fallback(self):

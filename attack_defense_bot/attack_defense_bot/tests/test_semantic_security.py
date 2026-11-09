@@ -335,7 +335,7 @@ class SemanticSecurityTests(unittest.TestCase):
         self.assertEqual(result['security']['classifier_call_count'],2)
 
     def test_all_categories_are_supported_without_hardcoded_attack_examples(self):
-        self.assertEqual(len(security.CATEGORIES),11)
+        self.assertEqual(len(security.CATEGORIES),13)
         for category in security.CATEGORIES:
             client=Mock();client.dialogue.return_value=json.dumps({'label':'attack','category':category,'quote':'operative request'})
             with self.subTest(category=category):

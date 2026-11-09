@@ -1,10 +1,10 @@
 {
-  "selected_variant": "B6",
+  "selected_variant": "mechanism_guard_r13",
   "production_profile": "A",
   "query_representation": false,
   "contrastive_rerank": false,
   "candidate_retention": false,
-  "answer_completeness": false,
+  "answer_completeness": true,
   "template_prompt": true,
   "neglect_completion": true,
   "anchor_canonical": true,
@@ -18,6 +18,6 @@
   "committed_guide_append": true,
   "mc_knn_fallback": true,
   "knn_min_top1_score": 0.42,
-  "knn_min_margin": 0.10,
-  "selection_status": "v30_official_scorer_selected"
+  "knn_min_margin": 0.1,
+  "selection_status": "experimental_pending_platform_evaluation"
 }

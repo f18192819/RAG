@@ -14,7 +14,7 @@ except ImportError:
     from answer_compiler import classify_short_answer_template
 
 PROMPT_VERSION = 'lecture6-evidence-v2'
-COURSE_TERMINOLOGY_RULE = '如果 verified course evidence 中存在直接对应当前问题的标准术语，优先保留这些术语，不要为了文风把关键安全名词全部换成近义表达。若存在草稿（DRAFT_ANSWER），必须保留草稿中已有的安全术语与规范短语（preserve all security terms and canonical phrases already present in draft），只允许补充、纠错或去除明显矛盾，不得将已正确术语随意同义改写。'
+COURSE_TERMINOLOGY_RULE = '保留与当前问题和证据一致的标准术语。先检查主控制是否真正解决题干中的失败模式，再解释直接原因、核心机制及必要验证。DRAFT_ANSWER 是待核验草稿；错误或无来源支持的术语和结论必须纠正，不得为了概念覆盖保留错误。不要整段复制指南或堆叠无关机制。'
 TEMPLATE_MODES = {
     'T1_neglect': '简答题（忽视控制后果）。没有可选项，禁止输出选项字母。结构：如果组织忽视【题目中的控制正式名称（English canonical name, ACRONYM）】，组织将难以【直接安全作用/能力】，从而使相关威胁更容易转化为实际事件。最后一句必须精确保留“从而使相关威胁更容易转化为实际事件。”。' + COURSE_TERMINOLOGY_RULE,
     'T2_implementation': '简答题（开始实施控制）。没有可选项，禁止输出选项字母。结构：开始实施【控制中文正式名称（English canonical name, ACRONYM）】时，首先明确第一步实施动作，随后结合已验证证据中的核心机制词展开，并通过具体的核验与闭环动作验证。' + COURSE_TERMINOLOGY_RULE,

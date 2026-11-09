@@ -15,12 +15,12 @@ import unicodedata
 from typing import Any, Sequence
 
 try:
-    from .control_routing import control_scopes
+    from .control_routing import control_scopes, primary_control_mention
     from .question_format import has_choice_options, is_chinese_question
     from .retrieval import index, is_bundled_guide_excerpt, question_stem, terms
     from .reference_search import is_course_reference_excerpt
 except ImportError:
-    from control_routing import control_scopes
+    from control_routing import control_scopes, primary_control_mention
     from question_format import has_choice_options, is_chinese_question
     from retrieval import index, is_bundled_guide_excerpt, question_stem, terms
     from reference_search import is_course_reference_excerpt
@@ -1059,24 +1059,56 @@ def append_verified_course_support(
     return f"{cleaned}\n\n{heading}{selected_quote}"
 
 
+def verified_control_quotes(context, files, control_id):
+    """Resolve actual evidence, not merely a router ID or a source label."""
+    try:
+        evidence = json.loads(context or '{}').get('validated_evidence', [])
+    except (ValueError, TypeError, AttributeError):
+        return []
+    guide = next((doc for doc in index()[0] if doc['id'] == control_id), None)
+    if not guide or not isinstance(evidence, list):
+        return []
+    quotes = []
+    for item in evidence:
+        if not isinstance(item, dict): continue
+        number, quote = item.get('source'), item.get('quote')
+        if type(number) is not int or not 1 <= number <= len(files) or not isinstance(quote, str): continue
+        source = files[number - 1]
+        if source.get('metadata', {}).get('source_id', '').casefold() != control_id: continue
+        normalized = ' '.join(quote.split())
+        if len(normalized) >= 8 and normalized in ' '.join(source.get('text', '').split()) and normalized in ' '.join(guide['text'].split()):
+            quotes.append(quote)
+    return quotes
+
+
 def append_committed_guide_support(
     answer: str,
     question: str,
     committed_control_id: str,
+    context: str = '',
+    files: Sequence[dict] = (),
 ) -> str:
-    """S_commit (Section 9): Unconditionally append bundled course guide text once primary control is committed to a local guide-*."""
+    """Supplement only missing, source-verified sentences; never reload a guide."""
     cleaned = str(answer or "").strip()
     if not cleaned or has_choice_options(question):
         return cleaned
     cid = str(committed_control_id or "").strip().casefold()
     if not cid.startswith("guide-"):
         return cleaned
-    guides = {doc["id"]: doc for doc in index()[0] if doc["id"].startswith("guide-")}
-    doc = guides.get(cid)
-    if not doc:
+    quotes = verified_control_quotes(context, files, cid)
+    if not quotes:
         return cleaned
     chinese = is_chinese_question(question)
-    quote = str(doc.get("text_zh" if chinese else "text_en") or doc.get("text") or "").strip()
+    # This is a bounded coverage repair, not a semantic correctness score.
+    answer_terms = set(terms(cleaned))
+    missing = []
+    for quote in quotes:
+        for sentence in re.split(r'(?<=[。.!?；;])\s*', quote):
+            sentence = sentence.strip()
+            sentence_terms = set(terms(sentence))
+            if len(sentence_terms) >= 4 and len(answer_terms & sentence_terms) / len(sentence_terms) < 0.5:
+                if sentence not in missing: missing.append(sentence)
+    quote = ' '.join(missing[:2])
     if not quote or _norm(quote) in _norm(cleaned):
         return cleaned
     heading = "课程参考：" if chinese else "Course reference: "
@@ -1140,6 +1172,14 @@ def compile_answer(
     resolved_id = resolve_control_id(
         question, ans, files, primary_source_id, allow_scenario_patches=allow_scenario_patches
     )
+    if template == 'generic':
+        return ans
+    if template == 'T3_scenario':
+        # Do not turn a routing mistake into an authoritative-looking answer.
+        # The raw draft must independently agree with a source-backed primary.
+        resolved_id = str(primary_source_id or '').casefold()
+        if not verified_control_quotes(context, files, resolved_id) or primary_control_mention(ans) != resolved_id:
+            return ans
     q_ctrl = anchors.get("control_name") or ""
     failure_phrase = anchors.get("failure_phrase") or ""
 
@@ -1211,7 +1251,7 @@ def compile_answer(
     if enable_support:
         committed_id = resolved_id or primary_source_id
         if committed_guide_append and template != 'generic' and str(committed_id).casefold().startswith("guide-"):
-            ans = append_committed_guide_support(ans, question, committed_id)
+            ans = append_committed_guide_support(ans, question, committed_id, context, files)
         else:
             ans = append_verified_course_support(ans, question, context, files, committed_id)
 

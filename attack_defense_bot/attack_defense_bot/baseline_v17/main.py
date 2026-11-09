@@ -67,9 +67,11 @@ LOG = logging.getLogger(__name__)
 try:
     from ..security import guarded_request,checked_input,request_client,rejection_response
     from ..answer_review import review_reasons
+    from ..control_routing import primary_control_mention
 except ImportError:
     from security import guarded_request,checked_input,request_client,rejection_response
     from answer_review import review_reasons
+    from control_routing import primary_control_mention
 
 
 def generate_answer(client, prompt: str, citation_count: int, settings: Settings) -> str:
@@ -155,6 +157,9 @@ def answer_question(question: str, settings: Settings, show_prompt: bool = False
 
     has_options = has_choice_options(safe_question)
     template_kind = classify_short_answer_template(safe_question)
+    # All inferred controls (including new scenario phrasings) require a
+    # mechanism check. Explicitly named control questions keep their fast path.
+    scenario_reasoning = not has_options and template_kind in {'T3_scenario', 'generic'}
     guides = {doc['id']: doc for doc in index()[0] if doc['id'].startswith('guide-')}
 
     fast_path = bool(getattr(settings, 'fast_path_named_controls', False))
@@ -195,7 +200,7 @@ def answer_question(question: str, settings: Settings, show_prompt: bool = False
                 exclude_ids=exclude_ids,
             )
             pred_id = str(knn_info.get('predicted_control') or '')
-            if (use_knn_only or knn_info.get('high_confidence')) and pred_id in guides:
+            if not scenario_reasoning and (use_knn_only or knn_info.get('high_confidence')) and pred_id in guides:
                 queries = [question_stem(safe_question)]
                 routed_files = [guide_file(guides[pred_id])]
                 route_method = 'knn_only' if use_knn_only else 'knn_high_confidence'
@@ -252,15 +257,13 @@ def answer_question(question: str, settings: Settings, show_prompt: bool = False
     if not has_options:
         if not routed_files:
             knn_cands = [knn_info.get('predicted_control', ''), knn_info.get('top2_control', '')] if knn_info else None
-            if not strong_lexical_guide(safe_question):
+            if scenario_reasoning or not strong_lexical_guide(safe_question):
                 routing_calls = 1
-            try:
-                routed_files = route_guides(safe_question, client, personal_files + local_files, knn_candidates=knn_cands)
-            except TypeError:
-                routed_files = route_guides(safe_question, client, personal_files + local_files)
+            routed_files = route_guides(safe_question, client, personal_files + local_files,
+                                        knn_candidates=knn_cands, verify_scenario=scenario_reasoning)
             route_method = 'llm_fallback' if knn_info else 'llm_router'
 
-        if getattr(settings, 'anchor_canonical', False) or getattr(settings, 'verified_support_append', False) or committed_append:
+        if not scenario_reasoning and (getattr(settings, 'anchor_canonical', False) or getattr(settings, 'verified_support_append', False) or committed_append):
             routed_id = str(routed_files[0]['metadata']['source_id']).casefold() if routed_files else ''
             resolved_id = resolve_control_id(
                 safe_question, '', routed_files, routed_id, allow_scenario_patches=allow_patches
@@ -273,11 +276,18 @@ def answer_question(question: str, settings: Settings, show_prompt: bool = False
     course_files=select_relevant_files(course_files,max_files=20,query=safe_question)
     relevant_files = fuse_rankings([(3.5,routed_files),(1.3,relevant_files),(1.5,public_lexical),
                                     (1.4,course_files),(1.25,personal_files),(1.0,local_files)],settings.context_max_files)
+    # A selected local source must survive fusion even if many dense hits agree.
+    if routed_files:
+        retained={f['metadata']['source_id'].casefold() for f in routed_files}
+        relevant_files=(routed_files+[f for f in relevant_files
+            if str(f.get('metadata',{}).get('source_id', '')).casefold() not in retained])[:settings.context_max_files]
+    diag_record('fusion', sources=[str(f.get('metadata',{}).get('source_id', '')).casefold() for f in relevant_files])
     _, candidate_files = prepare_context(
         relevant_files,
         max_chars=settings.context_max_chars,
         max_files=settings.context_max_files,
     )
+    diag_record('prepared', sources=[str(f.get('metadata',{}).get('source_id', '')).casefold() for f in candidate_files])
     if has_options:
         primary_source_id = ','.join(mc_primary_ids[:5]) if mc_primary_ids else ''
     else:
@@ -286,6 +296,7 @@ def answer_question(question: str, settings: Settings, show_prompt: bool = False
     if not primary_source_id and candidate_files:
         evidence_extraction_calls = 1
     context, used_files = isolate_evidence(safe_question, candidate_files, client, primary_source_id)
+    diag_record('evidence', retained_sources=[str(f.get('metadata',{}).get('source_id', '')).casefold() for f in used_files])
     citations = files_to_citations(used_files, max_files=settings.context_max_files)
     if settings.api_token:
         citations = [label.replace(settings.api_token, "[REDACTED]") for label in citations]
@@ -392,8 +403,10 @@ def answer_question(question: str, settings: Settings, show_prompt: bool = False
                 except ValueError:
                     draft_response = response
 
-            coverage_reasons = review_reasons(str(result.get('answer') or ''), context) if getattr(settings, 'answer_completeness', False) else []
-            should_review = not (skip_review and template_kind != 'generic') or bool(coverage_reasons)
+            draft_control = primary_control_mention(str(result.get('answer') or ''))
+            conflict = bool(scenario_reasoning and primary_source_id and draft_control and draft_control != primary_source_id)
+            coverage_reasons = review_reasons(str(result.get('answer') or ''), context, conflict=conflict)
+            should_review = not skip_review or bool(coverage_reasons)
             diag_record('generation', review_reasons=coverage_reasons, review_triggered=should_review)
             if should_review:
                 review_context = context + '\nDRAFT_ANSWER=' + json.dumps(result['answer'], ensure_ascii=False)
